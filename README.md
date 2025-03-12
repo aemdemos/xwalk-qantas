@@ -3,7 +3,7 @@ Your project's description...
 
 ## Environments
 - Preview: https://main--xwalk-qantas--aemdemos.aem.page/
-- Live: https://main--xwalk-qantas--{owner}.aem.live/
+- Live: https://main--xwalk-qantas--aemdemos.aem.live/
 
 ## Documentation
 
