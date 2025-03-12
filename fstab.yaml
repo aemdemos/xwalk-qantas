@@ -1,5 +1,5 @@
 mountpoints:
   /:
-    url: "https://author-p126452-e295452-cmstg.adobeaemcloud.com/bin/franklin.delivery/aemdemos/xwalk-qantas/main"
+    url: "https://author-p152749-e1584268.adobeaemcloud.com/bin/franklin.delivery/aemdemos/xwalk-qantas/main"
     type: "markup"
     suffix: ".html"
