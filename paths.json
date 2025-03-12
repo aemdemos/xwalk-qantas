@@ -1,10 +1,10 @@
 {
   "mappings": [
-    "/content/aem-boilerplate/:/",
-    "/content/aem-boilerplate/configuration:/.helix/config.json",
-    "/content/aem-boilerplate/metadata:/metadata.json"
+    "/content/qantasnewsroom/:/",
+    "/content/qantasnewsroom/configuration:/.helix/config.json",
+    "/content/qantasnewsroom/metadata:/metadata.json"
   ],
   "includes": [
-    "/content/aem-boilerplate/"
+    "/content/qantasnewsroom/"
   ]
 }
