@@ -11,32 +11,51 @@
  */
 /* global WebImporter */
 /* eslint-disable no-console, class-methods-use-this */
-function addPageIntoAndPublishedDateToMetadata(document, meta) {
-  const pageContent = document.querySelector(".page-content")?.innerText.trim();
-  let pageIntro;
-  if (pageContent.length > 500) {
-    let trimmedContent = pageContent.slice(0, 500);
 
-    // Ensure we don't cut off in the middle of a word
-    let lastSpaceIndex = trimmedContent.lastIndexOf(" ");
-    if (lastSpaceIndex > 0) {
-        trimmedContent = trimmedContent.slice(0, lastSpaceIndex);
+// for /media-releases/<page> and /roo-tales/<page>, add the published date and intro to the page metadata 
+function addPageIntoAndPublishedDateToMetadata(document, meta, url) {
+  const pathname = new URL(url).pathname;
+  if (pathname.startsWith("/media-releases/") || pathname.startsWith("/roo-tales/")) {
+    const pageContent = document.querySelector(".page-content")?.innerText.trim();
+    let pageIntro;
+    if (pageContent.length > 500) {
+      let trimmedContent = pageContent.slice(0, 500);
+
+      // Ensure we don't cut off in the middle of a word
+      let lastSpaceIndex = trimmedContent.lastIndexOf(" ");
+      if (lastSpaceIndex > 0) {
+          trimmedContent = trimmedContent.slice(0, lastSpaceIndex);
+      }
+
+      pageIntro = trimmedContent + " […]"; // Append the indicator for more content
+    } else {
+      pageIntro = pageContent; // If it's less than 300 characters, keep it as is
     }
-
-    pageIntro = trimmedContent + " […]"; // Append the indicator for more content
-  } else {
-    pageIntro = pageContent; // If it's less than 300 characters, keep it as is
+    meta['intro'] = pageIntro;
+    meta['publishedDate'] = document.querySelector(".page-intro")?.querySelector(".page-published-date")?.innerText;
   }
-  meta['intro'] = pageIntro;
-  meta['publishedDate'] = document.querySelector(".page-intro")?.querySelector(".page-published-date")?.innerText;
 }
 
+
 function addSidebarInfoToMetadata(document, meta) {
-  const sidebarIntro = document.querySelector(".sidebar-intro")
-  if (sidebarIntro) {
+  const sidebarIntro = document.querySelector(".sidebar-intro");
+  // add the sidebar metadata for gallery-template-default page
+  if (sidebarIntro && document.querySelector(".gallery-template-default")) {
     const paragraphs = sidebarIntro.querySelectorAll("p");
     meta['imageCount'] = paragraphs[0]?.textContent.trim();
-    meta['postedOn'] = paragraphs[1]?.textContent.trim();    
+    meta['publishedDate'] = paragraphs[1]?.textContent.trim();
+  }
+
+  // add the topics (if present) for /media-releases/<articles>
+  if (document.querySelector(".sidebar-topics")) {
+    const topics = [];
+    document.querySelectorAll(".sidebar-topic").forEach((topic) => {
+      const link = topic.querySelector("a"); // Get the anchor element
+      if (link) {
+        topics.push(link.className)
+      }
+    });
+    meta['pageTopics'] = topics;
   }
 }
 
@@ -65,16 +84,8 @@ function setMetadata(meta, document, url) {
     meta['image'] = img;
   }
 
-  // for /media-releases/<page> and /roo-tales/<page>, add the published date and intro to the page metadata 
-  const pathname = new URL(url).pathname;
-  if (pathname.startsWith("/media-releases/") || pathname.startsWith("/roo-tales/")) {
-    addPageIntoAndPublishedDateToMetadata(document, meta);
-  }
-
-  // add the sidebar metadata for gallery-template-default page
-  if (document.querySelector(".gallery-template-default")) {
-    addSidebarInfoToMetadata(document, meta);
-  }
+  addPageIntoAndPublishedDateToMetadata(document, meta, url);
+  addSidebarInfoToMetadata(document, meta);
 }
 
 // NOT TO BE IMPORTED
