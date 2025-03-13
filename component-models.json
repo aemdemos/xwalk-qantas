@@ -1,45 +1,5 @@
 [
   {
-    "id": "page-metadata",
-    "fields": [
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "jcr:title",
-        "label": "Title"
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "jcr:description",
-        "label": "Description"
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "intro",
-        "label": "Intro"
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "publishedDate",
-        "label": "Published Date"
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "imageCount",
-        "label": "Image Count"
-      },
-      {
-        "component": "reference",
-        "name": "image",
-        "label": "Image"
-      }
-    ]
-  },
-  {
     "id": "image",
     "fields": [
       {
@@ -206,7 +166,7 @@
     ]
   },
   {
-    "id": "topic-card",
+    "id": "gallery-card",
     "fields": [
       {
         "component": "reference",

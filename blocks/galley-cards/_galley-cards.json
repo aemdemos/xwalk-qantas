@@ -33,7 +33,7 @@
   ],
   "models": [
     {
-      "id": "topic-card",
+      "id": "gallery-card",
       "fields": [
         {
           "component": "reference",
