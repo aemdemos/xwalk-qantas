@@ -166,6 +166,30 @@
     ]
   },
   {
+    "id": "topic-card",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Text",
+        "valueType": "string"
+      },
+      {
+        "component": "aem-content",
+        "name": "link",
+        "label": "Link"
+      }
+    ]
+  },
+  {
     "id": "hero",
     "fields": [
       {
@@ -181,6 +205,37 @@
         "name": "imageAlt",
         "label": "Alt",
         "value": ""
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "topic-card",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "background-image",
+        "label": "Background Image",
+        "multi": false
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "overlay-image",
+        "label": "Overlay Image",
+        "multi": false
+      },
+      {
+        "component": "aem-content",
+        "name": "link",
+        "label": "Link"
       },
       {
         "component": "richtext",

@@ -1,0 +1,75 @@
+{
+  "definitions": [
+    {
+      "title": "Topic Cards",
+      "id": "topic-cards",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Topic Cards",
+              "filter": "topic-cards"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Topic Card",
+      "id": "topic-card",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Topic Card",
+              "model": "topic-card"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "topic-card",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "background-image",
+          "label": "Background Image",
+          "multi": false
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "overlay-image",
+          "label": "Overlay Image",
+          "multi": false
+        },
+        {
+          "component": "aem-content",
+          "name": "link",
+          "label": "Link"
+        },
+        {
+          "component": "richtext",
+          "name": "text",
+          "value": "",
+          "label": "Text",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "topic-cards",
+      "components": [
+        "topic-card"
+      ]
+    }
+  ]
+}

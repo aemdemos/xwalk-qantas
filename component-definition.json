@@ -143,6 +143,36 @@
           }
         },
         {
+          "title": "Galley Cards",
+          "id": "gallery-cards",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "Gallery Cards",
+                  "filter": "gallery-cards"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Gallery Card",
+          "id": "gallery-card",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "Gallery Card",
+                  "model": "gallery-card"
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Hero",
           "id": "hero",
           "plugins": {
@@ -152,6 +182,36 @@
                 "template": {
                   "name": "Hero",
                   "model": "hero"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Topic Cards",
+          "id": "topic-cards",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "Topic Cards",
+                  "filter": "topic-cards"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Topic Card",
+          "id": "topic-card",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "Topic Card",
+                  "model": "topic-card"
                 }
               }
             }

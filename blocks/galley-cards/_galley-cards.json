@@ -1,0 +1,68 @@
+{
+  "definitions": [
+    {
+      "title": "Galley Cards",
+      "id": "gallery-cards",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Gallery Cards",
+              "filter": "gallery-cards"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Gallery Card",
+      "id": "gallery-card",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Gallery Card",
+              "model": "gallery-card"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "topic-card",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Image",
+          "multi": false
+        },
+        {
+          "component": "richtext",
+          "name": "text",
+          "value": "",
+          "label": "Text",
+          "valueType": "string"
+        },
+        {
+          "component": "aem-content",
+          "name": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "gallery-cards",
+      "components": [
+        "gallery-card"
+      ]
+    }
+  ]
+}

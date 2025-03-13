@@ -38,5 +38,17 @@
       "button",
       "title"
     ]
+  },
+  {
+    "id": "gallery-cards",
+    "components": [
+      "gallery-card"
+    ]
+  },
+  {
+    "id": "topic-cards",
+    "components": [
+      "topic-card"
+    ]
   }
 ]
