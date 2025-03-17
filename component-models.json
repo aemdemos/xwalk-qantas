@@ -216,6 +216,54 @@
     ]
   },
   {
+    "id": "page-metadata",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "jcr:title",
+        "label": "Title"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "jcr:description",
+        "label": "Description"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "intro",
+        "label": "Intro"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "publishedDate",
+        "label": "Published Date"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageCount",
+        "label": "Image Count"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "multi": true,
+        "name": "pageTopics",
+        "label": "Page Topics"
+      }
+    ]
+  },
+  {
     "id": "topic-card",
     "fields": [
       {

@@ -46,6 +46,10 @@
     ]
   },
   {
+    "id": "page-metadata",
+    "components": []
+  },
+  {
     "id": "topic-cards",
     "components": [
       "topic-card"
