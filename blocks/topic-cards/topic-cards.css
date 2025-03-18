@@ -1,15 +1,15 @@
-
 .topic-cards-wrapper > .block.topic-cards {
   display: flex;
   flex-wrap: wrap; /* Allow rows to wrap for responsive layout */
   justify-content: space-between; /* Distribute cards evenly */
-  gap: 24px; /* Add spacing between rows and columns */
+  gap: 20px; /* Add spacing between rows and columns */
+  width: 65.88078%
 }
 
 .topic-cards-wrapper > .block.topic-cards > ul {
   display: flex;
   flex-wrap: wrap; /* Enable wrapping for rows */
-  gap: 24px; /* Add spacing between cards */
+  gap: 20px; /* Add spacing between cards */
   list-style: none;
   margin: 0;
   padding: 0;
@@ -17,44 +17,99 @@
 
 .topic-cards-wrapper > .block.topic-cards > ul > li {
   position: relative; /* Enable layering for child elements */
-  flex: 1 1 calc(25% - 24px); /* Ensure 4 cards per row */
-  max-width: calc(25% - 24px); /* Maintain card width */
+  flex: 1 1 calc(25% - 20px); /* Ensure 4 cards per row */
+  max-width: calc(25% - 20px); /* Maintain card width */
   display: flex;
   flex-direction: column; /* Stack elements vertically */
-  align-items: center; /* Center content horizontally */
-  justify-content: center; /* Center content vertically */
   height: auto; /* Allow cards to adjust dynamically */
   overflow: hidden; /* Prevent content overflow */
+  cursor: pointer; /* Show pointer cursor for clickable cards */
 }
 
-.topic-cards-wrapper > .block.topic-cards > ul > li img {
+/* Background image with darkening overlay */
+.topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-image {
   width: 100%;
-  height: auto; /* Maintain aspect ratio */
+  height: 100%;
+  position: relative;
+}
+
+.topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(51, 51, 51, 0.7); /* Dark overlay with 70% opacity */
+  z-index: 1;
+}
+
+.topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-image img {
+  width: 100%;
+  height: 100%;
   object-fit: cover; /* Ensure image fills the card */
+  display: block;
+  position: relative;
+  z-index: 0; /* Ensure image is behind the overlay */
 }
 
-.topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-body:first-child {
-  position: absolute; /* Place the icon above the image */
-  top: 50%;
+/* Update z-index values for other elements to ensure proper stacking */
+.topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-icon {
+  position: absolute;
+  top: 35%;
   left: 50%;
-  transform: translate(-50%, -50%); /* Center the icon */
-  z-index: 1; /* Ensure icon is above the image */
+  transform: translate(-50%, -50%);
+  z-index: 3; /* Increased to be above the overlay */
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
+  justify-content: center;
+  align-items: center;
 }
 
-.topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-body:last-child {
-  position: absolute; /* Layer the text on the image */
-  bottom: 16px; /* Position text slightly above the bottom edge */
+.topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-icon .icon {
+  transform: scale(2.2); /* Increase size by 50% */
+  display: inline-block;
+}
+
+.topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-body {
+  position: absolute;
+  bottom: 16px;
   left: 50%;
-  transform: translateX(-50%); /* Center text horizontally */
-  text-align: center; /* Align text in the center */
-  font-size: 18px; /* Adjust font size */
-  font-family: roboto, roboto-fallback, sans-serif; /* Set font family */
-  line-height: 28.8px; /* Adjust line height */
-  color: #fff; /* Default text color for visibility */
-  z-index: 1; /* Ensure text is visible above the image */
+  transform: translateX(-50%);
+  text-align: center;
+  font-family: europa, sans-serif;
+  color: #fff;
+  z-index: 2; /* Increased to be above the overlay */
+  width: 90%;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4; /* Increased to remain above all elements */
+  opacity: 0;
+}
+
+.topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-link a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-link .button-container {
+  visibility: hidden;
+  position: absolute;
+  pointer-events: none;
+}
+
+.topic-cards-wrapper > .block.topic-cards > ul > li:hover {
+  transform: scale(1.02);
+  transition: transform 0.3s ease;
 }
 
 .topic-cards-wrapper > .block.topic-cards > ul > li:nth-child(2) .cards-card-image {
@@ -65,10 +120,67 @@
   border-bottom: 2px solid rgb(19, 19, 19); /* Adjust border for Customer Experience */
 }
 
-.topic-cards-wrapper > .block.topic-cards > ul > li:nth-child(18) .cards-card-body:last-child {
-  color: rgb(19, 19, 19); /* Adjust text decoration color for Transformation */
-}
-
 .topic-cards-wrapper > .block.topic-cards .button-container {
   display: none; /* Hide button container */
+}
+
+/* Responsive styling */
+@media (max-width: 1024px) {
+  /* Full width for screens smaller than 1024px */
+  .topic-cards-wrapper > .block.topic-cards {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  /* 3 cards per row for screens smaller than 768px */
+  .topic-cards-wrapper > .block.topic-cards > ul > li {
+    flex: 1 1 calc(33.333% - 20px);
+    max-width: calc(33.333% - 20px);
+  }
+  
+  /* Adjust icon size for smaller cards */
+  .topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-icon .icon {
+    transform: scale(1.8);
+  }
+}
+
+@media (max-width: 580px) {
+  /* 2 cards per row for screens smaller than 580px */
+  .topic-cards-wrapper > .block.topic-cards > ul > li {
+    flex: 1 1 calc(50% - 20px);
+    max-width: calc(50% - 20px);
+  }
+  
+  /* Further adjust spacing for smaller screens */
+  .topic-cards-wrapper > .block.topic-cards {
+    gap: 15px;
+  }
+  
+  .topic-cards-wrapper > .block.topic-cards > ul {
+    gap: 15px;
+  }
+  
+  /* Adjust text size for smaller cards */
+  .topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-body {
+    font-size: 11px;
+    letter-spacing: 0.8px;
+  }
+}
+
+/* Optional: Add styling for very small screens */
+@media (max-width: 400px) {
+  /* Slightly reduce the gap for very small screens */
+  .topic-cards-wrapper > .block.topic-cards {
+    gap: 10px;
+  }
+  
+  .topic-cards-wrapper > .block.topic-cards > ul {
+    gap: 10px;
+  }
+  
+  /* Adjust icon size for very small screens */
+  .topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-icon .icon {
+    transform: scale(1.5);
+  }
 }
