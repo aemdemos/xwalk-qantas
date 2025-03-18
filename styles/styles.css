@@ -20,8 +20,8 @@
   --link-hover-color: #1d3ecf;
 
   /* fonts */
-  --body-font-family: roboto, roboto-fallback, sans-serif;
-  --heading-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif;
+  --body-font-family: "europa", "europa Fallback", "sans-serif";
+  --heading-font-family: "europa", "europa Fallback", "sans-serif";
 
   /* body sizes */
   --body-font-size-m: 22px;
@@ -37,7 +37,7 @@
   --heading-font-size-xs: 22px;
 
   /* nav height */
-  --nav-height: 64px;
+  --nav-height: 245px;
 }
 
 /* fallback fonts */
@@ -51,6 +51,51 @@
   font-family: roboto-fallback;
   size-adjust: 99.529%;
   src: local('Arial');
+}
+
+/* fallback fonts */
+@font-face {
+  font-family:"europa Fallback";
+  font-style:normal;
+  font-weight:700;
+  src:local("Arial Bold");
+  ascent-override:106.73%;
+  descent-override:28.52%;
+  line-gap-override:0.00%;
+  size-adjust:96.78%;
+}
+
+@font-face {
+  font-family:"europa Fallback";
+  font-style:normal;
+  font-weight:400;
+  src:local("Arial");
+  ascent-override:104.59%;
+  descent-override:27.94%;
+  line-gap-override:0.00%;
+  size-adjust:98.77%;
+}
+
+@font-face {
+  font-family:"europa Fallback";
+  font-style:normal;
+  font-weight:300;
+  src:local("Arial");
+  ascent-override:106.16%;
+  descent-override:28.36%;
+  line-gap-override:0.00%;
+  size-adjust:97.31%;
+}
+
+@font-face {
+  font-family:"FontAwesome Fallback";
+  font-style:normal;
+  font-weight:400;
+  src:local("Arial");
+  ascent-override:85.71%;
+  descent-override:14.29%;
+  line-gap-override:0.00%;
+  size-adjust:100.00%;
 }
 
 @media (width >= 900px) {
@@ -165,29 +210,6 @@ a:hover {
   text-decoration: underline;
 }
 
-/* buttons */
-a.button:any-link,
-button {
-  box-sizing: border-box;
-  display: inline-block;
-  max-width: 100%;
-  margin: 12px 0;
-  border: 2px solid transparent;
-  border-radius: 2.4em;
-  padding: 0.5em 1.2em;
-  font-family: var(--body-font-family);
-  font-style: normal;
-  font-weight: 500;
-  line-height: 1.25;
-  text-align: center;
-  text-decoration: none;
-  background-color: var(--link-color);
-  color: var(--background-color);
-  cursor: pointer;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
 
 a.button:hover,
 a.button:focus,
