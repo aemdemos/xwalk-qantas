@@ -1,0 +1,52 @@
+{
+  "originUrl": "https://www.qantasnewsroom.com.au",
+  "urls": [
+    {
+      "url": "https://www.qantasnewsroom.com.au/gallery/",
+      "source": "CRAWL"
+    },
+    {
+      "url": "https://www.qantasnewsroom.com.au/gallery/qantas-selects-airbus-as-preferred-aircraft-for-domestic-fleet-renewal/",
+      "source": "CRAWL"
+    },
+    {
+      "url": "https://www.qantasnewsroom.com.au",
+      "source": "CRAWL"
+    },
+    {
+      "url": "https://www.qantasnewsroom.com.au/media-releases/qantas-doubles-down-on-rewards-for-frequent-flyers/",
+      "source": "CRAWL"
+    },
+    {
+      "url": "https://www.qantasnewsroom.com.au/roo-tales/",
+      "source": "CRAWL"
+    },
+    {
+      "url": "https://www.qantasnewsroom.com.au/qantas-responds/",
+      "source": "CRAWL"
+    },
+    {
+      "url": "https://www.qantasnewsroom.com.au/media-enquiries/",
+      "source": "CRAWL"
+    },
+    {
+      "url": "https://www.qantasnewsroom.com.au/gallery-category/airports-and-lounges/",
+      "source": "CRAWL"
+    },
+    {
+      "url": "https://www.qantasnewsroom.com.au/topics/",
+      "source": "CRAWL"
+    }
+  ],
+  "crawlOptions": {
+    "timeout": 64800000,
+    "inclusionPatterns": [],
+    "exclusionPatterns": [],
+    "limit": -1,
+    "sameDomain": true,
+    "keepHash": false,
+    "strategy": "SITEMAPS",
+    "logger": {}
+  },
+  "extractionErrors": []
+}
