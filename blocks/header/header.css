@@ -271,7 +271,7 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
 .nav-tools .icon-logo-grey-news-room {
   display: inline-block;
   margin: 0;
-  padding: 1rem 0;
+  padding: 1rem 0 1.7rem 0;
 }
 
 .nav-tools .button-container {
