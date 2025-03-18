@@ -94,6 +94,10 @@ nav {
   padding: 22px 12px 21px;
 }
 
+.nav-sections .nav-drop>p {
+  margin: 0;
+}
+
 .nav-sections .nav-drop ul li a {
   color: #333;
   font-size: 18px;
@@ -186,7 +190,7 @@ nav {
   transform: rotate(45deg);
   position: absolute;
   right: -5px;
-  top: 45px;
+  top: 32px;
 }
 
 /* Alternatively, you can add margin to the second picture */
