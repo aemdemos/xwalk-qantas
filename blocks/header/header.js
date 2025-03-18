@@ -63,6 +63,39 @@ function toggleAllNavSections(sections, expanded = false) {
 }
 
 /**
+ * Creates and adds a mobile menu section with the nav-tools buttons
+ * @param {Element} navSections The nav sections container
+ */
+function setupMobileToolsMenu(nav) {
+  // Check if the mobile tools menu already exists
+  if (nav.querySelector('.mobile-tools-menu')) {
+    return;
+  }
+  const navTools = document.querySelector('.nav-tools');
+  if (!navTools) {
+    return;
+  }
+  // Create mobile tools menu
+  const mobileToolsMenu = document.createElement('div');
+  mobileToolsMenu.className = 'mobile-tools-menu';
+  // Clone button containers
+  const buttonContainers = navTools.querySelectorAll('.button-container');
+  const buttonList = document.createElement('ul');
+  buttonContainers.forEach((container) => {
+    const listItem = document.createElement('li');
+    const button = container.querySelector('a.button');
+    if (button) {
+      listItem.appendChild(button.cloneNode(true));
+    }
+    buttonList.appendChild(listItem);
+  });
+  mobileToolsMenu.appendChild(buttonList);
+  if (nav) {
+    nav.appendChild(mobileToolsMenu);
+  }
+}
+
+/**
  * Toggles the entire nav
  * @param {Element} nav The container element
  * @param {Element} navSections The nav sections within the container element
@@ -75,6 +108,9 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
   nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
   toggleAllNavSections(navSections, expanded || isDesktop.matches ? 'false' : 'true');
   button.setAttribute('aria-label', expanded ? 'Open navigation' : 'Close navigation');
+  if (!expanded && !isDesktop.matches) {
+    setupMobileToolsMenu(nav);
+  }
   // enable nav dropdown keyboard accessibility
   const navDrops = navSections.querySelectorAll('.nav-drop');
   if (isDesktop.matches) {
