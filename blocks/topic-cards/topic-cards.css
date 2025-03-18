@@ -1,28 +1,74 @@
 
+.topic-cards-wrapper > .block.topic-cards {
+  display: flex;
+  flex-wrap: wrap; /* Allow rows to wrap for responsive layout */
+  justify-content: space-between; /* Distribute cards evenly */
+  gap: 24px; /* Add spacing between rows and columns */
+}
+
 .topic-cards-wrapper > .block.topic-cards > ul {
+  display: flex;
+  flex-wrap: wrap; /* Enable wrapping for rows */
+  gap: 24px; /* Add spacing between cards */
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  grid-gap: 24px;
 }
 
 .topic-cards-wrapper > .block.topic-cards > ul > li {
-  border: 1px solid #dadada;
-  background-color: var(--background-color);
-}
-
-.topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-body {
-  margin: 16px;
-}
-
-.topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-image {
-  line-height: 0;
+  position: relative; /* Enable layering for child elements */
+  flex: 1 1 calc(25% - 24px); /* Ensure 4 cards per row */
+  max-width: calc(25% - 24px); /* Maintain card width */
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center; /* Center content horizontally */
+  justify-content: center; /* Center content vertically */
+  height: auto; /* Allow cards to adjust dynamically */
+  overflow: hidden; /* Prevent content overflow */
 }
 
 .topic-cards-wrapper > .block.topic-cards > ul > li img {
   width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
+  height: auto; /* Maintain aspect ratio */
+  object-fit: cover; /* Ensure image fills the card */
+}
+
+.topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-body:first-child {
+  position: absolute; /* Place the icon above the image */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the icon */
+  z-index: 1; /* Ensure icon is above the image */
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+.topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-body:last-child {
+  position: absolute; /* Layer the text on the image */
+  bottom: 16px; /* Position text slightly above the bottom edge */
+  left: 50%;
+  transform: translateX(-50%); /* Center text horizontally */
+  text-align: center; /* Align text in the center */
+  font-size: 18px; /* Adjust font size */
+  font-family: roboto, roboto-fallback, sans-serif; /* Set font family */
+  line-height: 28.8px; /* Adjust line height */
+  color: #fff; /* Default text color for visibility */
+  z-index: 1; /* Ensure text is visible above the image */
+}
+
+.topic-cards-wrapper > .block.topic-cards > ul > li:nth-child(2) .cards-card-image {
+  background-color: rgb(19, 19, 19); /* Adjust background color for Corporate */
+}
+
+.topic-cards-wrapper > .block.topic-cards > ul > li:nth-child(3) {
+  border-bottom: 2px solid rgb(19, 19, 19); /* Adjust border for Customer Experience */
+}
+
+.topic-cards-wrapper > .block.topic-cards > ul > li:nth-child(18) .cards-card-body:last-child {
+  color: rgb(19, 19, 19); /* Adjust text decoration color for Transformation */
+}
+
+.topic-cards-wrapper > .block.topic-cards .button-container {
+  display: none; /* Hide button container */
 }
