@@ -1,20 +1,229 @@
-footer {
-  background-color: var(--light-color);
-  font-size: var(--body-font-size-xs);
+/* Footer base styles */
+.footer-wrapper {
+  margin-top: 50px;
+  padding: 12px 0 30px;
+  background-color: #1c1d1e;
+  color: #999;
 }
 
-footer .footer > div {
+.footer>div {
   margin: auto;
   max-width: 1200px;
-  padding: 40px 24px 24px;
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
-footer .footer p {
+/* Create a wrapper for nav sections */
+.footer .section.left-nav,
+.footer .section.useful-links {
+  flex: 1;
+}
+
+.footer>div>.section.useful-links {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Put left-nav and useful-links in same row */
+.footer>div>.section.logos+.section.left-nav+.section.useful-links {
+  margin-top: -82px;
+}
+
+/* Create a flex container for nav sections */
+.footer>div>.section.left-nav {
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* Adjust the width of nav sections */
+.footer .left-nav .default-content-wrapper,
+.footer .useful-links .default-content-wrapper {
+  width: auto;
+  min-width: 200px;
+}
+
+/* Keep copyright at full width */
+.footer .copyright {
+  width: 100%;
+}
+
+/* Logos section */
+.footer .logos {
+  border-bottom: 1px solid #999;
+}
+
+/* Remove extra spacing */
+.footer p,
+.footer .button-container {
   margin: 0;
 }
 
-@media (width >= 900px) {
-  footer .footer > div {
-    padding: 40px 32px 24px;
+.footer .copyright p {
+  color: #e6e6e6;
+  font-size: 12px;
+}
+
+.footer .logos p:first-child {
+  margin: 0 0 30px;
+}
+
+.footer .logos p:first-child img {
+  width: 65px;
+  height: auto;
+}
+
+/* Create a wrapper div for social icons */
+.footer .logos .social-icons-wrapper {
+  display: flex;
+  gap: 12px;
+  margin-left: auto;
+}
+
+/* Common styles for social media icons */
+.footer .logos p.fa-facebook,
+.footer .logos p.fa-twitter,
+.footer .logos p.fa-instagram,
+.footer .logos p.fa-linkedin,
+.footer .logos p.fa-youtube {
+  display: inline-flex;
+  cursor: pointer;
+  font-size: 0;
+  margin: 0;
+}
+
+/* Style for the actual icons */
+.footer .logos p.fa-facebook::before,
+.footer .logos p.fa-twitter::before,
+.footer .logos p.fa-instagram::before,
+.footer .logos p.fa-linkedin::before,
+.footer .logos p.fa-youtube::before {
+  display: inline-block;
+  font: normal normal normal 20px/1 FontAwesome, sans-serif;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #999;
+}
+
+/* Individual icon unicode points */
+.footer .logos p.fa-facebook::before {
+  content: "\f09a";
+}
+
+.footer .logos p.fa-twitter::before {
+  content: "\f099";
+}
+
+.footer .logos p.fa-instagram::before {
+  content: "\f16d";
+}
+
+.footer .logos p.fa-linkedin::before {
+  content: "\f0e1";
+}
+
+.footer .logos p.fa-youtube::before {
+  content: "\f167";
+}
+
+/* Hover effect */
+.footer .logos p[class*="fa-"]:hover::before {
+  color: #e40000;
+  transition: color 0.3s ease;
+}
+
+/* Left nav section */
+.footer .left-nav .default-content-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer .left-nav .button {
+  color: #e6e6e6;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+/* Useful links section */
+.footer .useful-links .default-content-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 1px;
+  width: 400px;
+}
+
+/* Style the "Useful Links" heading */
+.footer .useful-links p:first-child {
+  font-size: 16px;
+  font-weight: bold;
+  color: #999;
+  margin-bottom: 2px;
+  width: 100%;
+  grid-column: 1 / -1;
+}
+
+/* Style the links */
+.footer .useful-links .button {
+  color: #e6e6e6;
+  text-decoration: none;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* Hover effects for links */
+.footer .button:hover {
+  text-decoration: underline;
+}
+
+/* Container for social icons */
+.footer .logos .default-content-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+/* Responsive design */
+@media (width <=768px) {
+  .footer .useful-links .default-content-wrapper {
+    width: 300px;
+  }
+}
+
+@media (width <=580px) {
+  .footer .section.useful-links,
+  .footer>div>.section.useful-links {
+    display: none;
+  }
+
+  .footer>div>.section.logos+.section.left-nav {
+    margin-top: 0;
+  }
+
+  /* Logos section */
+  .footer .logos {
+    padding-bottom: 20px;
+  }
+
+  .footer .logos .social-icons-wrapper {
+    margin-left: 10px;
+  }
+
+  .footer .left-nav .default-content-wrapper {
+    flex-direction: row;
+    gap: 15px;
+  }
+
+  .footer .logos .default-content-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .footer .logos p:not(:first-child) {
+    margin-left: 0;
+    margin-right: 16px;
   }
 }
