@@ -177,17 +177,14 @@ const addGalleryImages = (main) => {
 }
 
 // eg. https://www.qantasnewsroom.com.au/media-releases/hugh-jackman-and-qantas-announce-initiative-to-champion-a-new-generation-of-young-indigenous-leaders/
-const addMediaReleaseLinkImages = (main) => {
+const handleLinkImages = (main) => {
   const pageContent = main.querySelector(".page-content");
   if (pageContent) {
     // check for links which contain images
     pageContent.querySelectorAll("a")?.forEach((item) => {
-      const cells = [['Cards']];
       const img = item.querySelector("img");
       if (img) {
-        cells.push([img]);
-        const table = WebImporter.DOMUtils.createTable(cells, document);
-        item.replaceWith(table);
+        item.replaceWith(img);
       }
     });
   }
@@ -247,7 +244,7 @@ export default {
 
     addCards(main);
     addGalleryImages(main);
-    addMediaReleaseLinkImages(main);
+    handleLinkImages(main);
     WebImporter.rules.transformBackgroundImages(main, document);
     // WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
     WebImporter.rules.convertIcons(main, document);
