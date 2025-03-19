@@ -154,12 +154,41 @@ const addCards = (main) => {
   }
 };
 
-const addImageList = (main) => {
+const addGalleryImages = (main) => {
   const gallery = main.querySelector(".gallery");
   if (gallery) {
+    const cells = [['Cards']];
+
     main.querySelectorAll(".swipebox").forEach((item) => {
+      cells.push([item.querySelector("img")]);
+    });
+    const table = WebImporter.DOMUtils.createTable(cells, document);
+    gallery.replaceWith(table);
+  } else if (main.querySelector(".full-width")) {
+    const cells = [['Cards']];
+
+    main.querySelectorAll("img").forEach((item) => {
+      cells.push([item]);
+    });
+    const table = WebImporter.DOMUtils.createTable(cells, document);
+    main.querySelector(".full-width").replaceWith(table);
+
+  }
+}
+
+// eg. https://www.qantasnewsroom.com.au/media-releases/hugh-jackman-and-qantas-announce-initiative-to-champion-a-new-generation-of-young-indigenous-leaders/
+const addMediaReleaseLinkImages = (main) => {
+  const pageContent = main.querySelector(".page-content");
+  if (pageContent) {
+    // check for links which contain images
+    pageContent.querySelectorAll("a")?.forEach((item) => {
+      const cells = [['Cards']];
       const img = item.querySelector("img");
-      item?.replaceWith(img);
+      if (img) {
+        cells.push([img]);
+        const table = WebImporter.DOMUtils.createTable(cells, document);
+        item.replaceWith(table);
+      }
     });
   }
 }
@@ -217,7 +246,8 @@ export default {
     removeSidebar(main);
 
     addCards(main);
-    addImageList(main);
+    addGalleryImages(main);
+    addMediaReleaseLinkImages(main);
     WebImporter.rules.transformBackgroundImages(main, document);
     // WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
     WebImporter.rules.convertIcons(main, document);
@@ -239,9 +269,6 @@ export default {
     document, url, html, params,
   }) => {
     let p = new URL(url).pathname;
-    if (p.endsWith('/')) {
-      p = `${p}index`;
-    }
 
     return decodeURIComponent(p)
     .toLowerCase()
