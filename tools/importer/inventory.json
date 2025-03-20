@@ -231,7 +231,8 @@
   ],
   "blocks": [
     {
-      "name": "Cards",
+      "name": "topic-cards",
+      "mapping": "cards",
       "cluster": 15,
       "instances": [
         {
