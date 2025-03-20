@@ -190,6 +190,22 @@ const handleLinkImages = (main) => {
   }
 }
 
+const addVideo = (main) => {
+  const iframes = main.querySelectorAll('iframe');
+  if (iframes) {
+    iframes.forEach((iframe) => {
+      const cells = [['Embed']];
+      const iframeSrc = iframe.src;
+      if (iframeSrc && (iframeSrc.includes('youtube') || iframeSrc?.includes('youtu.be'))) {
+        cells.push([iframeSrc]);
+        
+        const table = WebImporter.DOMUtils.createTable(cells, document);
+        iframe.replaceWith(table);
+      }
+    });
+  }
+}
+
 const removeSocial = (main) => {
   const social = main.querySelector(".social");
   social?.remove();
@@ -245,6 +261,7 @@ export default {
     addCards(main);
     addGalleryImages(main);
     handleLinkImages(main);
+    addVideo(main);
     WebImporter.rules.transformBackgroundImages(main, document);
     // WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
     WebImporter.rules.convertIcons(main, document);

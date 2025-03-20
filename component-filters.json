@@ -40,6 +40,10 @@
     ]
   },
   {
+    "id": "embed",
+    "components": []
+  },
+  {
     "id": "gallery-cards",
     "components": [
       "gallery-card"
