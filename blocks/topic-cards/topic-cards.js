@@ -10,6 +10,8 @@ export default function decorate(block) {
     while (row.firstElementChild) li.append(row.firstElementChild);
     [...li.children].forEach((div) => {
       if (div.children.length === 1 && div.querySelector('picture')) div.className = 'cards-card-image';
+      else if (div.querySelector('.button-container')) div.className = 'cards-card-link';
+      else if (div.querySelector('.icon')) div.className = 'cards-card-icon';
       else div.className = 'cards-card-body';
     });
     ul.append(li);
