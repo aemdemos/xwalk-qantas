@@ -2,7 +2,8 @@
   "mappings": [
     "/content/qantasnewsroom/:/",
     "/content/qantasnewsroom/configuration:/.helix/config.json",
-    "/content/qantasnewsroom/metadata:/metadata.json"
+    "/content/qantasnewsroom/metadata:/metadata.json",
+    "/content/qantasnewsroom.resource/media-releases.json:/media-releases.json"
   ],
   "includes": [
     "/content/qantasnewsroom/"
