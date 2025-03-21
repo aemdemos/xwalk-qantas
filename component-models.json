@@ -227,6 +227,18 @@
     ]
   },
   {
+    "id": "news-feed",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "page-metadata",
     "fields": [
       {
