@@ -295,20 +295,6 @@
         "value": "",
         "label": "Text",
         "valueType": "string"
-      },
-      {
-        "component": "richtext",
-        "name": "topics",
-        "value": "",
-        "label": "Text",
-        "valueType": "string"
-      },
-      {
-        "component": "richtext",
-        "name": "most-viewed",
-        "value": "",
-        "label": "Text",
-        "valueType": "string"
       }
     ]
   },
