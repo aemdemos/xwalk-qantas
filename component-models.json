@@ -291,7 +291,7 @@
     "fields": [
       {
         "component": "richtext",
-        "name": "heading",
+        "name": "text",
         "value": "",
         "label": "Text",
         "valueType": "string"
