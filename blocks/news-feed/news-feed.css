@@ -1,0 +1,130 @@
+/* News Feed Container */
+.news-feed-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  font-family: 'Europa', sans-serif;
+}
+
+/* News Feed Block */
+.news-feed {
+  padding-top: 45px;
+  display: block;
+  margin-right: 2.35765%;
+  width: 65.88078%;
+}
+
+/* Post Item Styling */
+.post-item {
+  display: flex;
+  flex-direction: row;
+  /* Explicit: text on left, image on right */
+  justify-content: space-between;
+  padding: 20px 0;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+/* Post Text Area */
+.post-text {
+  flex: 1;
+  padding-right: 40px;
+}
+
+/* Post Title */
+.post-title {
+  margin: 0 0 15px 0;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 1.2;
+  font-family: europa, sans-serif;
+}
+
+.post-title a {
+  color: #333;
+  text-decoration: none;
+  text-transform: uppercase;
+  display: block;
+}
+
+/* Post Meta (Location/Date) */
+.post-meta {
+  margin: 0 0 15px 0;
+  font-size: 16px;
+  color: #666;
+}
+
+/* Post Excerpt */
+.post-excerpt-wrap {
+  margin-bottom: 10px;
+}
+
+.post-excerpt p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Read More Link */
+
+.news-feed .read-more {
+  display: inline-block;
+  color: #e3001b;
+  font-size: 16px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.read-more:hover {
+  text-decoration: none;
+  color: #333;
+}
+
+/* Post Image */
+.post-image {
+  width: 28%;
+  width: 130px;
+  height: 130px;
+  order: 2;
+  /* Ensures image is on the right */
+}
+
+.post-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .news-feed {
+    float: none;
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .post-item {
+    flex-direction: column-reverse;
+    /* Image on top, text below on mobile */
+    padding: 15px 0;
+  }
+
+  .post-text {
+    max-width: 100%;
+    padding-right: 0;
+    margin-top: 20px;
+  }
+
+  .post-image {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .post-meta,
+  .post-excerpt p,
+  .read-more {
+    font-size: 14px;
+  }
+}
