@@ -51,7 +51,8 @@
         "cards",
         "columns",
         "fragment",
-        "news-feed"
+        "news-feed",
+        "side-nav"
       ]
     }
   ]

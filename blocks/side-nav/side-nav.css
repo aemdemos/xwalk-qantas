@@ -1,0 +1,148 @@
+/* Side Nav Block Styling */
+.side-nav-container {
+  font-family: europa, sans-serif;
+  max-width: 24%;
+  padding: 0 20px;
+}
+
+.side-nav-wrapper {
+  background-color: #f7f7f7;
+  padding: 40px 20px;
+}
+
+.side-nav {
+  padding-bottom: 30px;
+}
+/* Targeting with the new class names */
+.side-nav .heading {
+  padding: 35px 0px 0px 0px;
+}
+
+.side-nav .heading h1 {
+  padding-bottom: 10px;
+  color: #1c1d1e;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.side-nav .topics {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.side-nav .topics p a {
+  color: #1c1d1e;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: .5px;
+  padding-right: 10px;
+  line-height: 15px;
+  position: relative;
+  top: -15px;
+  left: 10px;
+  display: inline-block;
+}
+
+.side-nav .topics .icon {
+  width: 40px;
+  height: 40px;
+}
+
+.side-nav .latest h1 {
+  font-size: 15px;
+  font-weight: 400;
+  text-transform: uppercase;
+  margin: 0 0 20px 0;
+}
+
+/* Common divider styling */
+.side-nav > div::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 30px 0;
+}
+
+.side-nav > div:last-child::after {
+  display: none; /* Remove divider after last section */
+}
+
+/* Topics section */
+.side-nav > div:nth-child(2) h1:first-child {
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0 0 20px 0;
+  display: inline-block;
+}
+
+.side-nav > div:nth-child(2) h1#all-topics {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 14px;
+  font-weight: normal;
+  margin: 0;
+}
+
+.side-nav > div:nth-child(2) h1#all-topics a {
+  color: #666;
+  text-decoration: none;
+}
+
+.side-nav > div:nth-child(2) .button-container {
+  margin: 15px 0;
+  display: flex;
+  align-items: center;
+}
+
+.side-nav > div:nth-child(2) .button {
+  font-size: 15px;
+  color: #333;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-left: 70px;
+}
+
+.side-nav > div:nth-child(2) .button::before {
+  content: "";
+  display: block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  position: absolute;
+  left: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 25px;
+}
+
+/* Most Viewed section */
+.side-nav .latest .button-container a {
+  text-transform: uppercase;
+  margin: 0 0 5px 0;
+  font-size: 1.4rem;
+  color: #1c1d1e;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.side-nav > div:nth-child(3) p:not(.button-container) {
+  font-size: 14px;
+  color: #666;
+  margin: 5px 0 20px 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .side-nav-container {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+}

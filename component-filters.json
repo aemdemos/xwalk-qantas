@@ -16,7 +16,8 @@
       "cards",
       "columns",
       "fragment",
-      "news-feed"
+      "news-feed",
+      "side-nav"
     ]
   },
   {
@@ -53,6 +54,21 @@
   {
     "id": "page-metadata",
     "components": []
+  },
+  {
+    "id": "columns",
+    "components": [
+      "column"
+    ]
+  },
+  {
+    "id": "column",
+    "components": [
+      "text",
+      "image",
+      "button",
+      "title"
+    ]
   },
   {
     "id": "table",
