@@ -287,21 +287,28 @@
     ]
   },
   {
-    "id": "columns",
+    "id": "side-nav",
     "fields": [
       {
-        "component": "text",
-        "valueType": "number",
-        "name": "columns",
+        "component": "richtext",
+        "name": "heading",
         "value": "",
-        "label": "Columns"
+        "label": "Text",
+        "valueType": "string"
       },
       {
-        "component": "text",
-        "valueType": "number",
-        "name": "rows",
+        "component": "richtext",
+        "name": "topics",
         "value": "",
-        "label": "Rows"
+        "label": "Text",
+        "valueType": "string"
+      },
+      {
+        "component": "richtext",
+        "name": "most-viewed",
+        "value": "",
+        "label": "Text",
+        "valueType": "string"
       }
     ]
   },
