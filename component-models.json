@@ -118,6 +118,18 @@
     ]
   },
   {
+    "id": "archives",
+    "fields": [
+      {
+        "component": "text",
+        "name": "archives",
+        "value": "",
+        "label": "Archives",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "card",
     "fields": [
       {
