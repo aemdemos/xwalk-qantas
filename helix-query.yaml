@@ -36,3 +36,25 @@ indices:
         select: head > meta[property="og:image"]
         value: |
           match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+  speeches:
+    include:
+      - '/speeches/*'
+    exclude:
+      - '/**.json'
+    target: /speeches.json
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: |
+          attribute(el, 'content')
+      description:
+        select: head > meta[name="intro"]
+        value: attribute(el, 'content')
+      publishedDate:
+        select: head > meta[name="published-date"]
+        value: |
+          attribute(el, 'content')
+      image:
+        select: head > meta[property="og:image"]
+        value: |
+          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
