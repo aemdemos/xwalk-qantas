@@ -1,13 +1,14 @@
-/* Side Nav Block Styling */
-.side-nav-container {
-  font-family: europa, sans-serif;
-  max-width: 24%;
-  padding: 0 20px;
-}
-
+/* Make sure side nav is on the right with matching top spacing */
 .side-nav-wrapper {
+  width: 28%;
   background-color: #f7f7f7;
   padding: 40px 20px;
+  display: inline-block;
+  padding-top: 45px;
+  order: 2;
+  margin-left: auto;
+  align-self: flex-start;
+  margin-top: 0 !important;
 }
 
 .side-nav {
@@ -47,6 +48,9 @@
 .side-nav .topics .icon {
   width: 40px;
   height: 40px;
+}
+.side-nav .topics .icon img {
+  filter: brightness(0); /* Convert white to black */
 }
 
 .side-nav .latest h1 {
@@ -139,10 +143,29 @@
   margin: 5px 0 20px 0;
 }
 
+/* Container for both news feed and side nav - ensure proper clearfix */
+.news-feed-wrapper::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .side-nav-container {
-    max-width: 100%;
-    padding: 0 15px;
+  .section.news-feed-container.side-nav-container {
+    flex-direction: column;
+  }
+  
+  .news-feed-wrapper {
+    width: 100%;
+    margin-right: 0;
+    order: 1;
+  }
+  
+  .side-nav-wrapper {
+    width: 100%;
+    margin-top: 40px;
+    padding: 30px 20px;
+    order: 2;
   }
 }
