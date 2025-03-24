@@ -21,6 +21,13 @@
       "id": "news-feed",
       "fields": [
         {
+          "component": "text",
+          "name": "variation",
+          "value": "",
+          "label": "Variation",
+          "valueType": "string"
+        },
+        {
           "component": "richtext",
           "name": "text",
           "value": "",
