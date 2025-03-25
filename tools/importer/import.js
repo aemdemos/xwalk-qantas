@@ -13,29 +13,27 @@
 /* eslint-disable no-console, class-methods-use-this */
 
 // for /media-releases/<page> and /roo-tales/<page>, add the published date and intro to the page metadata 
-function addPageIntoAndPublishedDateToMetadata(document, meta, url) {
+function addPageIntroAndPublishedMetadata(document, meta, url) {
   const pathname = new URL(url).pathname;
-  if (pathname.startsWith("/media-releases/") || pathname.startsWith("/roo-tales/") || pathname.startsWith("/speeches/")) {
-    const pageContent = document.querySelector(".page-content")?.innerText.trim();
-    let intro;
-    if (pageContent.length > 400) {
-      let trimmedContent = pageContent.slice(0, 400);
+  const pageContent = document.querySelector(".page-content")?.innerText.trim();
+  let intro;
+  if (pageContent.length > 400) {
+    let trimmedContent = pageContent.slice(0, 400);
 
-      // Ensure we don't cut off in the middle of a word
-      let lastSpaceIndex = trimmedContent.lastIndexOf(" ");
-      if (lastSpaceIndex > 0) {
-          trimmedContent = trimmedContent.slice(0, lastSpaceIndex);
-      }
-
-      intro = trimmedContent + " […]"; // Append the indicator for more content
-    } else {
-      intro = pageContent; // If it's less than 300 characters, keep it as is
+    // Ensure we don't cut off in the middle of a word
+    let lastSpaceIndex = trimmedContent.lastIndexOf(" ");
+    if (lastSpaceIndex > 0) {
+        trimmedContent = trimmedContent.slice(0, lastSpaceIndex);
     }
-    meta['intro'] = intro;
-    const pageIntro = document.querySelector(".page-intro");
-    meta['publishedDate'] = pageIntro?.querySelector(".page-published-date")?.innerText;
-    meta['publishedLocation'] = pageIntro?.querySelector(".page-published-location")?.innerText;
+
+    intro = trimmedContent + " […]"; // Append the indicator for more content
+  } else {
+    intro = pageContent; // If it's less than 300 characters, keep it as is
   }
+  meta['intro'] = intro;
+  const pageIntro = document.querySelector(".page-intro");
+  meta['publishedDate'] = pageIntro?.querySelector(".page-published-date")?.innerText;
+  meta['publishedLocation'] = pageIntro?.querySelector(".page-published-location")?.innerText;
 }
 
 function addSidebarInfoToMetadata(document, meta) {
@@ -85,7 +83,7 @@ function setMetadata(meta, document, url) {
     meta['image'] = img;
   }
 
-  addPageIntoAndPublishedDateToMetadata(document, meta, url);
+  addPageIntroAndPublishedMetadata(document, meta, url);
   addSidebarInfoToMetadata(document, meta);
 }
 
@@ -343,7 +341,7 @@ export default {
     addGalleryImages(main);
     handleLinkImages(main);
     addVideos(main);
-    addTables(main);
+    // addTables(main);
     WebImporter.rules.transformBackgroundImages(main, document);
     // WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
     WebImporter.rules.convertIcons(main, document);
