@@ -21,13 +21,6 @@
       "id": "archives",
       "fields": [
         {
-          "component": "text",
-          "name": "heading",
-          "value": "",
-          "label": "Heading",
-          "valueType": "string"
-        },
-        {
           "component": "richtext",
           "name": "prev-archives",
           "value": "",
