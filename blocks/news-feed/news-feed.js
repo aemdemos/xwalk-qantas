@@ -62,7 +62,8 @@ export default async function decorate(block) {
         // Create and add the publication date
         const postMeta = document.createElement('p');
         postMeta.className = 'post-meta';
-        postMeta.textContent = item.publicationDate || item.publishedDate || '';
+        const publishedLocation = item.publishedlocation? item.publishedlocation + ' • ' : '';
+        postMeta.textContent = publishedLocation + (item.publisheddate || item.publicationDate || '');
 
         postText.appendChild(postMeta);
 
