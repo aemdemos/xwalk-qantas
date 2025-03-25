@@ -47,6 +47,12 @@
         {
           "component": "text",
           "valueType": "string",
+          "name": "publishedLocation",
+          "label": "Published Location"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
           "name": "imageCount",
           "label": "Image Count"
         },

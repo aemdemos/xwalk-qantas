@@ -350,6 +350,47 @@
           }
         },
         {
+          "title": "Row",
+          "id": "table-col-5",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "Row",
+                  "model": "table-col-5",
+                  "column1text": "Column1",
+                  "column2text": "Column2",
+                  "column3text": "Column3",
+                  "column4text": "Column4",
+                  "column5text": "Column5"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Row",
+          "id": "table-col-6",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "Row",
+                  "model": "table-col-6",
+                  "column1text": "Column1",
+                  "column2text": "Column2",
+                  "column3text": "Column3",
+                  "column4text": "Column4",
+                  "column5text": "Column5",
+                  "column6text": "Column6"
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Topic Cards",
           "id": "topic-cards",
           "plugins": {
