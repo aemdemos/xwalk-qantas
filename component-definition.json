@@ -249,7 +249,7 @@
           }
         },
         {
-          "title": "side-nav",
+          "title": "Side Navigation",
           "id": "side-nav",
           "plugins": {
             "xwalk": {

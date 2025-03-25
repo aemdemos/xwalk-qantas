@@ -122,9 +122,16 @@
     "fields": [
       {
         "component": "text",
-        "name": "archives",
+        "name": "heading",
         "value": "",
-        "label": "Archives",
+        "label": "Heading",
+        "valueType": "string"
+      },
+      {
+        "component": "richtext",
+        "name": "prev-archives",
+        "value": "",
+        "label": "Previous Archives",
         "valueType": "string"
       }
     ]
