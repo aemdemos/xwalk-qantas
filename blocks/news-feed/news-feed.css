@@ -63,8 +63,8 @@ main > .section > .news-feed-wrapper {
 /* Post Meta (Location/Date) */
 .post-meta {
   margin: 0 0 15px 0;
-  font-size: 16px;
-  color: #666;
+  font-size: 14px;
+  color: #515151;
 }
 
 /* Post Excerpt */
@@ -75,8 +75,8 @@ main > .section > .news-feed-wrapper {
 .post-excerpt p {
   margin: 0;
   font-size: 16px;
-  line-height: 1.6;
-  color: #333;
+  line-height: 21px;
+  color: #515151;
 }
 
 /* Read More Link */
