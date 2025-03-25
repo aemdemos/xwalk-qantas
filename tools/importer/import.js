@@ -15,11 +15,11 @@
 // for /media-releases/<page> and /roo-tales/<page>, add the published date and intro to the page metadata 
 function addPageIntoAndPublishedDateToMetadata(document, meta, url) {
   const pathname = new URL(url).pathname;
-  if (pathname.startsWith("/media-releases/") || pathname.startsWith("/roo-tales/")) {
+  if (pathname.startsWith("/media-releases/") || pathname.startsWith("/roo-tales/") || pathname.startsWith("/speeches/")) {
     const pageContent = document.querySelector(".page-content")?.innerText.trim();
-    let pageIntro;
-    if (pageContent.length > 500) {
-      let trimmedContent = pageContent.slice(0, 500);
+    let intro;
+    if (pageContent.length > 400) {
+      let trimmedContent = pageContent.slice(0, 400);
 
       // Ensure we don't cut off in the middle of a word
       let lastSpaceIndex = trimmedContent.lastIndexOf(" ");
@@ -27,15 +27,16 @@ function addPageIntoAndPublishedDateToMetadata(document, meta, url) {
           trimmedContent = trimmedContent.slice(0, lastSpaceIndex);
       }
 
-      pageIntro = trimmedContent + " […]"; // Append the indicator for more content
+      intro = trimmedContent + " […]"; // Append the indicator for more content
     } else {
-      pageIntro = pageContent; // If it's less than 300 characters, keep it as is
+      intro = pageContent; // If it's less than 300 characters, keep it as is
     }
-    meta['intro'] = pageIntro;
-    meta['publishedDate'] = document.querySelector(".page-intro")?.querySelector(".page-published-date")?.innerText;
+    meta['intro'] = intro;
+    const pageIntro = document.querySelector(".page-intro");
+    meta['publishedDate'] = pageIntro?.querySelector(".page-published-date")?.innerText;
+    meta['publishedLocation'] = pageIntro?.querySelector(".page-published-location")?.innerText;
   }
 }
-
 
 function addSidebarInfoToMetadata(document, meta) {
   const sidebarIntro = document.querySelector(".sidebar-intro");
@@ -88,7 +89,7 @@ function setMetadata(meta, document, url) {
   addSidebarInfoToMetadata(document, meta);
 }
 
-// NOT TO BE IMPORTED
+// Galley-Category NOT TO BE IMPORTED
 function getGalleyCategoryCards(galleries) {
   //const cells = [['GalleryCategoryCards']];
   const cells = [['Cards']];
@@ -132,7 +133,7 @@ function getTopicCards(topicsModule) {
   return cells;
 }
 
-const addCards = (main) => {
+function addCards(main) {
   const galleriesModule = main.querySelector(".galleries-module");
   if (galleriesModule) {
     let cells;
@@ -154,7 +155,7 @@ const addCards = (main) => {
   }
 };
 
-const addGalleryImages = (main) => {
+function addGalleryImages(main) {
   const gallery = main.querySelector(".gallery");
   if (gallery) {
     const cells = [['Cards']];
@@ -176,8 +177,88 @@ const addGalleryImages = (main) => {
   }
 }
 
+// Get the number of columns in the table - return max column count in it's rows
+function getMaxColumnCount(table) {
+  let maxColumns = 0;
+  table?.querySelectorAll("tr").forEach((row) => {
+    const columnCount = row.querySelectorAll("td, th").length;
+    maxColumns = Math.max(maxColumns, columnCount);
+  });
+  return maxColumns;
+}
+
+const tableColumnMap = {
+  1: "table-row",
+  2: "table-2-columns",
+  3: "table-3-columns",
+  4: "table-4-columns",
+  5: "table-5-columns",
+  6: "table-6-columns"
+};
+
+function getBoldRowsAndCols(table) {
+    const rows = [...table.querySelectorAll("tr")];
+    const colCount = rows[0].querySelectorAll("td, th").length;
+    
+    let boldRows = new Set();
+    let boldCols = new Array(colCount).fill(true);
+    
+    rows.forEach((row, rowIndex) => {
+        const cells = [...row.querySelectorAll("td, th")];
+        
+        if (cells.every(cell => cell.querySelector("strong"))) {
+            boldRows.add(`bold-row-${rowIndex + 1}`);
+        }
+        
+        cells.forEach((cell, colIndex) => {
+            if (!cell.querySelector("strong")) {
+                boldCols[colIndex] = false;
+            }
+        });
+    });
+    
+    let boldColResults = boldCols.map((isBold, index) => isBold ? `bold-col-${index + 1}` : null).filter(Boolean);
+    
+    return [...boldRows, ...boldColResults].join(", ");
+}
+
+function createTableBlock(table, maxColumnCount, boldRowColClasses) {
+//  const tableCells = [[tableColumnMap[maxColumnCount] + ' (no-header, ' + boldRowColClasses + ')']];
+  const tableCells = [['Table (no-header, ' + boldRowColClasses + ')']];
+
+  table.querySelectorAll("tr").forEach((row) => {
+    const cells = [];
+    const cols = row.querySelectorAll("td, th");
+    let thisColCount = cols.length;
+    cols.forEach((col) => { // add the data from page table
+      cells.push(col.innerText? col.innerText : '');
+    });
+    // fill in empty cells for missing column data
+    while (thisColCount++ < maxColumnCount) {
+      cells.push('');
+    }
+    tableCells.push(cells);
+  });
+  return tableCells;
+}
+
+function addTables(main) {
+  const tables = main.querySelectorAll("table").forEach((table) => {
+    const columnCount = getMaxColumnCount(table);
+    const tableId = tableColumnMap[columnCount];
+    let classList = "no-header";
+    let boldRowColClasses = getBoldRowsAndCols(table);
+    try {
+      const blockTable = WebImporter.DOMUtils.createTable(createTableBlock(table, columnCount, boldRowColClasses), document);
+      table.replaceWith(blockTable);
+    } catch(err) {
+      console.log(err);
+    }
+  });
+}
+
 // eg. https://www.qantasnewsroom.com.au/media-releases/hugh-jackman-and-qantas-announce-initiative-to-champion-a-new-generation-of-young-indigenous-leaders/
-const handleLinkImages = (main) => {
+function handleLinkImages(main) {
   const pageContent = main.querySelector(".page-content");
   if (pageContent) {
     // check for links which contain images
@@ -190,7 +271,7 @@ const handleLinkImages = (main) => {
   }
 }
 
-const addVideo = (main) => {
+function addVideos(main) {
   const iframes = main.querySelectorAll('iframe');
   if (iframes) {
     iframes.forEach((iframe) => {
@@ -206,12 +287,12 @@ const addVideo = (main) => {
   }
 }
 
-const removeSocial = (main) => {
+function removeSocial(main) {
   const social = main.querySelector(".social");
   social?.remove();
 }
 
-const removeSidebar = (main) => {
+function removeSidebar(main) {
   const sidebar = main.querySelector(".sidebar");
   sidebar?.remove();
 }
@@ -261,7 +342,8 @@ export default {
     addCards(main);
     addGalleryImages(main);
     handleLinkImages(main);
-    addVideo(main);
+    addVideos(main);
+    addTables(main);
     WebImporter.rules.transformBackgroundImages(main, document);
     // WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
     WebImporter.rules.convertIcons(main, document);
