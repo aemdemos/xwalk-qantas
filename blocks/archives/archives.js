@@ -108,6 +108,10 @@ export default async function decorate(block) {
       archiveItems.push(details); // Add this line to store the details element
     });
 
+    // Store the last div's content before clearing
+    const lastDiv = block.children[block.children.length - 1];
+    const lastDivContent = lastDiv?.querySelector('p')?.innerHTML || 'For previous years\' press releases, <a href="http://www.qantas.com.au/travel/airlines/media-room/global/en">click here</a>.';
+
     // Clear existing content and add new structure
     block.innerHTML = '';
     block.appendChild(archiveItemsWrapper);
@@ -115,14 +119,13 @@ export default async function decorate(block) {
     // Add the months section to the end of the block
     block.appendChild(monthsSection);
 
-    // Create and add the prev-archives div using the content from the last row
+    // Create and add the prev-archives div using the saved content
     const prevArchivesDiv = document.createElement('div');
     prevArchivesDiv.className = 'prev-archives';
-
-    // Add the prev-archives div to the block
+    const paragraph = document.createElement('p');
+    paragraph.innerHTML = lastDivContent;
+    prevArchivesDiv.appendChild(paragraph);
     block.appendChild(prevArchivesDiv);
-
-    // Remove the original last row
 
     // Set up event handlers and initialization
     setTimeout(() => {
