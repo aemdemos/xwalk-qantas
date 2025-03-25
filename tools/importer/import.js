@@ -32,8 +32,8 @@ function addPageIntroAndPublishedMetadata(document, meta, url) {
   }
   meta['intro'] = intro;
   const pageIntro = document.querySelector(".page-intro");
-  meta['publishedDate'] = pageIntro?.querySelector(".page-published-date")?.innerText;
-  meta['publishedLocation'] = pageIntro?.querySelector(".page-published-location")?.innerText;
+  meta['publishedDate'] = pageIntro?.querySelector(".page-published-date")?.innerText || '';
+  meta['publishedLocation'] = pageIntro?.querySelector(".page-published-location")?.innerText || '';
 }
 
 function addSidebarInfoToMetadata(document, meta) {
