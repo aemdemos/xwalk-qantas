@@ -142,3 +142,58 @@ main > .section > .news-feed-wrapper {
     font-size: 14px;
   }
 }
+
+/* Pagination Styling */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 0;
+  gap: 15px;
+}
+
+.page-link {
+  display: inline-block;
+  font-size: 18px;
+  text-decoration: none;
+  color: #ccc;
+  padding: 5px 10px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.page-link.current {
+  color: #e3001b;
+  font-weight: bold;
+  position: relative;
+}
+
+.page-link.current::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #e3001b;
+}
+
+.page-link.next {
+  font-weight: bold;
+  color: #e3001b;
+}
+
+.page-link:hover {
+  color: #e3001b;
+}
+
+@media (max-width: 480px) {
+  .pagination {
+    gap: 10px;
+  }
+  
+  .page-link {
+    font-size: 16px;
+    padding: 3px 8px;
+  }
+}
