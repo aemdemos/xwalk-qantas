@@ -69,6 +69,7 @@ indices:
   qantas-responds:
     include:
       - '/qantas-responds/*'
+      - '/featured/*'
     exclude:
       - '/**.json'
     target: /qantas-responds.json
