@@ -59,7 +59,6 @@ export default async function decorate(block) {
     }
 
     // Create archive items from grouped data
-    const archiveItemsWrapper = document.createElement('div');
     archiveItemsWrapper.className = 'archive-items-wrapper';
     const archiveItems = []; // Add this array to store the details elements
 
@@ -161,7 +160,6 @@ export default async function decorate(block) {
       }
     }, 50);
   } catch (error) {
-    console.error('Error loading archives:', error);
     block.innerHTML = '<p>An error occurred while loading the archives.</p>';
   }
 }
