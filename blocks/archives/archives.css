@@ -1,6 +1,6 @@
 /* Make sure side nav is on the right with matching top spacing */
 .archives-wrapper {
-  width: 28%;
+  width: 32%;
   background-color: #f7f7f7;
   padding: 40px 20px;
   display: inline-block;
@@ -13,7 +13,7 @@
 
 /* Archives Block Styling */
 .archives-container {
-  max-width: 23%;
+  max-width: 32%;
   padding: 0 20px;
   font-family: europa, sans-serif;
 }
@@ -21,6 +21,7 @@
 .archives-container .archives-wrapper {
   background-color: #f7f7f7;
   padding: 0;
+  margin: 0;
 }
 
 /* Archives heading */
@@ -30,6 +31,7 @@
   font-size: 15px;
   font-weight: bold;
   margin-bottom: 15px;
+  padding-top: 10px;
   padding-bottom: 15px;
   display: block;
   width: 100%;
@@ -108,10 +110,9 @@
 /* Months section */
 .archives .months-section {
   grid-column: 1 / -1;
-
-  /* Span all columns */
   padding-top: 10px;
-  padding-left: 10px;
+  padding-left: 20px;
+  padding-bottom: 20px;
   width: 100%;
 }
 
@@ -168,7 +169,7 @@
   position: relative;
   border-top: 1px solid #E6E6E6;
   border-bottom: 1px solid #E6E6E6;
-  margin: 30px 10px 20px;
+  margin: 30px 20px 20px;
   padding: 10px 0;
 }
 
