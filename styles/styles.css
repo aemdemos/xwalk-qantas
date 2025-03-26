@@ -129,10 +129,6 @@ body.appear {
   display: block;
 }
 
-header {
-  height: var(--nav-height);
-}
-
 header .header,
 footer .footer {
   visibility: hidden;

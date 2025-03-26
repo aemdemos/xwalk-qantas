@@ -11,8 +11,10 @@ export default async function decorate(block) {
   const newsContainer = document.createElement('div');
   newsContainer.className = 'news-container';
 
-  const paginationContainer = document.createElement('div');
-  paginationContainer.className = 'pagination';
+  const paginationContainer = !blockContent.includes('home') ? document.createElement('div') : null;
+  if (paginationContainer) {
+    paginationContainer.className = 'pagination';
+  }
 
   // Function declarations at root level
   async function loadPage(page) {
@@ -108,9 +110,11 @@ export default async function decorate(block) {
         newsContainer.appendChild(postItem);
       });
 
-      // Update pagination
-      // eslint-disable-next-line no-use-before-define
-      updatePagination(data.total, limit, page);
+      // Only show pagination if not on home page
+      if (!blockContent.includes('home')) {
+        // eslint-disable-next-line no-use-before-define
+        updatePagination(data.total, limit, page);
+      }
     } else {
       const errorMessage = document.createElement('p');
       errorMessage.textContent = 'No items found.';
@@ -193,7 +197,9 @@ export default async function decorate(block) {
 
     // Add containers to the block
     block.appendChild(newsContainer);
-    block.appendChild(paginationContainer);
+    if (paginationContainer) {
+      block.appendChild(paginationContainer);
+    }
 
     // Load the initial page
     await loadPage(currentPage);
