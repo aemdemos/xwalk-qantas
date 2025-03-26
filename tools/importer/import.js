@@ -17,7 +17,7 @@ function addPageIntroAndPublishedMetadata(document, meta, url) {
   const pathname = new URL(url).pathname;
   const pageContent = document.querySelector(".page-content")?.innerText.trim();
   let intro;
-  if (pageContent.length > 400) {
+  if (pageContent && pageContent.length > 400) {
     let trimmedContent = pageContent.slice(0, 400);
 
     // Ensure we don't cut off in the middle of a word
@@ -94,10 +94,10 @@ function getGalleyCategoryCards(galleries) {
   galleries.forEach((gallery) => {
     const href = gallery.querySelector(".gallery-image")?.getAttribute("href");
     const img = gallery.querySelector(".gallery-image img");
-    const meta = gallery.querySelector(".gallery-meta").innerHTML;
+    const meta = gallery.querySelector(".gallery-meta").innerText;
     const text = gallery.querySelector(".gallery-text");
-    const title = text.querySelector(".title").innerHTML;
-    const description = text.querySelector(".gallery-description")?.innerHTML;
+    const title = text.querySelector(".title").innerText;
+    const description = text.querySelector(".gallery-description")?.innerText;
     const formattedText = description ? `<h3>${title}</h3>\n<p>${description}</p>` : `<h3>${title}</h3>`;
     const cell = [img, meta, formattedText, href];
     cells.push(cell);
@@ -110,7 +110,7 @@ function getGalleryCards(main) {
   main.querySelectorAll(".galleries-module ul li").forEach((item) => {
     const href = item.querySelector(".gallery-image")?.getAttribute("href");
     const img = item.querySelector(".gallery-image img");
-    const meta = item.querySelector(".gallery-meta").innerHTML;
+    const meta = item.querySelector(".gallery-meta").innerText;
     const cell = [img, meta, href];
     cells.push(cell);
   });
@@ -120,7 +120,7 @@ function getGalleryCards(main) {
 function getTopicCards(topicsModule) {
   const cells = [['Topic Cards']];
   topicsModule.querySelectorAll("li").forEach((topic) => {
-    const topicTitle = topic.querySelector(".topic-title")?.innerHTML;
+    const topicTitle = topic.querySelector(".topic-title")?.innerText;
     const backgroundImg = topic.querySelector(".topics-background");
     const overlayImg = topic.querySelector(".topic-overlay img");
     overlayImg.classList.replace("hide-ie", "overylay-image")
@@ -215,17 +215,18 @@ function getBoldRowsAndCols(table) {
         });
     });
     
-    let boldColResults = boldCols.map((isBold, index) => isBold ? `bold-col-${index + 1}` : null).filter(Boolean);
+    let boldColResults = boldCols
+      .map((isBold, index) => isBold ? `bold-col-${index + 1}` : null)
+      .filter(Boolean);
     
     return [...boldRows, ...boldColResults].join(", ");
 }
 
 function createTableBlock(table, maxColumnCount, boldRowColClasses) {
-//  const tableCells = [[tableColumnMap[maxColumnCount] + ' (no-header, ' + boldRowColClasses + ')']];
-  const tableCells = [['Table (no-header, ' + boldRowColClasses + ')']];
+  const tableCells = [['Table' + (boldRowColClasses ? ' (no-header, ' + boldRowColClasses + ')' : ' (no-header)')]];
 
   table.querySelectorAll("tr").forEach((row) => {
-    const cells = [];
+    const cells = [tableColumnMap[maxColumnCount]]; // add the modelId as the first cell in the rows
     const cols = row.querySelectorAll("td, th");
     let thisColCount = cols.length;
     cols.forEach((col) => { // add the data from page table
@@ -328,6 +329,9 @@ export default {
       'script',
     ]);
 
+    // handle the tables before adding the metadata table
+    addTables(main);
+
     const meta = WebImporter.Blocks.getMetadata(document);
     setMetadata(meta, document, url);
 
@@ -341,7 +345,6 @@ export default {
     addGalleryImages(main);
     handleLinkImages(main);
     addVideos(main);
-    // addTables(main);
     WebImporter.rules.transformBackgroundImages(main, document);
     // WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
     WebImporter.rules.convertIcons(main, document);
