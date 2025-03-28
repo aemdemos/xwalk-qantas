@@ -130,6 +130,32 @@
     ]
   },
   {
+    "id": "cards",
+    "fields": [
+      {
+        "component": "select",
+        "name": "classes",
+        "value": "",
+        "label": "Cards Layout Options",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Thumbnail",
+            "value": "thumbnail"
+          },
+          {
+            "name": "Teaser",
+            "value": "teaser"
+          },
+          {
+            "name": "Banner",
+            "value": "banner"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "card",
     "fields": [
       {
