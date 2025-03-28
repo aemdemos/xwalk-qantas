@@ -14,13 +14,13 @@
 }
 
 .cards-wrapper > .cards.block > ul {
-  display: flex; /* Ensure the list acts as a flex container */
-  flex-flow: row wrap; /* Wrap the cards into multiple rows */ /* Ensure cards are side-by-side */
-  justify-content: center; /* Center align the cards horizontally */
-  gap: 16px; /* Reduce spacing between cards to match original layout */
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start; /* Change from center to flex-start */
+  gap: 16px;
   padding: 0;
   margin: 0;
-  list-style: none; /* Remove default list styling */
+  list-style: none;
 }
 
 .cards-wrapper > .cards.block > ul > li {
@@ -55,6 +55,10 @@
   padding: 10px;
   font-size: 14px;
   text-transform: uppercase;
+}
+
+.cards-wrapper>.cards.block.banner>ul>li>.cards-card-body {
+  display: none;
 }
 
 .cards-wrapper>.cards.block>ul>li>.cards-card-body p {

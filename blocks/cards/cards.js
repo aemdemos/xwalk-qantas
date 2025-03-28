@@ -9,8 +9,33 @@ export default function decorate(block) {
     moveInstrumentation(row, li);
     while (row.firstElementChild) li.append(row.firstElementChild);
     [...li.children].forEach((div) => {
-      if (div.children.length === 1 && div.querySelector('picture')) div.className = 'cards-card-image';
-      else div.className = 'cards-card-body';
+      if (div.children.length === 1) {
+        if (div.querySelector('picture')) {
+          div.className = 'cards-card-image';
+        } else if (div.querySelector('a')) {
+          // If div contains only an anchor tag
+          const link = div.querySelector('a');
+          const imageDiv = li.querySelector('.cards-card-image');
+          if (imageDiv) {
+            // Create a new wrapper anchor
+            const wrapper = document.createElement('a');
+            wrapper.href = link.href;
+            // Wrap the picture element with the anchor
+            const picture = imageDiv.querySelector('picture');
+            if (picture) {
+              imageDiv.removeChild(picture);
+              wrapper.appendChild(picture);
+              imageDiv.appendChild(wrapper);
+            }
+          }
+          // Remove the div containing only the anchor
+          div.remove();
+        } else {
+          div.className = 'cards-card-body';
+        }
+      } else {
+        div.className = 'cards-card-body';
+      }
     });
     ul.append(li);
   });
