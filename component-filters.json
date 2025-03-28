@@ -48,12 +48,6 @@
     "components": []
   },
   {
-    "id": "gallery-cards",
-    "components": [
-      "gallery-card"
-    ]
-  },
-  {
     "id": "page-metadata",
     "components": []
   },

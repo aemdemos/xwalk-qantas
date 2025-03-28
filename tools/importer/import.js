@@ -105,8 +105,16 @@ function getGalleyCategoryCards(galleries) {
   return cells;
 }
 
+function innerGalleryCards(main) {
+  const cells = [['Cards (banner)']];
+  main.querySelectorAll(".swipebox").forEach((item) => {
+    cells.push([item.querySelector("img")]);
+  });
+  return cells;
+}
+
 function getGalleryCards(main) {
-  const cells = [['Gallery Cards']];
+  const cells = [['Cards (thumbnail)']];
   main.querySelectorAll(".galleries-module ul li").forEach((item) => {
     const href = item.querySelector(".gallery-image")?.getAttribute("href");
     const img = item.querySelector(".gallery-image img");
@@ -156,11 +164,7 @@ function addCards(main) {
 function addGalleryImages(main) {
   const gallery = main.querySelector(".gallery");
   if (gallery) {
-    const cells = [['Cards']];
-
-    main.querySelectorAll(".swipebox").forEach((item) => {
-      cells.push([item.querySelector("img")]);
-    });
+    const cells = innerGalleryCards(main);
     const table = WebImporter.DOMUtils.createTable(cells, document);
     gallery.replaceWith(table);
   } else if (main.querySelector(".full-width")) {
@@ -330,7 +334,7 @@ export default {
     ]);
 
     // handle the tables before adding the metadata table
-    addTables(main);
+    //addTables(main);
 
     const meta = WebImporter.Blocks.getMetadata(document);
     setMetadata(meta, document, url);
@@ -366,6 +370,9 @@ export default {
     document, url, html, params,
   }) => {
     let p = new URL(url).pathname;
+    if (p.endsWith('gallery/')) {
+      p = `${p}index`;
+    }
 
     return decodeURIComponent(p)
     .toLowerCase()

@@ -10,8 +10,8 @@
             "template": {
               "name": "Cards",
               "filter": "cards",
-              "classes": "thumbnail",
-              "model": "cards"
+              "model": "cards",
+              "classes": "thumbnail"
             }
           }
         }
@@ -67,6 +67,11 @@
           "value": "",
           "label": "Text",
           "valueType": "string"
+        },
+        {
+          "component": "aem-content",
+          "name": "link",
+          "label": "Link"
         }
       ]
     }
