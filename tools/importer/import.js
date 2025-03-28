@@ -106,12 +106,12 @@ function getGalleyCategoryCards(galleries) {
 }
 
 function getGalleryCards(main) {
-  const cells = [['Gallery Cards']];
+  const cells = [['Gallery Cards (bg-red)']];
   main.querySelectorAll(".galleries-module ul li").forEach((item) => {
     const href = item.querySelector(".gallery-image")?.getAttribute("href");
     const img = item.querySelector(".gallery-image img");
     const meta = item.querySelector(".gallery-meta").innerText;
-    const cell = [img, meta, href];
+    const cell = ['bg-blue', img, meta, href];
     cells.push(cell);
   });
   return cells;
@@ -330,7 +330,7 @@ export default {
     ]);
 
     // handle the tables before adding the metadata table
-    addTables(main);
+    //addTables(main);
 
     const meta = WebImporter.Blocks.getMetadata(document);
     setMetadata(meta, document, url);
