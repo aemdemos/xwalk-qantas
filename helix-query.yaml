@@ -32,6 +32,9 @@ indices:
         select: head > meta[name="publisheddate"]
         value: |
           attribute(el, 'content')
+      publishDateTime:
+        select: head > meta[name="published-time"]
+        value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
       publishedlocation:
         select: head > meta[name="publishedlocation"]
         value: |
