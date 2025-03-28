@@ -23,19 +23,13 @@
       "fields": [
         {
           "component": "select",
-          "name": "layout",
+          "name": "classes",
           "value": "",
           "label": "Layout Options",
           "valueType": "string",
           "options": [
-            {
-              "name": "Main",
-              "value": "main"
-            },
-            {
-              "name": "Article",
-              "value": "article"
-            }
+            { "name": "Main", "value": "main" },
+            { "name": "Article", "value": "article" }
           ]
         },
         {

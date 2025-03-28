@@ -342,7 +342,7 @@
     "fields": [
       {
         "component": "select",
-        "name": "layout",
+        "name": "classes",
         "value": "",
         "label": "Layout Options",
         "valueType": "string",
