@@ -230,7 +230,8 @@
                 "template": {
                   "name": "side-nav",
                   "model": "side-nav",
-                  "classes": "article"
+                  "classes": "article",
+                  "title": "RELATED POSTS"
                 }
               }
             }

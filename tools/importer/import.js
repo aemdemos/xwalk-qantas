@@ -295,8 +295,26 @@ function removeSocial(main) {
   social?.remove();
 }
 
-function removeSidebar(main) {
+function removeSidebar(main, url) {
   const sidebar = main.querySelector(".sidebar");
+  if (url.includes("/qantas-responds/")
+      || url.includes("/media-releases/")
+      || url.includes("/speeches/")
+      || url.includes("/roo-tales/")
+      || url.includes("/uncategorized/")
+      || url.includes("/featured/")
+    ) {
+    const cells = [["Side Navigation (article)"]];
+    sidebar?.replaceWith(WebImporter.DOMUtils.createTable(cells, document));
+
+    // rearrange the side bar to be on top of the main content.
+    const parent = main.querySelector(".content-wrap");
+    const mainSection = parent.children[0];
+    const sideNav = parent.children[1];
+    if (mainSection && sideNav) {
+      parent.insertBefore(sideNav, mainSection);
+    }
+  }
   sidebar?.remove();
 }
 
@@ -343,7 +361,7 @@ export default {
     main.append(mdb);
 
     removeSocial(main);
-    removeSidebar(main);
+    removeSidebar(main, url);
 
     addCards(main);
     addGalleryImages(main);
@@ -353,6 +371,8 @@ export default {
     // WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
     WebImporter.rules.convertIcons(main, document);
 
+    // remove skip link block
+    main.querySelector(".skiplinks")?.remove();
     return main;
   },
 
