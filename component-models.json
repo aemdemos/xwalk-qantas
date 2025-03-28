@@ -341,6 +341,23 @@
     "id": "side-nav",
     "fields": [
       {
+        "component": "select",
+        "name": "layout",
+        "value": "",
+        "label": "Layout Options",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Main",
+            "value": "main"
+          },
+          {
+            "name": "Article",
+            "value": "article"
+          }
+        ]
+      },
+      {
         "component": "text",
         "valueType": "string",
         "name": "title",
