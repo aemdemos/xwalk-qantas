@@ -231,6 +231,18 @@
   ],
   "blocks": [
     {
+      "name": "Cards",
+      "cluster": 9,
+      "instances": [
+        {
+          "url": "https://www.qantasnewsroom.com.au/gallery/",
+          "urlHash": "be55da6290efe33d23ea35eed79b3f0fbb5a961f",
+          "uuid": "be55da62-02-517a94db4be9e28b45ddc57a88330ab3a851dd0d",
+          "xpath": "/html[1]/body[1]/div[3]/div[1]"
+        }
+      ]
+    },
+    {
       "name": "topic-cards",
       "mapping": "cards",
       "cluster": 15,
@@ -486,18 +498,6 @@
           "urlHash": "70b278c5db42ba3aac75c7b6762cc805b0294b96",
           "uuid": "70b278c5-01-467ff85a41fa75a20150d1119670a5e9b2459ffe",
           "xpath": "/html[1]/body[1]/div[3]/header[1]"
-        }
-      ]
-    },
-    {
-      "name": "Cards",
-      "cluster": 9,
-      "instances": [
-        {
-          "url": "https://www.qantasnewsroom.com.au/gallery/",
-          "urlHash": "be55da6290efe33d23ea35eed79b3f0fbb5a961f",
-          "uuid": "be55da62-02-517a94db4be9e28b45ddc57a88330ab3a851dd0d",
-          "xpath": "/html[1]/body[1]/div[3]/div[1]"
         }
       ]
     },

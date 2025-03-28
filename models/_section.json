@@ -50,7 +50,11 @@
         "hero",
         "cards",
         "columns",
-        "fragment"
+        "fragment",
+        "news-feed",
+        "side-nav",
+        "archives",
+        "gallery-cards"
       ]
     }
   ]

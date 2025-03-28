@@ -66,3 +66,30 @@ indices:
         select: head > meta[property="og:image"]
         value: |
           match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+  qantas-responds:
+    include:
+      - '/qantas-responds/*'
+      - '/featured/*'
+    exclude:
+      - '/**.json'
+    target: /qantas-responds.json
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: |
+          attribute(el, 'content')
+      description:
+        select: head > meta[name="intro"]
+        value: attribute(el, 'content')
+      publisheddate:
+        select: head > meta[name="publisheddate"]
+        value: |
+          attribute(el, 'content')
+      publishedlocation:
+        select: head > meta[name="publishedlocation"]
+        value: |
+          attribute(el, 'content')
+      image:
+        select: head > meta[property="og:image"]
+        value: |
+          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')  

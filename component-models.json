@@ -118,6 +118,18 @@
     ]
   },
   {
+    "id": "archives",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "prev-archives",
+        "value": "",
+        "label": "Previous Archives",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "card",
     "fields": [
       {
@@ -276,6 +288,25 @@
     ]
   },
   {
+    "id": "news-feed",
+    "fields": [
+      {
+        "component": "text",
+        "name": "variation",
+        "value": "",
+        "label": "Variation",
+        "valueType": "string"
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "page-metadata",
     "fields": [
       {
@@ -326,6 +357,29 @@
         "multi": true,
         "name": "pageTopics",
         "label": "Page Topics"
+      }
+    ]
+  },
+  {
+    "id": "side-nav",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "title",
+        "label": "Title"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "topics",
+        "label": "Topics"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "most-viewed",
+        "label": "Most-Viewed"
       }
     ]
   },
