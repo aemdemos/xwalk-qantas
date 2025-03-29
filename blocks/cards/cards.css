@@ -1,27 +1,167 @@
-.cards > ul {
-  list-style: none;
-  margin: 0;
+.cards-wrapper {
+  display: flex;
+  flex-direction: column; /* Stack top-level elements vertically */
+  gap: 40px; /* Space between the top section and the card grid */
+}
+
+.cards-wrapper > .cards.block {
+  display: flex; /* Use flexbox for the overall card container */
+  flex-flow: row wrap; /* Allow cards to wrap into multiple rows */ /* Ensure cards are side-by-side */
+  justify-content: center; /* Center align all cards */
+  gap: 16px; /* Reduce spacing between cards to match original layout */
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  grid-gap: 24px;
+  padding-top: 20px;
+  margin: 0;
 }
 
-.cards > ul > li {
-  border: 1px solid #dadada;
-  background-color: var(--background-color);
+.cards-wrapper > .cards.block > ul {
+  display: flex; /* Use flexbox for arranging the list items */
+  flex-wrap: wrap; /* Allow wrapping to multiple rows */
+  justify-content: flex-start; /* Align cards to the left */
+  gap: 24px; /* Space between cards */
+  padding: 0; /* Remove padding from the list */
+  margin: 0; /* Remove default margin */
+  list-style: none; /* Remove list styling */
+  width: 100%; /* Ensure full width */
 }
 
-.cards .cards-card-body {
-  margin: 16px;
+.cards-wrapper > .cards.block > ul > li {
+  display: flex; /* Make each card a flex container */
+  flex-direction: column; /* Stack image and red card body vertically */
+  flex: 0 1 calc(33.333% - 16px); /* Fixed card width for three columns */
+  box-sizing: border-box; /* Ensure consistent sizing */
+  background-color: white; /* Add a white background for cards */
+  overflow: hidden; /* Prevent overflow */
+  border-radius: 0; /* Remove rounded corners */
+  margin: 0; /* Remove unnecessary margins */
+  overflow: hidden; /* Prevent content overflow */
 }
 
-.cards .cards-card-image {
-  line-height: 0;
+.cards-wrapper>.cards.block.roo-tales>ul>li {
+  border: 1px solid #ccc; /* Add a border for separation */
+  border-radius: 8px; /* Optional: Rounded corners */
+  overflow: hidden; 
 }
 
-.cards > ul > li img {
+.cards-wrapper > .cards.block > ul > li > .cards-card-image {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  display: block; /* Add this to remove inline element spacing */
+  line-height: 0; /* Add this to remove any line-height gaps */
+}
+
+.cards-wrapper > .cards.block > ul > li img {
+  width: 100%;
+  height: auto;
   object-fit: cover;
+  margin: 0;
+  display: block; /* Add this to remove inline element spacing */
+}
+
+.cards-wrapper>.cards.block>ul>li>.cards-card-body {
+  margin: 0;
+  background-color: #eb000a;
+  color: #fff;
+  padding: 10px;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.cards-wrapper>.cards.block.banner>ul>li>.cards-card-body {
+  display: none;
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body {
+  color: #000;
+  background-color: white;
+  text-transform: none;
+  padding: 20px;
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>h2 {
+  font-size: 20px; /* Slightly smaller font for 3-column layout */
+  color: #1c1d1e;
+  margin-bottom: 8px; /* Add spacing below the heading */
+  line-height: 20px; /* Improved line height for readability */
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>h2 a {
+  color: #1c1d1e;
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>h2 a:hover {
+  text-decoration: none;
+}
+
+.cards-wrapper>.cards.block>ul>li>.cards-card-body p {
+  margin: 0.3rem;
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>p {
+  font-size: 16px;
+  color: #1c1d1e;
+  font-weight: 400;
+  line-height: 22px;
+  margin: 10px 0;
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>.card-publisheddate {
+  font-size: 14px;
+  color: #1c1d1e;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>.card-description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 4.5em; /* 3 lines * 1.5 line height */
+  line-height: 1.5;
+  margin: 20px 0;
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>.cards-card-read-more>a {
+  font-size: 16px;
+  color: #eb000a;
+  font-weight: 400;
+  line-height: 16px;
+}
+@media (width <= 768px) {
+  .cards-wrapper > .cards.block > ul > li {
+    flex: 0 1 calc(50% - 16px);
+  }
+}
+
+@media (width <= 580px) {
+  .cards-wrapper > .cards.block > ul > li {
+    flex: 0 1 100%;
+  }
+}
+
+/* Load More Button Styling */
+.cards-load-more-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+  width: 100%;
+}
+
+.cards-load-more-button {
+  background-color: white;
+  color: #eb000a;
+  border: none;
+  padding: 12px 30px;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+  position: relative;
+}
+
+.cards-load-more-button:hover {
+  background-color: white;
+  color: black;
 }
