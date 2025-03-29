@@ -10,17 +10,19 @@
   justify-content: center; /* Center align all cards */
   gap: 16px; /* Reduce spacing between cards to match original layout */
   padding: 0;
+  padding-top: 20px;
   margin: 0;
 }
 
 .cards-wrapper > .cards.block > ul {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-start; /* Change from center to flex-start */
-  gap: 16px;
-  padding: 0;
-  margin: 0;
-  list-style: none;
+  display: flex; /* Use flexbox for arranging the list items */
+  flex-wrap: wrap; /* Allow wrapping to multiple rows */
+  justify-content: flex-start; /* Align cards to the left */
+  gap: 24px; /* Space between cards */
+  padding: 0; /* Remove padding from the list */
+  margin: 0; /* Remove default margin */
+  list-style: none; /* Remove list styling */
+  width: 100%; /* Ensure full width */
 }
 
 .cards-wrapper > .cards.block > ul > li {
@@ -32,6 +34,13 @@
   overflow: hidden; /* Prevent overflow */
   border-radius: 0; /* Remove rounded corners */
   margin: 0; /* Remove unnecessary margins */
+  overflow: hidden; /* Prevent content overflow */
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li {
+  border: 1px solid #ccc; /* Add a border for separation */
+  border-radius: 8px; /* Optional: Rounded corners */
+  overflow: hidden; 
 }
 
 .cards-wrapper > .cards.block > ul > li > .cards-card-image {
@@ -61,10 +70,63 @@
   display: none;
 }
 
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body {
+  color: #000;
+  background-color: white;
+  text-transform: none;
+  padding: 20px;
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>h2 {
+  font-size: 20px; /* Slightly smaller font for 3-column layout */
+  color: #1c1d1e;
+  margin-bottom: 8px; /* Add spacing below the heading */
+  line-height: 20px; /* Improved line height for readability */
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>h2 a {
+  color: #1c1d1e;
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>h2 a:hover {
+  text-decoration: none;
+}
+
 .cards-wrapper>.cards.block>ul>li>.cards-card-body p {
   margin: 0.3rem;
 }
 
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>p {
+  font-size: 16px;
+  color: #1c1d1e;
+  font-weight: 400;
+  line-height: 22px;
+  margin: 10px 0;
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>.card-publisheddate {
+  font-size: 14px;
+  color: #1c1d1e;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>.card-description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 4.5em; /* 3 lines * 1.5 line height */
+  line-height: 1.5;
+  margin: 20px 0;
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>.cards-card-read-more>a {
+  font-size: 16px;
+  color: #eb000a;
+  font-weight: 400;
+  line-height: 16px;
+}
 @media (width <= 768px) {
   .cards-wrapper > .cards.block > ul > li {
     flex: 0 1 calc(50% - 16px);
