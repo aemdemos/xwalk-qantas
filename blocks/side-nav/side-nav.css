@@ -32,6 +32,22 @@
   margin-bottom: 40px;
 }
 
+.side-nav .posts .entry{
+  margin-bottom: 20px;
+}
+
+.side-nav .posts p {
+  font-size: 14px;
+  color: #515151;
+  margin-top: 4px;;
+}
+
+.side-nav .posts p a {
+  color: #1c1d1e;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
 .side-nav .topics p a {
   color: #1c1d1e;
   text-transform: uppercase;
