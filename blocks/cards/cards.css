@@ -138,3 +138,30 @@
     flex: 0 1 100%;
   }
 }
+
+/* Load More Button Styling */
+.cards-load-more-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+  width: 100%;
+}
+
+.cards-load-more-button {
+  background-color: white;
+  color: #eb000a;
+  border: none;
+  padding: 12px 30px;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+  position: relative;
+}
+
+.cards-load-more-button:hover {
+  background-color: white;
+  color: black;
+}
