@@ -150,6 +150,10 @@
           {
             "name": "Banner",
             "value": "banner"
+          },
+          {
+            "name": "Roo-tales",
+            "value": "roo-tales"
           }
         ]
       }

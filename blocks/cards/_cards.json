@@ -46,7 +46,8 @@
           "options": [
             { "name": "Thumbnail", "value": "thumbnail" },
             { "name": "Teaser", "value": "teaser" },
-            { "name": "Banner", "value": "banner" }
+            { "name": "Banner", "value": "banner" },
+            { "name": "Roo-tales", "value": "roo-tales" }
           ]
         }
       ]
