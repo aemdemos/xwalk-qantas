@@ -1,5 +1,5 @@
 export default async function decorate(block) {
-  // Get all the main sections (divs) of the side-nav
+  // Get all the main sections (divs) of the side-navigation
   const sections = block.children;
 
   // Add class names to each section

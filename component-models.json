@@ -319,7 +319,7 @@
     ]
   },
   {
-    "id": "side-nav",
+    "id": "side-navigation",
     "fields": [
       {
         "component": "select",
