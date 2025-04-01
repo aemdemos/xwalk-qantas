@@ -12,6 +12,36 @@
 /* global WebImporter */
 /* eslint-disable no-console, class-methods-use-this */
 
+// Convert text date in the format 'Published on 28th October 2015 at 9:17' to '2015-10-28T9:17:00.000Z' format
+function convertToISO(dateString) {
+    // Extracting the date and time using regex
+    const regex = /(Published|Posted) on (\d{1,2})(?:st|nd|rd|th)? (\w+) (\d{4}) at (\d{1,2}):(\d{2})/;;
+    const match = dateString.match(regex);
+
+    if (!match) {
+        return null;
+    }
+
+    // Extracting parts
+    const [, , day, month, year, hours, minutes] = match;
+
+    // Month mapping
+    const monthMap = {
+        January: "01", February: "02", March: "03", April: "04",
+        May: "05", June: "06", July: "07", August: "08",
+        September: "09", October: "10", November: "11", December: "12"
+    };
+
+    const monthNumber = monthMap[month];
+
+    if (!monthNumber) {
+        return null;
+    }
+
+    // Construct ISO format
+    return `${year}-${monthNumber}-${day.padStart(2, '0')}T${hours}:${minutes}:00.000Z`;
+}
+
 // for /media-releases/<page> and /roo-tales/<page>, add the published date and intro to the page metadata 
 function addPageIntroAndPublishedMetadata(document, meta, url) {
   const pathname = new URL(url).pathname;
@@ -32,8 +62,9 @@ function addPageIntroAndPublishedMetadata(document, meta, url) {
   }
   meta['intro'] = intro;
   const pageIntro = document.querySelector(".page-intro");
-  meta['publishedDate'] = pageIntro?.querySelector(".page-published-date")?.innerText || '';
-  meta['publishedLocation'] = pageIntro?.querySelector(".page-published-location")?.innerText || '';
+  const publishedDateStr = pageIntro?.querySelector(".page-published-date")?.innerText.trim() || null;
+  meta['publishedDate'] = convertToISO(publishedDateStr) || '';
+  meta['publishedLocation'] = pageIntro?.querySelector(".page-published-location")?.innerText.trim() || '';
 }
 
 function addSidebarInfoToMetadata(document, meta) {

@@ -61,6 +61,9 @@ indices:
         select: head > meta[name="publisheddate"]
         value: |
           attribute(el, 'content')
+      publishDateTime:
+        select: head > meta[name="published-time"]
+        value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
       publishedlocation:
         select: head > meta[name="publishedlocation"]
         value: |
@@ -88,6 +91,9 @@ indices:
         select: head > meta[name="publisheddate"]
         value: |
           attribute(el, 'content')
+      publishDateTime:
+        select: head > meta[name="published-time"]
+        value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
       publishedlocation:
         select: head > meta[name="publishedlocation"]
         value: |
@@ -95,4 +101,33 @@ indices:
       image:
         select: head > meta[property="og:image"]
         value: |
-          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')  
+          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+  roo-tales:
+    include:
+      - '/roo-tales/*'
+    exclude:
+      - '/**.json'
+    target: /roo-tales.json
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: |
+          attribute(el, 'content')
+      description:
+        select: head > meta[name="intro"]
+        value: attribute(el, 'content')
+      publisheddate:
+        select: head > meta[name="publisheddate"]
+        value: |
+          attribute(el, 'content')
+      publishDateTime:
+        select: head > meta[name="published-time"]
+        value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
+      publishedlocation:
+        select: head > meta[name="publishedlocation"]
+        value: |
+          attribute(el, 'content')
+      image:
+        select: head > meta[property="og:image"]
+        value: |
+          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
