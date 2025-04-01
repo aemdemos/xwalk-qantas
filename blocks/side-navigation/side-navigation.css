@@ -11,6 +11,12 @@
   margin-top: 0 !important;
 }
 
+/* Remove top padding when side-navigation has article class */
+.side-navigation-wrapper:has(.side-navigation.article) {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 .side-navigation {
   padding-bottom: 30px;
 }
