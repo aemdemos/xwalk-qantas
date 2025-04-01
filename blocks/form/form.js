@@ -81,7 +81,6 @@ export default async function decorate(block) {
   const links = [...block.querySelectorAll('a')].map((a) => a.href);
   const formLink = links.find((link) => link.startsWith(window.location.origin) && link.endsWith('.json'));
   const submitLink = links.find((link) => link !== formLink);
-  if (!formLink || !submitLink) return;
 
   const form = await createForm(formLink, submitLink);
   block.replaceChildren(form);
