@@ -220,13 +220,22 @@ function getMaxColumnCount(table) {
   return maxColumns;
 }
 
-const tableColumnMap = {
+const tableColumnsMap = {
   1: "table-row",
   2: "table-2-columns",
   3: "table-3-columns",
   4: "table-4-columns",
   5: "table-5-columns",
   6: "table-6-columns"
+};
+
+const tableColsMap = {
+  1: "table-row",
+  2: "table-col-2",
+  3: "table-col-3",
+  4: "table-col-4",
+  5: "table-col-5",
+  6: "table-col-6"
 };
 
 function getBoldRowsAndCols(table) {
@@ -259,6 +268,7 @@ function getBoldRowsAndCols(table) {
 
 function createTableBlock(table, maxColumnCount, boldRowColClasses) {
   const tableCells = [['Table' + (boldRowColClasses ? ' (no-header, ' + boldRowColClasses + ')' : ' (no-header)')]];
+  tableCells.push([tableColumnMap[maxColumnCount]])
 
   table.querySelectorAll("tr").forEach((row) => {
     const cells = [tableColumnMap[maxColumnCount]]; // add the modelId as the first cell in the rows
@@ -383,7 +393,7 @@ export default {
     ]);
 
     // handle the tables before adding the metadata table
-    //addTables(main);
+    addTables(main);
 
     const meta = WebImporter.Blocks.getMetadata(document);
     setMetadata(meta, document, url);

@@ -141,15 +141,19 @@
           "valueType": "string",
           "options": [
             {
-              "name": "Border",
+              "name": "Bold",
               "children": [
                 {
-                  "name": "Striped",
-                  "value": "striped"
+                  "name": "Bold Column 1",
+                  "value": "bold-col-1"
                 },
                 {
-                  "name": "Bordered",
-                  "value": "bordered"
+                  "name": "Bold Column 2",
+                  "value": "bold-col-2"
+                },
+                {
+                  "name": "Bold Row 1",
+                  "value": "bold-row-1"
                 }
               ]
             },
@@ -190,6 +194,10 @@
             {
               "name": "5 Columns",
               "value": "table-5-columns"
+            },
+            {
+              "name": "6 Columns",
+              "value": "table-6-columns"
             }
           ]
         }
