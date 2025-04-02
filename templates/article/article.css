@@ -1,0 +1,23 @@
+/* Parent container styling */
+.article-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* News Feed Container */
+main > .section > .article-wrapper > .default-content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+  font-family: 'Europa', sans-serif;
+  margin-right: 2.35765%;
+  width: 67%;
+  order: 1;
+  align-self: flex-start;
+}

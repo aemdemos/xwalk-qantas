@@ -1,5 +1,5 @@
 /* Make sure side nav is on the right with matching top spacing */
-.side-nav-wrapper {
+.side-navigation-wrapper {
   width: 28%;
   background-color: #f7f7f7;
   padding: 40px 20px;
@@ -11,15 +11,21 @@
   margin-top: 0 !important;
 }
 
-.side-nav {
+/* Remove top padding when side-navigation has article class */
+.side-navigation-wrapper:has(.side-navigation.article) {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.side-navigation {
   padding-bottom: 30px;
 }
 /* Targeting with the new class names */
-.side-nav .heading {
+.side-navigation .heading {
   padding: 35px 0px 0px 0px;
 }
 
-.side-nav .heading h1 {
+.side-navigation .heading h1 {
   padding-bottom: 10px;
   color: #1c1d1e;
   text-transform: uppercase;
@@ -27,12 +33,28 @@
   font-size: 15px;
 }
 
-.side-nav .topics {
+.side-navigation .topics {
   position: relative;
   margin-bottom: 40px;
 }
 
-.side-nav .topics p a {
+.side-navigation .posts .entry{
+  margin-bottom: 20px;
+}
+
+.side-navigation .posts p {
+  font-size: 14px;
+  color: #515151;
+  margin-top: 4px;;
+}
+
+.side-navigation .posts p a {
+  color: #1c1d1e;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.side-navigation .topics p a {
   color: #1c1d1e;
   text-transform: uppercase;
   font-size: 12px;
@@ -45,15 +67,15 @@
   display: inline-block;
 }
 
-.side-nav .topics .icon {
+.side-navigation .topics .icon {
   width: 40px;
   height: 40px;
 }
-.side-nav .topics .icon img {
+.side-navigation .topics .icon img {
   filter: brightness(0); /* Convert white to black */
 }
 
-.side-nav .latest h1 {
+.side-navigation .latest h1 {
   font-size: 15px;
   font-weight: 400;
   text-transform: uppercase;
@@ -61,7 +83,7 @@
 }
 
 /* Common divider styling */
-.side-nav > div::after {
+.side-navigation > div::after {
   content: "";
   display: block;
   width: 100%;
@@ -70,12 +92,12 @@
   margin: 30px 0;
 }
 
-.side-nav > div:last-child::after {
+.side-navigation > div:last-child::after {
   display: none; /* Remove divider after last section */
 }
 
 /* Topics section */
-.side-nav > div:nth-child(2) h1:first-child {
+.side-navigation > div:nth-child(2) h1:first-child {
   font-size: 16px;
   font-weight: 600;
   text-transform: uppercase;
@@ -83,7 +105,7 @@
   display: inline-block;
 }
 
-.side-nav > div:nth-child(2) h1#all-topics {
+.side-navigation > div:nth-child(2) h1#all-topics {
   position: absolute;
   right: 0;
   top: 0;
@@ -92,18 +114,18 @@
   margin: 0;
 }
 
-.side-nav > div:nth-child(2) h1#all-topics a {
+.side-navigation > div:nth-child(2) h1#all-topics a {
   color: #666;
   text-decoration: none;
 }
 
-.side-nav > div:nth-child(2) .button-container {
+.side-navigation > div:nth-child(2) .button-container {
   margin: 15px 0;
   display: flex;
   align-items: center;
 }
 
-.side-nav > div:nth-child(2) .button {
+.side-navigation > div:nth-child(2) .button {
   font-size: 15px;
   color: #333;
   text-decoration: none;
@@ -113,7 +135,7 @@
   padding-left: 70px;
 }
 
-.side-nav > div:nth-child(2) .button::before {
+.side-navigation > div:nth-child(2) .button::before {
   content: "";
   display: block;
   width: 50px;
@@ -128,7 +150,7 @@
 }
 
 /* Most Viewed section */
-.side-nav .latest .button-container a {
+.side-navigation .latest .button-container a {
   text-transform: uppercase;
   margin: 0 0 5px 0;
   font-size: 1.4rem;
@@ -137,7 +159,7 @@
   font-weight: 400;
 }
 
-.side-nav > div:nth-child(3) p:not(.button-container) {
+.side-navigation > div:nth-child(3) p:not(.button-container) {
   font-size: 14px;
   color: #666;
   margin: 5px 0 20px 0;
@@ -152,7 +174,7 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .section.news-feed-container.side-nav-container {
+  .section.news-feed-container.side-navigation-container {
     flex-direction: column;
   }
   
@@ -162,7 +184,7 @@
     order: 1;
   }
   
-  .side-nav-wrapper {
+  .side-navigation-wrapper {
     width: 100%;
     margin-top: 40px;
     padding: 30px 20px;
