@@ -30,6 +30,13 @@
           "name": "action",
           "label": "Action URL",
           "valueType": "string"
+        },
+        {
+          "component": "richtext",
+          "name": "success-message",
+          "value": "",
+          "label": "Success Message",
+          "valueType": "string"
         }
       ]
     }
