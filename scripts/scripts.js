@@ -58,6 +58,48 @@ async function loadFonts() {
   }
 }
 
+async function decorateTemplates(main) {
+  try {
+    // Check if URL contains any of the specified news paths with content after them
+    let template; // Default template
+
+    const basePatterns = [
+      '/qantas-responds/',
+      '/roo-tales/',
+      '/speeches/',
+      '/media-releases/',
+    ];
+
+    // Get the current pathname
+    const currentPath = window.location.pathname;
+
+    // Check if the path contains any pattern AND is not exactly that pattern
+    const isNewsArticle = basePatterns.some((pattern) => (
+      currentPath.includes(pattern)
+        && currentPath !== pattern
+        && currentPath !== pattern.slice(0, -1)
+    ));
+
+    if (isNewsArticle) {
+      template = 'article';
+    }
+
+    const templates = ['article'];
+
+    if (templates.includes(template)) {
+      const mod = await import(`../templates/${template}/${template}.js`);
+      await loadCSS(`${window.hlx.codeBasePath}/templates/${template}/${template}.css`);
+
+      if (mod.default) {
+        await mod.default(main);
+      }
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Decorate Templates failed', error);
+  }
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
@@ -95,6 +137,7 @@ async function loadEager(doc) {
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
+    await decorateTemplates(main);
     document.body.classList.add('appear');
     await loadSection(main.querySelector('.section'), waitForFirstImage);
   }

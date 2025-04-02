@@ -150,6 +150,10 @@
           {
             "name": "Banner",
             "value": "banner"
+          },
+          {
+            "name": "Roo-tales",
+            "value": "roo-tales"
           }
         ]
       }
@@ -315,7 +319,7 @@
         "label": "Published Date"
       },
       {
-        "component": "text",
+        "component": "date-time",
         "valueType": "string",
         "name": "publishedLocation",
         "label": "Published Location"
@@ -342,7 +346,7 @@
     ]
   },
   {
-    "id": "side-nav",
+    "id": "side-navigation",
     "fields": [
       {
         "component": "select",

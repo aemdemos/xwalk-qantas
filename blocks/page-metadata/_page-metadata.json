@@ -45,7 +45,7 @@
           "label": "Published Date"
         },
         {
-          "component": "text",
+          "component": "date-time",
           "valueType": "string",
           "name": "publishedLocation",
           "label": "Published Location"
