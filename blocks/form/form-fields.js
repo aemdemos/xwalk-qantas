@@ -129,6 +129,18 @@ const createSubmit = (fd) => {
 };
 
 const createTextArea = (fd) => {
+  // Check if this is an email field and create an input type="email" instead
+  if (fd.Id.toLowerCase().includes('email')) {
+    const field = document.createElement('input');
+    field.type = 'email';
+    setCommonAttributes(field, fd);
+    const fieldWrapper = createFieldWrapper(fd);
+    const label = createLabel(fd);
+    field.setAttribute('aria-labelledby', label.id);
+    fieldWrapper.append(field);
+    fieldWrapper.prepend(label);
+    return { field, fieldWrapper };
+  }
   const field = document.createElement('textarea');
   setCommonAttributes(field, fd);
 

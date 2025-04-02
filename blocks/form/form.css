@@ -205,7 +205,7 @@
 }
 
 /* Only allow the "Your Request" field to be larger but still no scrolling */
-.form textarea#Your\ Request {
+.form textarea#message {
   height: 100px;
   min-height: 100px;
   white-space: normal; /* Allow text wrapping */

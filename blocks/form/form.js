@@ -36,7 +36,7 @@ function generatePayload(form) {
       } else if (field.type === 'checkbox') {
         if (field.checked) payload[field.name] = payload[field.name] ? `${payload[field.name]},${field.value}` : field.value;
       } else {
-        payload[field.name] = field.value;
+        payload[field.id] = field.value;
       }
     }
   });
