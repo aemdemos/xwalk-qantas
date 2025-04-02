@@ -399,39 +399,6 @@
             ]
           }
         ]
-      },
-      {
-        "component": "select",
-        "name": "filter",
-        "label": "Columns",
-        "valueType": "string",
-        "value": "table",
-        "options": [
-          {
-            "name": "1 Column",
-            "value": "table"
-          },
-          {
-            "name": "2 Columns",
-            "value": "table-2-columns"
-          },
-          {
-            "name": "3 Columns",
-            "value": "table-3-columns"
-          },
-          {
-            "name": "4 Columns",
-            "value": "table-4-columns"
-          },
-          {
-            "name": "5 Columns",
-            "value": "table-5-columns"
-          },
-          {
-            "name": "6 Columns",
-            "value": "table-6-columns"
-          }
-        ]
       }
     ]
   },
@@ -443,6 +410,11 @@
         "valueType": "string",
         "name": "column1text",
         "label": "Column1"
+      },
+      {
+        "component": "text",
+        "name": "classes",
+        "label": "Classes"
       }
     ]
   },
@@ -460,6 +432,11 @@
         "valueType": "string",
         "name": "column2text",
         "label": "Column2"
+      },
+      {
+        "component": "text",
+        "name": "classes",
+        "label": "Classes"
       }
     ]
   },
@@ -483,6 +460,11 @@
         "valueType": "string",
         "name": "column3text",
         "label": "Column3"
+      },
+      {
+        "component": "text",
+        "name": "classes",
+        "label": "Classes"
       }
     ]
   },
@@ -512,6 +494,11 @@
         "valueType": "string",
         "name": "column4text",
         "label": "Column4"
+      },
+      {
+        "component": "text",
+        "name": "classes",
+        "label": "Classes"
       }
     ]
   },
@@ -547,6 +534,11 @@
         "valueType": "string",
         "name": "column5text",
         "label": "Column5"
+      },
+      {
+        "component": "text",
+        "name": "classes",
+        "label": "Classes"
       }
     ]
   },
@@ -588,6 +580,11 @@
         "valueType": "string",
         "name": "column6text",
         "label": "Column6"
+      },
+      {
+        "component": "text",
+        "name": "classes",
+        "label": "Classes"
       }
     ]
   },

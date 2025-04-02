@@ -39,7 +39,7 @@ function convertToISO(dateString) {
     }
 
     // Construct ISO format
-    return `${year}-${monthNumber}-${day.padStart(2, '0')}T${hours}:${minutes}:00.000Z`;
+    return `${year}-${monthNumber}-${day.padStart(2, '0')}T${hours}:${minutes}:00.00`;
 }
 
 // for /media-releases/<page> and /roo-tales/<page>, add the published date and intro to the page metadata 
@@ -226,7 +226,7 @@ const tableColumnsMap = {
   3: "table-3-columns",
   4: "table-4-columns",
   5: "table-5-columns",
-  6: "table-6-columns"
+  6: "Table Column 6"
 };
 
 const tableColsMap = {
@@ -268,10 +268,10 @@ function getBoldRowsAndCols(table) {
 
 function createTableBlock(table, maxColumnCount, boldRowColClasses) {
   const tableCells = [['Table' + (boldRowColClasses ? ' (no-header, ' + boldRowColClasses + ')' : ' (no-header)')]];
-  tableCells.push([tableColumnMap[maxColumnCount]])
+  //tableCells.push([tableColumnsMap[maxColumnCount]])
 
   table.querySelectorAll("tr").forEach((row) => {
-    const cells = [tableColumnMap[maxColumnCount]]; // add the modelId as the first cell in the rows
+    const cells = [tableColsMap[maxColumnCount]]; // add the modelId as the first cell in the rows
     const cols = row.querySelectorAll("td, th");
     let thisColCount = cols.length;
     cols.forEach((col) => { // add the data from page table
@@ -289,8 +289,6 @@ function createTableBlock(table, maxColumnCount, boldRowColClasses) {
 function addTables(main) {
   const tables = main.querySelectorAll("table").forEach((table) => {
     const columnCount = getMaxColumnCount(table);
-    const tableId = tableColumnMap[columnCount];
-    let classList = "no-header";
     let boldRowColClasses = getBoldRowsAndCols(table);
     try {
       const blockTable = WebImporter.DOMUtils.createTable(createTableBlock(table, columnCount, boldRowColClasses), document);

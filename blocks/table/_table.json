@@ -17,112 +17,90 @@
       }
     },
     {
-      "title": "Row",
+      "title": "Table Column 1",
       "id": "table-row",
       "plugins": {
         "xwalk": {
           "page": {
             "resourceType": "core/franklin/components/block/v1/block/item",
             "template": {
-              "name": "Row",
-              "model": "table-row",
-              "column1text": "Column1"
+              "name": "Table Column 1",
+              "model": "table-row"
             }
           }
         }
       }
     },
     {
-      "title": "Row",
+      "title": "Table Column 2",
       "id": "table-col-2",
       "plugins": {
         "xwalk": {
           "page": {
             "resourceType": "core/franklin/components/block/v1/block/item",
             "template": {
-              "name": "Row",
-              "model": "table-col-2",
-              "column1text": "Column1",
-              "column2text": "Column2"
+              "name": "Table Column 2",
+              "model": "table-col-2"
             }
           }
         }
       }
     },
     {
-      "title": "Row",
+      "title": "Table Column 3",
       "id": "table-col-3",
       "plugins": {
         "xwalk": {
           "page": {
             "resourceType": "core/franklin/components/block/v1/block/item",
             "template": {
-              "name": "Row",
-              "model": "table-col-3",
-              "column1text": "Column1",
-              "column2text": "Column2",
-              "column3text": "Column3"
+              "name": "Table Column 3",
+              "model": "table-col-3"
             }
           }
         }
       }
     },
     {
-      "title": "Row",
+      "title": "Table Column 4",
       "id": "table-col-4",
       "plugins": {
         "xwalk": {
           "page": {
             "resourceType": "core/franklin/components/block/v1/block/item",
             "template": {
-              "name": "Row",
-              "model": "table-col-4",
-              "column1text": "Column1",
-              "column2text": "Column2",
-              "column3text": "Column3",
-              "column4text": "Column4"
+              "name": "Table Column 4",
+              "model": "table-col-4"
             }
           }
         }
       }
     },
     {
-      "title": "Row",
+      "title": "Table Column 5",
       "id": "table-col-5",
       "plugins": {
         "xwalk": {
           "page": {
             "resourceType": "core/franklin/components/block/v1/block/item",
             "template": {
-              "name": "Row",
-              "model": "table-col-5",
-              "column1text": "Column1",
-              "column2text": "Column2",
-              "column3text": "Column3",
-              "column4text": "Column4",
-              "column5text": "Column5"
+              "name": "Table Column 5",
+              "model": "table-col-5"
             }
           }
         }
       }
     },
     {
-      "title": "Row",
+      "title": "Table Column 6",
       "id": "table-col-6",
       "plugins": {
         "xwalk": {
           "page": {
             "resourceType": "core/franklin/components/block/v1/block/item",
             "template": {
-              "name": "Row",
-              "model": "table-col-6",
-              "column1text": "Column1",
-              "column2text": "Column2",
-              "column3text": "Column3",
-              "column4text": "Column4",
-              "column5text": "Column5",
-              "column6text": "Column6"
-
+              "name": "Table Column 6",
+              "model": "table-col-6"
             }
           }
         }
@@ -167,39 +145,6 @@
               ]
             }
           ]
-        },
-        {
-          "component": "select",
-          "name": "filter",
-          "label": "Columns",
-          "valueType": "string",
-          "value": "table",
-          "options": [
-            {
-              "name": "1 Column",
-              "value": "table"
-            },
-            {
-              "name": "2 Columns",
-              "value": "table-2-columns"
-            },
-            {
-              "name": "3 Columns",
-              "value": "table-3-columns"
-            },
-            {
-              "name": "4 Columns",
-              "value": "table-4-columns"
-            },
-            {
-              "name": "5 Columns",
-              "value": "table-5-columns"
-            },
-            {
-              "name": "6 Columns",
-              "value": "table-6-columns"
-            }
-          ]
         }
       ]
     },
@@ -211,6 +156,11 @@
           "valueType": "string",
           "name": "column1text",
           "label": "Column1"
+        },
+        {
+          "component": "text",
+          "name": "classes",
+          "label": "Classes"
         }
       ]
     },
@@ -228,6 +178,11 @@
           "valueType": "string",
           "name": "column2text",
           "label": "Column2"
+        },
+        {
+          "component": "text",
+          "name": "classes",
+          "label": "Classes"
         }
       ]
     },
@@ -251,6 +206,11 @@
           "valueType": "string",
           "name": "column3text",
           "label": "Column3"
+        },
+        {
+          "component": "text",
+          "name": "classes",
+          "label": "Classes"
         }
       ]
     },
@@ -280,6 +240,11 @@
           "valueType": "string",
           "name": "column4text",
           "label": "Column4"
+        },
+        {
+          "component": "text",
+          "name": "classes",
+          "label": "Classes"
         }
       ]
     },
@@ -315,6 +280,11 @@
           "valueType": "string",
           "name": "column5text",
           "label": "Column5"
+        },
+        {
+          "component": "text",
+          "name": "classes",
+          "label": "Classes"
         }
       ]
     },
@@ -356,6 +326,11 @@
           "valueType": "string",
           "name": "column6text",
           "label": "Column6"
+        },
+        {
+          "component": "text",
+          "name": "classes",
+          "label": "Classes"
         }
       ]
     }
@@ -363,27 +338,14 @@
   "filters": [
     {
       "id": "table",
-      "components": ["table-row"]
-    },
-    {
-      "id": "table-2-columns",
-      "components": ["table-col-2"]
-    },
-    {
-      "id": "table-3-columns",
-      "components": ["table-col-3"]
-    },
-    {
-      "id": "table-4-columns",
-      "components": ["table-col-4"]
-    },
-    {
-      "id": "table-5-columns",
-      "components": ["table-col-5"]
-    },
-    {
-      "id": "table-6-columns",
-      "components": ["table-col-6"]
+      "components": [
+        "table-col-6",
+        "table-col-2",
+        "table-col-3",
+        "table-col-4",
+        "table-col-5",
+        "table-col-6"
+      ]
     }
   ]
 }
