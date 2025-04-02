@@ -62,7 +62,7 @@ function addPageIntroAndPublishedMetadata(document, meta, url) {
   }
   meta['intro'] = intro;
   const pageIntro = document.querySelector(".page-intro");
-  const publishedDateStr = pageIntro?.querySelector(".page-published-date")?.innerText.trim() || null;
+  const publishedDateStr = pageIntro?.querySelector(".page-published-date")?.innerText.trim() || "";
   meta['publishedDate'] = convertToISO(publishedDateStr) || '';
   meta['publishedLocation'] = pageIntro?.querySelector(".page-published-location")?.innerText.trim() || '';
 }
