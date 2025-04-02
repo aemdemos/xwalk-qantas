@@ -61,7 +61,14 @@ async function handleSubmit(form) {
       },
     });
     if (response.ok) {
-      if (form.dataset.confirmation) {
+      // Find the success message div
+      const successMessage = form.closest('.form').querySelector('.success-message');
+      if (successMessage) {
+        // Hide the form and show success message
+        form.style.display = 'none';
+        successMessage.style.display = 'block';
+      } else if (form.dataset.confirmation) {
+        // Fallback to the confirmation page if success message not found
         window.location.href = form.dataset.confirmation;
       }
     } else {
@@ -83,8 +90,21 @@ export default async function decorate(block) {
   const submitLink = links.find((link) => link !== formLink);
   if (!formLink || !submitLink) return;
 
+  // Get the content of the third div for success message
+  const successContent = block.children[2]?.innerHTML || '<p>Thank you for your submission.</p>';
+
   const form = await createForm(formLink, submitLink);
-  block.replaceChildren(form);
+
+  // Create success message div (hidden by default)
+  const successMessage = document.createElement('div');
+  successMessage.className = 'success-message';
+  successMessage.style.display = 'none';
+  successMessage.innerHTML = successContent;
+
+  // Clear block and add form and success message
+  block.innerHTML = '';
+  block.appendChild(form);
+  block.appendChild(successMessage);
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
