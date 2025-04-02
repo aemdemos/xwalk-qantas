@@ -42,7 +42,7 @@ function convertToISO(dateString) {
     return `${year}-${monthNumber}-${day.padStart(2, '0')}T${hours}:${minutes}:00.00`;
 }
 
-// for /media-releases/<page> and /roo-tales/<page>, add the published date and intro to the page metadata 
+// for article, add the published date and intro to the page metadata 
 function addPageIntroAndPublishedMetadata(document, meta, url) {
   const pathname = new URL(url).pathname;
   const pageContent = document.querySelector(".page-content")?.innerText.trim();
@@ -220,15 +220,6 @@ function getMaxColumnCount(table) {
   return maxColumns;
 }
 
-const tableColumnsMap = {
-  1: "table-row",
-  2: "table-2-columns",
-  3: "table-3-columns",
-  4: "table-4-columns",
-  5: "table-5-columns",
-  6: "Table Column 6"
-};
-
 const tableColsMap = {
   1: "table-row",
   2: "table-col-2",
@@ -268,7 +259,6 @@ function getBoldRowsAndCols(table) {
 
 function createTableBlock(table, maxColumnCount, boldRowColClasses) {
   const tableCells = [['Table' + (boldRowColClasses ? ' (no-header, ' + boldRowColClasses + ')' : ' (no-header)')]];
-  //tableCells.push([tableColumnsMap[maxColumnCount]])
 
   table.querySelectorAll("tr").forEach((row) => {
     const cells = [tableColsMap[maxColumnCount]]; // add the modelId as the first cell in the rows
@@ -332,6 +322,12 @@ function addVideos(main) {
 function removeSocial(main) {
   const social = main.querySelector(".social");
   social?.remove();
+}
+
+// this will come from the page metadata
+function removePagePublishedDiv(main) {
+  const pagePublished = main.querySelector(".page-published");
+  pagePublished?.remove();
 }
 
 function removeSidebar(main, url) {
@@ -401,6 +397,7 @@ export default {
 
     removeSocial(main);
     removeSidebar(main, url);
+    removePagePublishedDiv(main);
 
     addCards(main);
     addGalleryImages(main);
