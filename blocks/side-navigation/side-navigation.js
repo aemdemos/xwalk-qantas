@@ -1,3 +1,5 @@
+import { formatDate } from '../../scripts/util.js';
+
 export default async function decorate(block) {
   // Get all the main sections (divs) of the side-navigation
   const sections = block.children;
@@ -13,9 +15,20 @@ export default async function decorate(block) {
     } else {
       sections[1].classList.add('posts');
 
+      // Determine which JSON file to fetch based on URL
+      let jsonEndpoint = '/media-releases.json'; // Default
+      const currentUrl = window.location.href.toLowerCase();
+
+      if (currentUrl.includes('qantas-responds')) {
+        jsonEndpoint = '/qantas-responds.json';
+      } else if (currentUrl.includes('speeches')) {
+        jsonEndpoint = '/speeches.json';
+      } else if (currentUrl.includes('roo-tales')) {
+        jsonEndpoint = '/roo-tales.json';
+      }
       // Fetch top 3 entries from query index
       try {
-        const response = await fetch('/media-releases.json');
+        const response = await fetch(jsonEndpoint);
         const data = await response.json();
 
         // Get the top 3 entries by publishDateTime
@@ -48,7 +61,8 @@ export default async function decorate(block) {
           const dateElement = document.createElement('p');
           dateElement.className = 'date';
           const publishedLocation = entry.publishedlocation ? `${entry.publishedlocation} • ` : '';
-          dateElement.textContent = publishedLocation + (entry.publisheddate || entry.publicationDate || '');
+          const formattedDate = formatDate(entry.publisheddate || entry.publishDateTime);
+          dateElement.textContent = publishedLocation + formattedDate;
 
           // Add elements to entry
           entryElement.appendChild(titleElement);
@@ -62,7 +76,7 @@ export default async function decorate(block) {
         sections[1].innerHTML = '';
         sections[1].appendChild(entriesContainer);
       } catch (error) {
-        console.error('Error fetching query index:', error);
+        console.error(`Error fetching data from ${jsonEndpoint}:`, error);
       }
     }
   }
@@ -70,6 +84,4 @@ export default async function decorate(block) {
   if (sections.length >= 3) {
     sections[2].classList.add('latest');
   }
-
-  // Additional decoration can happen here if needed
 }
