@@ -1,3 +1,5 @@
+import { formatDate } from '../../scripts/util.js';
+
 export default async function decorate(block) {
   // Check if the block is for speeches or qantas-responds by examining its content
   const blockContent = block.textContent.trim().toLowerCase();
@@ -22,7 +24,7 @@ export default async function decorate(block) {
     const offset = (page - 1) * limit;
 
     // Determine which endpoint to use based on content
-    let endpoint = `/media-releases.json?limit=${limit}&offset=${offset}`; // Default endpoint
+    let endpoint = `/media-releases.json?limit=${limit}&offset=${offset}`;
 
     if (blockContent.includes('speeches')) {
       endpoint = `/speeches.json?limit=${limit}&offset=${offset}`;
@@ -77,7 +79,8 @@ export default async function decorate(block) {
         const postMeta = document.createElement('p');
         postMeta.className = 'post-meta';
         const publishedLocation = item.publishedlocation ? `${item.publishedlocation} • ` : '';
-        postMeta.textContent = publishedLocation + (item.publisheddate || item.publicationDate || '');
+        const formattedDate = formatDate(item.publisheddate || item.publicationDate);
+        postMeta.textContent = `${publishedLocation}Posted on ${formattedDate}`;
 
         postText.appendChild(postMeta);
 

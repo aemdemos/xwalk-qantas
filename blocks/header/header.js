@@ -53,7 +53,7 @@ function focusNavSection() {
 
 /**
  * Toggles all nav sections
- * @param {Element} sections The container element
+ * @param {Element} sections The container elemen
  * @param {Boolean} expanded Whether the element should be expanded or collapsed
  */
 function toggleAllNavSections(sections, expanded = false) {
@@ -97,8 +97,8 @@ function setupMobileToolsMenu(nav) {
 
 /**
  * Toggles the entire nav
- * @param {Element} nav The container element
- * @param {Element} navSections The nav sections within the container element
+ * @param {Element} nav The container elemen
+ * @param {Element} navSections The nav sections within the container elemen
  * @param {*} forceExpanded Optional param to force nav expand behavior when not null
  */
 function toggleMenu(nav, navSections, forceExpanded = null) {
@@ -131,7 +131,7 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
   if (!expanded || isDesktop.matches) {
     // collapse menu on escape press
     window.addEventListener('keydown', closeOnEscape);
-    // collapse menu on focus lost
+    // collapse menu on focus los
     nav.addEventListener('focusout', closeOnFocusLost);
   } else {
     window.removeEventListener('keydown', closeOnEscape);
@@ -141,10 +141,10 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
 
 /**
  * loads and decorates the header, mainly the nav
- * @param {Element} block The header block element
+ * @param {Element} block The header block elemen
  */
 export default async function decorate(block) {
-  // load nav as fragment
+  // load nav as fragmen
   const navMeta = getMetadata('nav');
   const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
   const fragment = await loadFragment(navPath);
@@ -180,6 +180,47 @@ export default async function decorate(block) {
         }
       });
     });
+  }
+
+  // Highlight current section in nav-tools based on URL
+  const currentUrl = window.location.href.toLowerCase();
+  const navTools = nav.querySelector('.nav-tools');
+  if (navTools) {
+    const navLinks = navTools.querySelectorAll('.button');
+
+    // Check if URL is just the host (home page)
+    const isHomePage = new URL(currentUrl).pathname === '/' || new URL(currentUrl).pathname === '';
+
+    navLinks.forEach((link) => {
+      const linkText = link.textContent.trim().toLowerCase();
+      // Check if URL contains the link text or matches specific patterns
+      if ((isHomePage && linkText === 'home')
+          || currentUrl.includes(linkText)
+          || (linkText === 'qantas responds' && currentUrl.includes('qantas-responds'))
+          || (linkText === 'media releases' && currentUrl.includes('media-releases'))
+          || (linkText === 'speeches' && currentUrl.includes('speeches'))
+          || (linkText === 'gallery' && currentUrl.includes('gallery'))
+          || (linkText === 'media enquiries' && currentUrl.includes('media-enquiries'))
+          || (linkText === 'roo tales' && currentUrl.includes('roo-tales'))) {
+        link.style.color = '#E3001B'; // Red color
+      }
+    });
+
+    // Add search bar at the end of nav-tools
+    const navToolsContent = navTools.querySelector('.default-content-wrapper');
+    if (navToolsContent) {
+      const searchBar = document.createElement('div');
+      searchBar.className = 'search-container';
+      searchBar.innerHTML = `
+        <form class="search-form" role="search">
+          <input type="search" placeholder="Search..." aria-label="Search">
+          <button type="submit" aria-label="Submit search">
+            <img src="/icons/search.svg" alt="Search" width="16" height="16">
+          </button>
+        </form>
+      `;
+      navToolsContent.appendChild(searchBar);
+    }
   }
 
   // hamburger for mobile

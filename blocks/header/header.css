@@ -43,6 +43,10 @@ nav {
   margin: 0;
 }
 
+.mobile-tools-menu {
+  display: none; /* Hide by default */
+}
+
 .nav-tools .icon-logo-grey-news-room img {
   width: 120px;
   height: auto;
@@ -217,7 +221,7 @@ nav {
   display: block;
   width: 24px;
   height: 2px;
-  background: #333;
+  background: #eb000a;
   position: relative;
   transition: all 0.3s;
 }
@@ -310,6 +314,55 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
 .nav-drop:hover>ul,
 .nav-drop:focus-within>ul {
   display: block;
+}
+
+/* Search bar styles */
+.nav-tools .search-container {
+  margin-left: auto;
+  padding: 0 20px;
+}
+
+.nav-tools .search-form {
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 36px;
+}
+
+.nav-tools .search-form input[type="search"] {
+  padding: 8px 12px;
+  border: 1px solid #E6E6E6;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 180px;
+  height: 36px;
+  transition: all 0.3s ease;
+}
+
+.nav-tools .search-form input[type="search"]:focus {
+  border-color: #E3001B;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(227, 0, 27, 0.2);
+  width: 220px;
+}
+
+.nav-tools .search-form button {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-tools .search-form button:hover {
+  color: #E3001B;
 }
 
 @media (width <=1199px) {
@@ -421,6 +474,7 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
     list-style: none;
     padding: 0;
     margin: 0;
+    background-color: #FAFAFA;
   }
   
   .mobile-tools-menu li {
@@ -439,5 +493,9 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
     text-transform: uppercase;
     display: block;
     padding: 5px 0;
+  }
+
+  .nav-tools .search-container {
+    display: none;
   }
 }
