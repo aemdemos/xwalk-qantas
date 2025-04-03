@@ -138,12 +138,10 @@ export default async function decorate(block) {
         const filteredData = allData.filter((item) => {
           const title = (item.title || '').toLowerCase();
           const description = (item.description || '').toLowerCase();
-          const content = (item.content || '').toLowerCase();
           const location = (item.publishedlocation || '').toLowerCase();
           const query = searchQuery.toLowerCase();
           return title.includes(query)
             || description.includes(query)
-            || content.includes(query)
             || location.includes(query);
         });
 
