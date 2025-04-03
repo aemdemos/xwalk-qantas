@@ -154,6 +154,10 @@
           {
             "name": "Roo-tales",
             "value": "roo-tales"
+          },
+          {
+            "name": "New Galleries",
+            "value": "new-galleries"
           }
         ]
       }
