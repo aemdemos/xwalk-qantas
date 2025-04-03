@@ -371,6 +371,7 @@
         "value": "",
         "label": "Options",
         "valueType": "string",
+        "multi": true,
         "options": [
           {
             "name": "Bold",
