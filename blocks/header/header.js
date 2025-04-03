@@ -212,13 +212,21 @@ export default async function decorate(block) {
       const searchBar = document.createElement('div');
       searchBar.className = 'search-container';
       searchBar.innerHTML = `
-        <form class="search-form" role="search">
-          <input type="search" placeholder="Search..." aria-label="Search">
-          <button type="submit" aria-label="Submit search">
-            <img src="/icons/search.svg" alt="Search" width="16" height="16">
-          </button>
+        <form class="search-form" role="search" action="/search">
+          <input type="search" name="q" aria-label="Search">
+          <button type="submit" aria-label="Submit search" class="search-button"></button>
         </form>
       `;
+
+      // Add event listener to handle search form submission
+      const searchForm = searchBar.querySelector('.search-form');
+      searchForm.addEventListener('submit', (e) => {
+        const searchInput = searchForm.querySelector('input[type="search"]');
+        if (!searchInput.value.trim()) {
+          e.preventDefault();
+        }
+      });
+
       navToolsContent.appendChild(searchBar);
     }
   }
