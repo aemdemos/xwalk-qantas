@@ -39,10 +39,10 @@ function convertToISO(dateString) {
     }
 
     // Construct ISO format
-    return `${year}-${monthNumber}-${day.padStart(2, '0')}T${hours}:${minutes}:00.000Z`;
+    return `${year}-${monthNumber}-${day.padStart(2, '0')}T${hours}:${minutes}:00.00`;
 }
 
-// for /media-releases/<page> and /roo-tales/<page>, add the published date and intro to the page metadata 
+// for article, add the published date and intro to the page metadata 
 function addPageIntroAndPublishedMetadata(document, meta, url) {
   const pathname = new URL(url).pathname;
   const pageContent = document.querySelector(".page-content")?.innerText.trim();
@@ -62,7 +62,7 @@ function addPageIntroAndPublishedMetadata(document, meta, url) {
   }
   meta['intro'] = intro;
   const pageIntro = document.querySelector(".page-intro");
-  const publishedDateStr = pageIntro?.querySelector(".page-published-date")?.innerText.trim() || null;
+  const publishedDateStr = pageIntro?.querySelector(".page-published-date")?.innerText.trim() || "";
   meta['publishedDate'] = convertToISO(publishedDateStr) || '';
   meta['publishedLocation'] = pageIntro?.querySelector(".page-published-location")?.innerText.trim() || '';
 }
@@ -220,13 +220,13 @@ function getMaxColumnCount(table) {
   return maxColumns;
 }
 
-const tableColumnMap = {
+const tableColsMap = {
   1: "table-row",
-  2: "table-2-columns",
-  3: "table-3-columns",
-  4: "table-4-columns",
-  5: "table-5-columns",
-  6: "table-6-columns"
+  2: "table-col-2",
+  3: "table-col-3",
+  4: "table-col-4",
+  5: "table-col-5",
+  6: "table-col-6"
 };
 
 function getBoldRowsAndCols(table) {
@@ -261,7 +261,7 @@ function createTableBlock(table, maxColumnCount, boldRowColClasses) {
   const tableCells = [['Table' + (boldRowColClasses ? ' (no-header, ' + boldRowColClasses + ')' : ' (no-header)')]];
 
   table.querySelectorAll("tr").forEach((row) => {
-    const cells = [tableColumnMap[maxColumnCount]]; // add the modelId as the first cell in the rows
+    const cells = [tableColsMap[maxColumnCount]]; // add the modelId as the first cell in the rows
     const cols = row.querySelectorAll("td, th");
     let thisColCount = cols.length;
     cols.forEach((col) => { // add the data from page table
@@ -279,8 +279,6 @@ function createTableBlock(table, maxColumnCount, boldRowColClasses) {
 function addTables(main) {
   const tables = main.querySelectorAll("table").forEach((table) => {
     const columnCount = getMaxColumnCount(table);
-    const tableId = tableColumnMap[columnCount];
-    let classList = "no-header";
     let boldRowColClasses = getBoldRowsAndCols(table);
     try {
       const blockTable = WebImporter.DOMUtils.createTable(createTableBlock(table, columnCount, boldRowColClasses), document);
@@ -324,6 +322,12 @@ function addVideos(main) {
 function removeSocial(main) {
   const social = main.querySelector(".social");
   social?.remove();
+}
+
+// this will come from the page metadata
+function removePagePublishedDiv(main) {
+  const pagePublished = main.querySelector(".page-published");
+  pagePublished?.remove();
 }
 
 function removeSidebar(main, url) {
@@ -383,7 +387,7 @@ export default {
     ]);
 
     // handle the tables before adding the metadata table
-    //addTables(main);
+    addTables(main);
 
     const meta = WebImporter.Blocks.getMetadata(document);
     setMetadata(meta, document, url);
@@ -393,6 +397,7 @@ export default {
 
     removeSocial(main);
     removeSidebar(main, url);
+    removePagePublishedDiv(main);
 
     addCards(main);
     addGalleryImages(main);

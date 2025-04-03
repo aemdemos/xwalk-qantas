@@ -39,13 +39,13 @@
           "label": "Intro"
         },
         {
-          "component": "text",
+          "component": "date-time",
           "valueType": "string",
           "name": "publishedDate",
           "label": "Published Date"
         },
         {
-          "component": "date-time",
+          "component": "text",
           "valueType": "string",
           "name": "publishedLocation",
           "label": "Published Location"

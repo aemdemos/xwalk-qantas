@@ -219,7 +219,7 @@ export default function decorate(block) {
     if (!sideNavContainer) return;
 
     const articleWrapper = div({ class: 'article-wrapper' });
-    
+
     // Create a wrapper for content divs
     const contentWrapper = div({ class: 'content-wrapper' });
 

@@ -11,7 +11,7 @@
 }
 
 /* News Feed Container */
-main > .section > .article-wrapper > .content-wrapper  {
+main > .section > .article-wrapper > .content-wrapper {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0;

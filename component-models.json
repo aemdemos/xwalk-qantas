@@ -214,6 +214,29 @@
     ]
   },
   {
+    "id": "form",
+    "fields": [
+      {
+        "component": "aem-content",
+        "name": "reference",
+        "label": "Form"
+      },
+      {
+        "component": "text",
+        "name": "action",
+        "label": "Action URL",
+        "valueType": "string"
+      },
+      {
+        "component": "richtext",
+        "name": "success-message",
+        "value": "",
+        "label": "Success Message",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "fragment",
     "fields": [
       {
@@ -290,13 +313,13 @@
         "label": "Intro"
       },
       {
-        "component": "text",
+        "component": "date-time",
         "valueType": "string",
         "name": "publishedDate",
         "label": "Published Date"
       },
       {
-        "component": "date-time",
+        "component": "text",
         "valueType": "string",
         "name": "publishedLocation",
         "label": "Published Location"
@@ -371,17 +394,22 @@
         "value": "",
         "label": "Options",
         "valueType": "string",
+        "multi": true,
         "options": [
           {
-            "name": "Border",
+            "name": "Bold",
             "children": [
               {
-                "name": "Striped",
-                "value": "striped"
+                "name": "Bold Column 1",
+                "value": "bold-col-1"
               },
               {
-                "name": "Bordered",
-                "value": "bordered"
+                "name": "Bold Column 2",
+                "value": "bold-col-2"
+              },
+              {
+                "name": "Bold Row 1",
+                "value": "bold-row-1"
               }
             ]
           },
@@ -395,35 +423,6 @@
             ]
           }
         ]
-      },
-      {
-        "component": "select",
-        "name": "filter",
-        "label": "Columns",
-        "valueType": "string",
-        "value": "table",
-        "options": [
-          {
-            "name": "1 Column",
-            "value": "table"
-          },
-          {
-            "name": "2 Columns",
-            "value": "table-2-columns"
-          },
-          {
-            "name": "3 Columns",
-            "value": "table-3-columns"
-          },
-          {
-            "name": "4 Columns",
-            "value": "table-4-columns"
-          },
-          {
-            "name": "5 Columns",
-            "value": "table-5-columns"
-          }
-        ]
       }
     ]
   },
@@ -435,6 +434,11 @@
         "valueType": "string",
         "name": "column1text",
         "label": "Column1"
+      },
+      {
+        "component": "text",
+        "name": "classes",
+        "label": "Classes"
       }
     ]
   },
@@ -452,6 +456,11 @@
         "valueType": "string",
         "name": "column2text",
         "label": "Column2"
+      },
+      {
+        "component": "text",
+        "name": "classes",
+        "label": "Classes"
       }
     ]
   },
@@ -475,6 +484,11 @@
         "valueType": "string",
         "name": "column3text",
         "label": "Column3"
+      },
+      {
+        "component": "text",
+        "name": "classes",
+        "label": "Classes"
       }
     ]
   },
@@ -504,6 +518,11 @@
         "valueType": "string",
         "name": "column4text",
         "label": "Column4"
+      },
+      {
+        "component": "text",
+        "name": "classes",
+        "label": "Classes"
       }
     ]
   },
@@ -539,6 +558,11 @@
         "valueType": "string",
         "name": "column5text",
         "label": "Column5"
+      },
+      {
+        "component": "text",
+        "name": "classes",
+        "label": "Classes"
       }
     ]
   },
@@ -580,6 +604,11 @@
         "valueType": "string",
         "name": "column6text",
         "label": "Column6"
+      },
+      {
+        "component": "text",
+        "name": "classes",
+        "label": "Classes"
       }
     ]
   },

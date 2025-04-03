@@ -19,7 +19,8 @@
       "news-feed",
       "side-navigation",
       "archives",
-      "gallery-cards"
+      "gallery-cards",
+      "form"
     ]
   },
   {
@@ -54,36 +55,11 @@
   {
     "id": "table",
     "components": [
-      "table-row"
-    ]
-  },
-  {
-    "id": "table-2-columns",
-    "components": [
-      "table-col-2"
-    ]
-  },
-  {
-    "id": "table-3-columns",
-    "components": [
-      "table-col-3"
-    ]
-  },
-  {
-    "id": "table-4-columns",
-    "components": [
-      "table-col-4"
-    ]
-  },
-  {
-    "id": "table-5-columns",
-    "components": [
-      "table-col-5"
-    ]
-  },
-  {
-    "id": "table-6-columns",
-    "components": [
+      "table-col-6",
+      "table-col-2",
+      "table-col-3",
+      "table-col-4",
+      "table-col-5",
       "table-col-6"
     ]
   },
