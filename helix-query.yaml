@@ -143,7 +143,7 @@ indices:
         value: |
           attribute(el, 'content')
       description:
-        select: head > meta[name="intro"]
+        select: head > meta[property="og:description"]
         value: attribute(el, 'content')
       publisheddate:
         select: head > meta[name="publisheddate"]
@@ -152,10 +152,6 @@ indices:
       publishDateTime:
         select: head > meta[name="published-time"]
         value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
-      publishedlocation:
-        select: head > meta[name="publishedlocation"]
-        value: |
-          attribute(el, 'content')
       image:
         select: head > meta[property="og:image"]
         value: |
