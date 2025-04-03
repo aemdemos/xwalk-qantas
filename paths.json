@@ -6,7 +6,8 @@
     "/content/qantasnewsroom.resource/media-releases.json:/media-releases.json",
     "/content/qantasnewsroom.resource/speeches.json:/speeches.json",
     "/content/qantasnewsroom.resource/qantas-responds.json:/qantas-responds.json",
-    "/content/qantasnewsroom/media-enquiries-spreadsheet:/media-enquiries-spreadsheet.json"
+    "/content/qantasnewsroom/media-enquiries-spreadsheet:/media-enquiries-spreadsheet.json",
+    "/content/qantasnewsroom/gallery.json:/gallery.json"
   ],
   "includes": [
     "/content/qantasnewsroom/"
