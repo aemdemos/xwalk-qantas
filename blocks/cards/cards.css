@@ -66,6 +66,32 @@
   text-transform: uppercase;
 }
 
+/* Set black background for the second card body in teaser cards */
+.cards-wrapper>.cards.block.teaser>ul>li>.cards-card-body:nth-of-type(3) {
+  background-color: #000;
+  font-size: 18px;
+  font-weight: 400;
+  min-height: 100px;
+}
+
+.cards-wrapper>.cards.block.teaser>ul>li>.cards-card-body:nth-of-type(2) {
+  font-size: 14px;
+  font-weight: 400;
+  flex: 1; /* Make this element fill the available space */
+  display: flex;
+  flex-direction: row;
+}
+
+/* Add flex container properties to the second card body */
+.cards-wrapper>.cards.block.teaser .cards-card-body:nth-of-type(2) {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; /* This is key for pushing items to edges */
+  align-items: center;
+  width: 95%;
+}
+
+
 .cards-wrapper>.cards.block.banner>ul>li>.cards-card-body {
   display: none;
 }
@@ -127,9 +153,88 @@
   font-weight: 400;
   line-height: 16px;
 }
+
+/* Styling for new-galleries with 2 cards per row */
+.cards-wrapper > .cards.block.new-galleries > ul.gallery-grid-two-per-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  width: 66%;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.cards-wrapper > .cards.block.new-galleries > ul.gallery-grid-two-per-row > li {
+  flex: 0 1 calc(50% - 15px); /* Two cards per row with gap consideration */
+  margin-bottom: 20px;
+  position: relative; /* For positioning child elements */
+}
+
+/* Image container positioning for overlay */
+.cards-wrapper > .cards.block.new-galleries .cards-card-image {
+  position: relative;
+  width: 100%;
+  height: 216px; /* Set a fixed height */
+  overflow: hidden; /* Prevent image overflow */
+}
+
+/* Control image dimensions and position */
+.cards-wrapper > .cards.block.new-galleries .cards-card-image img {
+  width: 100%;
+  height: 216px;
+  object-fit: cover;
+  object-position: center; /* Center the image */
+}
+
+/* Overlay styling */
+.cards-wrapper > .cards.block.new-galleries .cards-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.5) 60%, transparent 100%);
+  z-index: 1;
+}
+
+/* Card body inside overlay */
+.cards-wrapper > .cards.block.new-galleries .overlay-text {
+  color: white;
+  background-color: transparent !important;
+  padding: 0 10px 10px 20px;
+  text-transform: none;
+}
+
+/* Link styling */
+.cards-wrapper > .cards.block.new-galleries .overlay-text a {
+  color: white;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+/* Metadata styling */
+.cards-wrapper > .cards.block.new-galleries .overlay-text .card-metadata {
+  display: flex;
+  gap: 15px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+.cards-wrapper > .cards.block.new-galleries .overlay-text .card-metadata p {
+  margin: 0;
+}
+
+/* Ensure they're 50% width on medium screens too */
 @media (width <= 768px) {
   .cards-wrapper > .cards.block > ul > li {
     flex: 0 1 calc(50% - 16px);
+  }
+  
+  .cards-wrapper > .cards.block.new-galleries > ul.gallery-grid-two-per-row > li {
+    flex: 0 1 calc(50% - 15px);
   }
 }
 
