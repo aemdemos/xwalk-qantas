@@ -174,15 +174,15 @@ function getTopicCards(topicsModule) {
   return cells;
 }
 
-function addCards(main, url) {
+function addCards(main) {
   const galleriesModule = main.querySelector(".galleries-module");
   if (galleriesModule) {
     let cells;
     const galleries = galleriesModule.querySelectorAll(".gallery");
-    if (url.includes('/gallery-category/')) {
+    if (galleries && galleries.length > 0) {
       cells = getGalleyCategoryCards(galleries);
       main.querySelector(".pagination")?.remove(); // remove the pagination text
-    } else if (url) {
+    } else {
       cells = getGalleryCards(main);
     }
     const table = WebImporter.DOMUtils.createTable(cells, document);
@@ -403,10 +403,10 @@ export default {
     main.append(mdb);
 
     removeSocial(main);
-    removeSidebar(main, url);
+    removeSidebar(main);
     removePagePublishedDiv(main);
 
-    addCards(main);
+    addCards(main, url);
     addGalleryImages(main);
     handleLinkImages(main);
     addVideos(main);
