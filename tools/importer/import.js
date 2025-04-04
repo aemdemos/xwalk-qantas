@@ -206,7 +206,7 @@ function addGalleryImages(main) {
       const table = WebImporter.DOMUtils.createTable(cells, document);
       fullWidthContainer.replaceWith(table);
     } else { // eg. https://www.qantasnewsroom.com.au/gallery/qantas-crew-mini-uniforms/
-      const cells = [['Cards']];
+      const cells = [['Cards (banner)']];
       main.querySelectorAll("img").forEach((img) => {
         cells.push([img]);
       });
