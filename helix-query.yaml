@@ -156,3 +156,7 @@ indices:
         select: head > meta[property="og:image"]
         value: |
           match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      imagecount:
+        select: head > meta[name="imagecount"]
+        value: |
+          attribute(el, 'content')
