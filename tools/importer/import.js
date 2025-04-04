@@ -133,7 +133,7 @@ function getGalleyCategoryCards(galleries) {
     const text = gallery.querySelector(".gallery-text");
     const title = text.querySelector(".title").innerText;
     const description = text.querySelector(".gallery-description")?.innerText;
-    const formattedText = description ? `<h3>${title}</h3>\n<p>${description}</p>` : `<h3>${title}</h3>`;
+    const formattedText = description ? `<p>${title}</p>\n<p>${description}</p>` : `<p>${title}</p>`;
     const cell = [img, formattedText, href];
     cells.push(cell);
   });
@@ -403,10 +403,10 @@ export default {
     main.append(mdb);
 
     removeSocial(main);
-    removeSidebar(main);
+    removeSidebar(main, url);
     removePagePublishedDiv(main);
 
-    addCards(main, url);
+    addCards(main);
     addGalleryImages(main);
     handleLinkImages(main);
     addVideos(main);
