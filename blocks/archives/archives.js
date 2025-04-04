@@ -1,6 +1,31 @@
 export default async function decorate(block) {
   function parsePublishedDate(dateString) {
     if (!dateString) return null;
+
+    // Try to parse ISO date format (2022-12-10T6:07:00.00)
+    if (dateString.includes('T')) {
+      // Normalize date with single-digit hours
+      let normalizedDateString = dateString;
+      if (dateString.match(/T\d:/)) {
+        const tPos = dateString.indexOf('T');
+        if (tPos > 0) {
+          normalizedDateString = `${dateString.substring(0, tPos + 1)}0${dateString.substring(tPos + 1)}`;
+        }
+      }
+
+      const date = new Date(normalizedDateString);
+      if (!Number.isNaN(date.getTime())) {
+        const monthNames = [
+          'January', 'February', 'March', 'April', 'May', 'June',
+          'July', 'August', 'September', 'October', 'November', 'December',
+        ];
+        const month = monthNames[date.getMonth()];
+        const year = date.getFullYear().toString();
+        return { month, year };
+      }
+    }
+
+    // Fallback to the original regex for "Published on" forma
     const regex = /Published on \d+(?:st|nd|rd|th) (\w+) (\d{4})/;
     const match = dateString.match(regex);
     if (match) {
@@ -8,6 +33,7 @@ export default async function decorate(block) {
       const year = match[2]; // 2025
       return { month, year };
     }
+
     return null;
   }
 
@@ -104,7 +130,7 @@ export default async function decorate(block) {
       details.appendChild(summary);
       details.appendChild(body);
       archiveItemsWrapper.appendChild(details);
-      archiveItems.push(details); // Add this line to store the details element
+      archiveItems.push(details); // Add this line to store the details elemen
     });
 
     // Store the last div's content before clearing
@@ -118,7 +144,7 @@ export default async function decorate(block) {
     // Add the months section to the end of the block
     block.appendChild(monthsSection);
 
-    // Create and add the prev-archives div using the saved content
+    // Create and add the prev-archives div using the saved conten
     const prevArchivesDiv = document.createElement('div');
     prevArchivesDiv.className = 'prev-archives';
     const paragraph = document.createElement('p');
