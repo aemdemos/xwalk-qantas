@@ -3,6 +3,85 @@ import { moveInstrumentation } from '../../scripts/scripts.js';
 import { formatDate, formatDateNoTime } from '../../scripts/util.js';
 
 export default async function decorate(block) {
+  // Helper function to optimize images
+  function optimizeImages(container) {
+    container.querySelectorAll('picture > img:not([data-optimized])').forEach((img) => {
+      const optimizedPic = createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]);
+      moveInstrumentation(img, optimizedPic.querySelector('img'));
+      img.closest('picture').replaceWith(optimizedPic);
+      optimizedPic.querySelector('img').dataset.optimized = 'true';
+    });
+  }
+
+  // Helper function to create a gallery card
+  function createGalleryCard(gallery) {
+    const li = document.createElement('li');
+
+    // Create image container
+    if (gallery.image) {
+      const imageDiv = document.createElement('div');
+      imageDiv.className = 'cards-card-image';
+
+      const picture = document.createElement('picture');
+      const img = document.createElement('img');
+      img.src = gallery.image;
+      img.alt = gallery.title || 'Gallery';
+      img.loading = 'lazy';
+
+      picture.appendChild(img);
+
+      // Add link if path exists
+      if (gallery.path) {
+        const wrapper = document.createElement('a');
+        wrapper.href = gallery.path;
+        wrapper.appendChild(picture);
+        imageDiv.appendChild(wrapper);
+      } else {
+        imageDiv.appendChild(picture);
+      }
+
+      // Create overlay container for text that will appear on the image
+      const overlayDiv = document.createElement('div');
+      overlayDiv.className = 'cards-overlay';
+
+      // Create body for title inside the overlay
+      if (gallery.title) {
+        const bodyDiv = document.createElement('div');
+        bodyDiv.className = 'cards-card-body overlay-text';
+
+        const titleH3 = document.createElement('h3');
+
+        // Add title with link if path exists
+        if (gallery.path) {
+          const titleLink = document.createElement('a');
+          titleLink.href = gallery.path;
+          titleLink.textContent = gallery.title;
+          titleH3.appendChild(titleLink);
+        } else {
+          titleH3.textContent = gallery.title;
+        }
+
+        bodyDiv.appendChild(titleH3);
+
+        // Add metadata inline with the title in the overlay
+        // Create metadata container for imagecount and publisheddate
+        const metadataDiv = document.createElement('div');
+        metadataDiv.className = 'card-metadata';
+
+        if (metadataDiv.children.length > 0) {
+          bodyDiv.appendChild(metadataDiv);
+        }
+
+        overlayDiv.appendChild(bodyDiv);
+      }
+
+      imageDiv.appendChild(overlayDiv);
+      li.appendChild(imageDiv);
+    }
+
+    return li;
+  }
+
   // Function to create roo-tales cards
   function createCards(startIndex, count, data, ul, loadMoreContainer) {
     const endIndex = Math.min(startIndex + count, data.data.length);
@@ -95,12 +174,7 @@ export default async function decorate(block) {
     ul.appendChild(fragment);
 
     // Optimize newly added images
-    ul.querySelectorAll('picture > img:not([data-optimized])').forEach((img) => {
-      const optimizedPic = createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]);
-      moveInstrumentation(img, optimizedPic.querySelector('img'));
-      img.closest('picture').replaceWith(optimizedPic);
-      optimizedPic.querySelector('img').dataset.optimized = 'true';
-    });
+    optimizeImages(ul);
 
     // Update current index
     const newIndex = endIndex;
@@ -111,6 +185,49 @@ export default async function decorate(block) {
     }
 
     return newIndex;
+  }
+
+  // Handle new-galleries - show latest 4 galleries
+  async function createNewGalleriesCards() {
+    try {
+      const response = await fetch('/gallery.json');
+      const galleryData = await response.json();
+
+      if (!galleryData || !galleryData.data || !Array.isArray(galleryData.data)) {
+        throw new Error('Invalid gallery data format');
+      }
+
+      // Sort by publisheddate (newest first)
+      const sortedData = [...galleryData.data].sort((a, b) => {
+        const dateA = a.publisheddate ? new Date(a.publisheddate).getTime() : 0;
+        const dateB = b.publisheddate ? new Date(b.publisheddate).getTime() : 0;
+        return dateB - dateA; // Descending order (newest first)
+      });
+
+      // Take only the first 4 entries
+      const latestGalleries = sortedData.slice(0, 4);
+
+      // Create UL element for the cards
+      const ul = document.createElement('ul');
+      ul.className = 'gallery-grid-two-per-row'; // Add a class for specific styling
+
+      // Create cards for each of the latest galleries
+      latestGalleries.forEach((gallery) => {
+        const card = createGalleryCard(gallery);
+        ul.appendChild(card);
+      });
+
+      // Optimize images
+      optimizeImages(ul);
+
+      return ul;
+    } catch (error) {
+      const errorMessage = document.createElement('p');
+      errorMessage.textContent = 'Error loading galleries.';
+      const container = document.createElement('div');
+      container.appendChild(errorMessage);
+      return container;
+    }
   }
 
   if (block.classList.contains('roo-tales')) {
@@ -160,6 +277,13 @@ export default async function decorate(block) {
     } catch (error) {
       block.innerHTML = '<p>Error loading content.</p>';
     }
+  } else if (block.classList.contains('new-galleries')) {
+    // Clear existing conten
+    block.textContent = '';
+
+    // Create and add new galleries cards
+    const cardsContainer = await createNewGalleriesCards();
+    block.appendChild(cardsContainer);
   } else if (block.classList.contains('teaser')) {
     // Handle teaser cards
     /* change to ul, li */
@@ -234,16 +358,15 @@ export default async function decorate(block) {
               || (cardPath.startsWith('/') && cardPath.substring(1) === item.path));
             if (!matchingGallery) return;
 
-            // Create metadata container for imagecount and publisheddate
-            const metadataDiv = document.createElement('div');
-            metadataDiv.className = 'card-metadata';
+            const metadataBody = document.createElement('div');
+            metadataBody.className = 'cards-card-body';
 
             // Add imagecount if available
             if (matchingGallery.imagecount) {
               const imageCountP = document.createElement('p');
               imageCountP.className = 'card-image-count';
               imageCountP.textContent = `${matchingGallery.imagecount}`;
-              metadataDiv.appendChild(imageCountP);
+              metadataBody.appendChild(imageCountP);
             }
 
             // Add published date if available
@@ -251,16 +374,11 @@ export default async function decorate(block) {
               const dateP = document.createElement('p');
               dateP.className = 'card-publisheddate';
               dateP.textContent = formatDateNoTime(matchingGallery.publisheddate);
-              metadataDiv.appendChild(dateP);
+              metadataBody.appendChild(dateP);
             }
 
             // Create a new card body for metadata instead of adding to the existing one
-            if (metadataDiv.children.length > 0) {
-              const metadataBody = document.createElement('div');
-              metadataBody.className = 'cards-card-body';
-              metadataBody.appendChild(metadataDiv);
-
-              // Insert the new metadata body before the existing card body
+            if (metadataBody.children.length > 0) {
               card.insertBefore(metadataBody, cardBody);
             }
           });
