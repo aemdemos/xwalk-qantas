@@ -280,11 +280,21 @@
     "id": "news-feed",
     "fields": [
       {
-        "component": "text",
-        "name": "variation",
+        "component": "select",
+        "name": "classes",
         "value": "",
         "label": "Variation",
-        "valueType": "string"
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Category Pages",
+            "value": "category"
+          },
+          {
+            "name": "Search Results",
+            "value": "search"
+          }
+        ]
       },
       {
         "component": "richtext",
