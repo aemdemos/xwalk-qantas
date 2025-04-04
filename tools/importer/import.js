@@ -127,7 +127,8 @@ function setMetadata(meta, document, url) {
 function getGalleyCategoryCards(galleries) {
   const cells = [['Cards (teaser)']];
   galleries.forEach((gallery) => {
-    const href = gallery.querySelector(".gallery-image")?.getAttribute("href");
+    let href = gallery.querySelector(".gallery-image")?.getAttribute("href") || "";
+    href = href.replace(/\/$/, ''); // remove trailing slash (if any)
     const img = gallery.querySelector(".gallery-image img");
     const text = gallery.querySelector(".gallery-text");
     const title = text.querySelector(".title").innerText;
