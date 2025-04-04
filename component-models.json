@@ -214,6 +214,29 @@
     ]
   },
   {
+    "id": "form",
+    "fields": [
+      {
+        "component": "aem-content",
+        "name": "reference",
+        "label": "Form"
+      },
+      {
+        "component": "text",
+        "name": "action",
+        "label": "Action URL",
+        "valueType": "string"
+      },
+      {
+        "component": "richtext",
+        "name": "success-message",
+        "value": "",
+        "label": "Success Message",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "fragment",
     "fields": [
       {

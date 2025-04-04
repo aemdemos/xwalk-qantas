@@ -131,3 +131,32 @@ indices:
         select: head > meta[property="og:image"]
         value: |
           match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+  gallery:
+    include:
+      - '/gallery/*'
+    exclude:
+      - '/**.json'
+    target: /gallery.json
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: |
+          attribute(el, 'content')
+      description:
+        select: head > meta[property="og:description"]
+        value: attribute(el, 'content')
+      publisheddate:
+        select: head > meta[name="publisheddate"]
+        value: |
+          attribute(el, 'content')
+      publishDateTime:
+        select: head > meta[name="published-time"]
+        value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
+      image:
+        select: head > meta[property="og:image"]
+        value: |
+          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      imagecount:
+        select: head > meta[name="imagecount"]
+        value: |
+          attribute(el, 'content')
