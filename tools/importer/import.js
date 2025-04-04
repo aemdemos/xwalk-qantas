@@ -14,8 +14,8 @@
 
 // Convert text date in the format 'Published on 28th October 2015 at 9:17' to '2015-10-28T9:17:00.000Z' format
 function convertToISO(dateString) {
-    // Extracting the date and time using regex
-    const regex = /(Published|Posted) on (\d{1,2})(?:st|nd|rd|th)? (\w+) (\d{4}) at (\d{1,2}):(\d{2})/;;
+    // Extracting the date and time (optional) using regex
+    const regex = /(Published|Posted) on (\d{1,2})(?:st|nd|rd|th)? (\w+) (\d{4})(?: at (\d{1,2}):(\d{2}))?/;
     const match = dateString.match(regex);
 
     if (!match) {
@@ -38,8 +38,12 @@ function convertToISO(dateString) {
         return null;
     }
 
+    // Use default time if missing
+    const formattedHours = hours ? hours.padStart(2, '0') : "00";
+    const formattedMinutes = minutes ? minutes.padStart(2, '0') : "00";
+
     // Construct ISO format
-    return `${year}-${monthNumber}-${day.padStart(2, '0')}T${hours}:${minutes}:00.00`;
+    return `${year}-${monthNumber}-${day.padStart(2, '0')}T${formattedHours}:${formattedMinutes}:00.00`;
 }
 
 // for article, add the published date and intro to the page metadata 
@@ -60,11 +64,13 @@ function addPageIntroAndPublishedMetadata(document, meta, url) {
   } else {
     intro = pageContent; // If it's less than 300 characters, keep it as is
   }
-  meta['intro'] = intro;
+  meta['intro'] = intro || "";
   const pageIntro = document.querySelector(".page-intro");
-  const publishedDateStr = pageIntro?.querySelector(".page-published-date")?.innerText.trim() || "";
-  meta['publishedDate'] = convertToISO(publishedDateStr) || '';
-  meta['publishedLocation'] = pageIntro?.querySelector(".page-published-location")?.innerText.trim() || '';
+  if (pageIntro) {
+    const publishedDateStr = pageIntro.querySelector(".page-published-date")?.innerText.trim() || "";
+    meta['publishedDate'] = convertToISO(publishedDateStr) || '';
+    meta['publishedLocation'] = pageIntro.querySelector(".page-published-location")?.innerText.trim() || '';
+  }
 }
 
 function addSidebarInfoToMetadata(document, meta) {
@@ -72,8 +78,8 @@ function addSidebarInfoToMetadata(document, meta) {
   // add the sidebar metadata for gallery-template-default page
   if (sidebarIntro && document.querySelector(".gallery-template-default")) {
     const paragraphs = sidebarIntro.querySelectorAll("p");
-    meta['imageCount'] = paragraphs[0]?.textContent.trim();
-    meta['publishedDate'] = paragraphs[1]?.textContent.trim();
+    meta['imageCount'] = paragraphs[0]?.textContent.trim() || '';
+    meta['publishedDate'] = convertToISO(paragraphs[1]?.textContent.trim()) || '';
   }
 
   // add the topics (if present) for /media-releases/<articles>
@@ -118,19 +124,17 @@ function setMetadata(meta, document, url) {
   addSidebarInfoToMetadata(document, meta);
 }
 
-// Galley-Category NOT TO BE IMPORTED
 function getGalleyCategoryCards(galleries) {
-  //const cells = [['GalleryCategoryCards']];
-  const cells = [['Cards']];
+  const cells = [['Cards (teaser)']];
   galleries.forEach((gallery) => {
-    const href = gallery.querySelector(".gallery-image")?.getAttribute("href");
+    let href = gallery.querySelector(".gallery-image")?.getAttribute("href") || "";
+    href = href.replace(/\/$/, ''); // remove trailing slash (if any)
     const img = gallery.querySelector(".gallery-image img");
-    const meta = gallery.querySelector(".gallery-meta").innerText;
     const text = gallery.querySelector(".gallery-text");
     const title = text.querySelector(".title").innerText;
     const description = text.querySelector(".gallery-description")?.innerText;
     const formattedText = description ? `<h3>${title}</h3>\n<p>${description}</p>` : `<h3>${title}</h3>`;
-    const cell = [img, meta, formattedText, href];
+    const cell = [img, formattedText, href];
     cells.push(cell);
   });
   return cells;
@@ -176,7 +180,8 @@ function addCards(main) {
     let cells;
     const galleries = galleriesModule.querySelectorAll(".gallery");
     if (galleries && galleries.length > 0) {
-      // cells = getGalleyCategoryCards(galleries); NOT TO BE IMPORTED
+      cells = getGalleyCategoryCards(galleries);
+      main.querySelector(".pagination")?.remove(); // remove the pagination text
     } else {
       cells = getGalleryCards(main);
     }
@@ -193,20 +198,21 @@ function addCards(main) {
 };
 
 function addGalleryImages(main) {
-  const gallery = main.querySelector(".gallery");
-  if (gallery) {
-    const cells = innerGalleryCards(main);
-    const table = WebImporter.DOMUtils.createTable(cells, document);
-    gallery.replaceWith(table);
-  } else if (main.querySelector(".full-width")) {
-    const cells = [['Cards']];
-
-    main.querySelectorAll("img").forEach((item) => {
-      cells.push([item]);
-    });
-    const table = WebImporter.DOMUtils.createTable(cells, document);
-    main.querySelector(".full-width").replaceWith(table);
-
+  const fullWidthContainer = main.querySelector(".full-width");
+  if (fullWidthContainer) {
+    const gallery = main.querySelector(".gallery"); // eg. https://www.qantasnewsroom.com.au/gallery/singapore-first-lounge-concepts/
+    if (gallery) {
+      const cells = innerGalleryCards(main);
+      const table = WebImporter.DOMUtils.createTable(cells, document);
+      fullWidthContainer.replaceWith(table);
+    } else { // eg. https://www.qantasnewsroom.com.au/gallery/qantas-crew-mini-uniforms/
+      const cells = [['Cards']];
+      main.querySelectorAll("img").forEach((img) => {
+        cells.push([img]);
+      });
+      const table = WebImporter.DOMUtils.createTable(cells, document);
+      fullWidthContainer.replaceWith(table);
+    }
   }
 }
 
@@ -221,12 +227,13 @@ function getMaxColumnCount(table) {
 }
 
 const tableColsMap = {
-  1: "table-row",
+  1: "table-col-1",
   2: "table-col-2",
   3: "table-col-3",
   4: "table-col-4",
   5: "table-col-5",
-  6: "table-col-6"
+  6: "table-col-6",
+  7: "table-col-7"
 };
 
 function getBoldRowsAndCols(table) {
@@ -396,10 +403,10 @@ export default {
     main.append(mdb);
 
     removeSocial(main);
-    removeSidebar(main, url);
+    removeSidebar(main);
     removePagePublishedDiv(main);
 
-    addCards(main);
+    addCards(main, url);
     addGalleryImages(main);
     handleLinkImages(main);
     addVideos(main);
