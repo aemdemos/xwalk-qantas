@@ -14,17 +14,18 @@ export function getOrdinalSuffix(day) {
 }
 
 /**
- * Format date from ISO string to readable format "9th March 2025 at 9:00"
+ * Internal helper function for date formatting
  * @param {string} dateString - The date string to forma
+ * @param {boolean} includeTime - Whether to include time in the outpu
  * @return {string} - Formatted date string
  */
-export function formatDate(dateString) {
+function formatDateInternal(dateString, includeTime) {
   if (!dateString) return '';
 
   // Normalize the date string format if needed
   // Handle case where hour doesn't have leading zero (8:30 instead of 08:30)
   let normalizedDateString = dateString;
-  if (dateString.match(/T\d:\d/)) {
+  if (dateString.match(/T\d:/)) {
     // Find position of T and insert a 0 after it if needed
     const tPos = dateString.indexOf('T');
     if (tPos > 0) {
@@ -52,11 +53,34 @@ export function formatDate(dateString) {
   // Get year
   const year = date.getFullYear();
 
-  // Get time
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+  // Create the basic formatted date string
+  let formatted = `${day}${ordinalSuffix} ${month} ${year}`;
 
-  // Create the formatted date string
-  return `${day}${ordinalSuffix} ${month} ${year} at ${hours}:${formattedMinutes}`;
+  // Add time if requested
+  if (includeTime) {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    formatted += ` at ${hours}:${formattedMinutes}`;
+  }
+
+  return formatted;
+}
+
+/**
+ * Format date from ISO string to readable format "9th March 2025 at 9:00"
+ * @param {string} dateString - The date string to forma
+ * @return {string} - Formatted date string
+ */
+export function formatDate(dateString) {
+  return formatDateInternal(dateString, true);
+}
+
+/**
+ * Format date from ISO string to readable format without time "9th March 2025"
+ * @param {string} dateString - The date string to forma
+ * @return {string} - Formatted date string without time
+ */
+export function formatDateNoTime(dateString) {
+  return formatDateInternal(dateString, false);
 }
