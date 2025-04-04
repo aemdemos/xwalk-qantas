@@ -255,14 +255,14 @@
         },
         {
           "title": "Table Column 1",
-          "id": "table-row",
+          "id": "table-col-1",
           "plugins": {
             "xwalk": {
               "page": {
                 "resourceType": "core/franklin/components/block/v1/block/item",
                 "template": {
                   "name": "Table Column 1",
-                  "model": "table-row"
+                  "model": "table-col-1"
                 }
               }
             }
@@ -338,6 +338,21 @@
                 "template": {
                   "name": "Table Column 6",
                   "model": "table-col-6"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Table Column 7",
+          "id": "table-col-7",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "Table Column 7",
+                  "model": "table-col-7"
                 }
               }
             }
