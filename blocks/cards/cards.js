@@ -365,7 +365,7 @@ export default async function decorate(block) {
             if (matchingGallery.publisheddate) {
               const dateP = document.createElement('p');
               dateP.className = 'card-publisheddate';
-              dateP.textContent = 'POSTED ON' + formatDateNoTime(matchingGallery.publisheddate);
+              dateP.textContent = 'POSTED ON ' + formatDateNoTime(matchingGallery.publisheddate);
               metadataBody.appendChild(dateP);
             }
 
