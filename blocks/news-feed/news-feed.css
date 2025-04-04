@@ -197,3 +197,42 @@ main > .section > .news-feed-wrapper {
     padding: 3px 8px;
   }
 }
+
+/* Search results styles */
+.search-results-header {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.search-results-header h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.search-results-header p {
+  color: #666;
+  font-size: 16px;
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  margin: 20px 0;
+}
+
+.no-results h3 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.no-results p {
+  color: #666;
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
