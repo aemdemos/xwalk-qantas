@@ -174,15 +174,15 @@ function getTopicCards(topicsModule) {
   return cells;
 }
 
-function addCards(main) {
+function addCards(main, url) {
   const galleriesModule = main.querySelector(".galleries-module");
   if (galleriesModule) {
     let cells;
     const galleries = galleriesModule.querySelectorAll(".gallery");
-    if (galleries && galleries.length > 0) {
+    if (url.includes('/gallery-category/')) {
       cells = getGalleyCategoryCards(galleries);
       main.querySelector(".pagination")?.remove(); // remove the pagination text
-    } else {
+    } else if (url) {
       cells = getGalleryCards(main);
     }
     const table = WebImporter.DOMUtils.createTable(cells, document);
@@ -198,20 +198,21 @@ function addCards(main) {
 };
 
 function addGalleryImages(main) {
-  const gallery = main.querySelector(".gallery");
-  if (gallery) {
-    const cells = innerGalleryCards(main);
-    const table = WebImporter.DOMUtils.createTable(cells, document);
-    gallery.replaceWith(table);
-  } else if (main.querySelector(".full-width")) {
-    const cells = [['Cards']];
-
-    main.querySelectorAll("img").forEach((item) => {
-      cells.push([item]);
-    });
-    const table = WebImporter.DOMUtils.createTable(cells, document);
-    main.querySelector(".full-width").replaceWith(table);
-
+  const fullWidthContainer = main.querySelector(".full-width");
+  if (fullWidthContainer) {
+    const gallery = main.querySelector(".gallery"); // eg. https://www.qantasnewsroom.com.au/gallery/singapore-first-lounge-concepts/
+    if (gallery) {
+      const cells = innerGalleryCards(main);
+      const table = WebImporter.DOMUtils.createTable(cells, document);
+      fullWidthContainer.replaceWith(table);
+    } else { // eg. https://www.qantasnewsroom.com.au/gallery/qantas-crew-mini-uniforms/
+      const cells = [['Cards']];
+      main.querySelectorAll("img").forEach((img) => {
+        cells.push([img]);
+      });
+      const table = WebImporter.DOMUtils.createTable(cells, document);
+      fullWidthContainer.replaceWith(table);
+    }
   }
 }
 
