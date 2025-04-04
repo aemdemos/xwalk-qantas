@@ -361,20 +361,20 @@ export default async function decorate(block) {
             const metadataBody = document.createElement('div');
             metadataBody.className = 'cards-card-body';
 
+            // Add published date if available
+            if (matchingGallery.publisheddate) {
+              const dateP = document.createElement('p');
+              dateP.className = 'card-publisheddate';
+              dateP.textContent = 'POSTED ON ' + formatDateNoTime(matchingGallery.publisheddate);
+              metadataBody.appendChild(dateP);
+            }
+
             // Add imagecount if available
             if (matchingGallery.imagecount) {
               const imageCountP = document.createElement('p');
               imageCountP.className = 'card-image-count';
               imageCountP.textContent = `${matchingGallery.imagecount}`;
               metadataBody.appendChild(imageCountP);
-            }
-
-            // Add published date if available
-            if (matchingGallery.publisheddate) {
-              const dateP = document.createElement('p');
-              dateP.className = 'card-publisheddate';
-              dateP.textContent = formatDateNoTime(matchingGallery.publisheddate);
-              metadataBody.appendChild(dateP);
             }
 
             // Create a new card body for metadata instead of adding to the existing one
