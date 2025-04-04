@@ -33,16 +33,22 @@ main > .section > .article-wrapper > .content-wrapper .social {
 }
 
 /* Social Widget Containers */
-.social .fb-like,
+.social .facebook-container,
 .social .twitter-container {
+  display: flex;
+  align-items: center;
   min-height: 20px;
   min-width: 90px;
-  display: inline-block;
-  vertical-align: middle;
 }
 
 .social .twitter-container {
   margin-left: 8px;
+}
+
+.social .fb-share-button,
+.social .twitter-share-button {
+  display: flex !important;
+  align-items: center;
 }
 
 main > .section > .article-wrapper > .content-wrapper .social .print-friendly-version {

@@ -119,15 +119,14 @@ class ArticleManager {
     createSocialElements() {
         const socialContainer = div({ class: 'social' });
         
-        // Facebook Like placeholder
-        const fbContainer = div({ class: 'fb-like' });
-        Object.assign(fbContainer.dataset, {
-            href: window.location.href,
-            layout: 'button_count',
-            action: 'like',
-            size: 'small',
-            share: 'false'
-        });
+        // Facebook Share container
+        const fbContainer = div({ class: 'facebook-container' });
+        const fbButton = document.createElement('div');
+        fbButton.className = 'fb-share-button';
+        fbButton.dataset.href = window.location.href;
+        fbButton.dataset.layout = 'button';
+        fbButton.dataset.size = 'small';
+        fbContainer.appendChild(fbButton);
         
         // Twitter Post placeholder
         const twitterContainer = div({ class: 'twitter-container' });
@@ -149,11 +148,18 @@ class ArticleManager {
     }
 
     loadSocialWidgets() {
-        // Load Facebook SDK
+        // Load Facebook Widget
         if (!document.getElementById('facebook-jssdk')) {
+            window.fbAsyncInit = function() {
+                FB.init({
+                    xfbml: true,
+                    version: 'v18.0'
+                });
+            };
+
             const script = document.createElement('script');
             script.id = 'facebook-jssdk';
-            script.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v17.0';
+            script.src = 'https://connect.facebook.net/en_US/sdk.js';
             script.async = true;
             script.defer = true;
             document.head.appendChild(script);
