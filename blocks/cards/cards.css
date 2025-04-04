@@ -66,6 +66,14 @@
   text-transform: uppercase;
 }
 
+/* Set black background for the second card body in teaser cards */
+.cards-wrapper>.cards.block.teaser>ul>li>.cards-card-body:nth-of-type(3) {
+  background-color: #000;
+  font-size: 18px;
+  font-weight: 400;
+  min-height: 100px;
+}
+
 .cards-wrapper>.cards.block.banner>ul>li>.cards-card-body {
   display: none;
 }

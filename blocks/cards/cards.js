@@ -1,5 +1,6 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 import { moveInstrumentation } from '../../scripts/scripts.js';
+import { formatDate, formatDateNoTime } from '../../scripts/util.js';
 
 export default async function decorate(block) {
   // Function to create roo-tales cards
@@ -62,8 +63,7 @@ export default async function decorate(block) {
       if (tale.publisheddate) {
         const dateP = document.createElement('p');
         dateP.className = 'card-publisheddate';
-        const publishedLocation = tale.publishedlocation ? `${tale.publishedlocation} • ` : '';
-        dateP.textContent = publishedLocation + tale.publisheddate;
+        dateP.textContent = formatDate(tale.publisheddate);
         bodyDiv.appendChild(dateP);
       }
 
@@ -114,7 +114,7 @@ export default async function decorate(block) {
   }
 
   if (block.classList.contains('roo-tales')) {
-    // Clear existing content
+    // Clear existing conten
     block.textContent = '';
 
     try {
@@ -160,6 +160,115 @@ export default async function decorate(block) {
     } catch (error) {
       block.innerHTML = '<p>Error loading content.</p>';
     }
+  } else if (block.classList.contains('teaser')) {
+    // Handle teaser cards
+    /* change to ul, li */
+    const ul = document.createElement('ul');
+    [...block.children].forEach((row) => {
+      const li = document.createElement('li');
+      moveInstrumentation(row, li);
+      while (row.firstElementChild) li.append(row.firstElementChild);
+      [...li.children].forEach((div) => {
+        if (div.children.length === 1) {
+          if (div.querySelector('picture')) {
+            div.className = 'cards-card-image';
+          } else if (div.querySelector('a')) {
+            // If div contains only an anchor tag
+            const link = div.querySelector('a');
+            const imageDiv = li.querySelector('.cards-card-image');
+            if (imageDiv) {
+              // Create a new wrapper anchor
+              const wrapper = document.createElement('a');
+              wrapper.href = link.href;
+              // Wrap the picture element with the anchor
+              const picture = imageDiv.querySelector('picture');
+              if (picture) {
+                imageDiv.removeChild(picture);
+                wrapper.appendChild(picture);
+                imageDiv.appendChild(wrapper);
+              }
+            }
+            // Remove the div containing only the anchor
+            div.remove();
+          } else {
+            div.className = 'cards-card-body';
+          }
+        } else {
+          div.className = 'cards-card-body';
+        }
+      });
+      ul.append(li);
+    });
+    ul.querySelectorAll('picture > img').forEach((img) => {
+      const optimizedPic = createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]);
+      moveInstrumentation(img, optimizedPic.querySelector('img'));
+      img.closest('picture').replaceWith(optimizedPic);
+    });
+
+    // Fetch gallery data and enhance teaser cards
+    fetch('/gallery.json')
+      .then((response) => response.json())
+      .then((galleryData) => {
+        if (galleryData && galleryData.data && Array.isArray(galleryData.data)) {
+          // Process each card to find matches and add data
+          ul.querySelectorAll('li').forEach((card) => {
+            const cardBody = card.querySelector('.cards-card-body');
+            if (!cardBody) return;
+
+            // Find the link in the card to get the path
+            const cardLink = card.querySelector('a');
+            if (!cardLink) return;
+
+            // Get the relative path by creating a URL object and extracting the pathname
+            const href = cardLink.getAttribute('href');
+            if (!href) return;
+
+            // Extract just the pathname as the relative path
+            const cardPath = href.startsWith('http')
+              ? new URL(href).pathname
+              : href;
+
+            // Look for matching gallery item in the fetched data
+            const matchingGallery = galleryData.data.find((item) => item.path === cardPath
+              || (item.path.startsWith('/') && item.path.substring(1) === cardPath)
+              || (cardPath.startsWith('/') && cardPath.substring(1) === item.path));
+            if (!matchingGallery) return;
+
+            // Create metadata container for imagecount and publisheddate
+            const metadataDiv = document.createElement('div');
+            metadataDiv.className = 'card-metadata';
+
+            // Add imagecount if available
+            if (matchingGallery.imagecount) {
+              const imageCountP = document.createElement('p');
+              imageCountP.className = 'card-image-count';
+              imageCountP.textContent = `${matchingGallery.imagecount}`;
+              metadataDiv.appendChild(imageCountP);
+            }
+
+            // Add published date if available
+            if (matchingGallery.publisheddate) {
+              const dateP = document.createElement('p');
+              dateP.className = 'card-publisheddate';
+              dateP.textContent = formatDateNoTime(matchingGallery.publisheddate);
+              metadataDiv.appendChild(dateP);
+            }
+
+            // Create a new card body for metadata instead of adding to the existing one
+            if (metadataDiv.children.length > 0) {
+              const metadataBody = document.createElement('div');
+              metadataBody.className = 'cards-card-body';
+              metadataBody.appendChild(metadataDiv);
+
+              // Insert the new metadata body before the existing card body
+              card.insertBefore(metadataBody, cardBody);
+            }
+          });
+        }
+      });
+
+    block.textContent = '';
+    block.append(ul);
   } else {
     /* change to ul, li */
     const ul = document.createElement('ul');
