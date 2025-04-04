@@ -115,8 +115,14 @@ function setMetadata(meta, document, url) {
   if ('Image' in meta) {
     // somehow the img in the meta has the url appended twice, hence this song and dance
     delete meta['Image'];
-    const img = document.createElement("img"); 
-    img.src = document.querySelector('meta[property="og:image"]')?.getAttribute("content");
+    let img = document.createElement("img");
+    // for the gallery child pages, set the first image as the page image (for main page listing)
+    if (url.includes('/gallery/') && document.querySelector(".full-width")) {
+      img.src = document.querySelector(".full-width img")?.getAttribute('src');
+    } else {
+      // if not present, use the default one
+      img.src = document.querySelector('meta[property="og:image"]')?.getAttribute("content");
+    }
     meta['image'] = img;
   }
 
@@ -152,6 +158,7 @@ function getGalleryCards(main) {
   const cells = [['Cards (thumbnail)']];
   main.querySelectorAll(".galleries-module ul li").forEach((item) => {
     const href = item.querySelector(".gallery-image")?.getAttribute("href");
+    href = href.replace(/\/$/, ''); // remove trailing slash (if any)
     const img = item.querySelector(".gallery-image img");
     const meta = item.querySelector(".gallery-meta").innerText;
     const cell = [img, meta, href];
@@ -168,6 +175,7 @@ function getTopicCards(topicsModule) {
     const overlayImg = topic.querySelector(".topic-overlay img");
     overlayImg.classList.replace("hide-ie", "overylay-image")
     const href = topic.querySelector(".topic-overlay")?.getAttribute("href");
+    href = href.replace(/\/$/, ''); // remove trailing slash (if any)
     const cell = [backgroundImg, overlayImg, href, topicTitle];
     cells.push(cell);
   });
