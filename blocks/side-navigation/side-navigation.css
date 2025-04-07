@@ -1,4 +1,3 @@
-/* Make sure side nav is on the right with matching top spacing */
 .side-navigation-wrapper {
   width: 28%;
   background-color: #f7f7f7;
@@ -172,22 +171,27 @@
   clear: both;
 }
 
+@media (max-width: 1199px) {
+  main>.section>.side-navigation-wrapper {
+    margin-right: 30px;
+  }
+}
+
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .section.news-feed-container.side-navigation-container {
     flex-direction: column;
   }
-  
-  .news-feed-wrapper {
-    width: 100%;
-    margin-right: 0;
-    order: 1;
+
+  main>.section>.side-navigation-wrapper {
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
   }
-  
-  .side-navigation-wrapper {
-    width: 100%;
-    margin-top: 40px;
-    padding: 30px 20px;
-    order: 2;
+}
+
+@media (max-width: 580px) {
+  main>.section>.side-navigation-wrapper {
+    display: none;
   }
 }

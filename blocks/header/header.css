@@ -419,8 +419,14 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
   }
 }
 
+@media (width <=1080px) {
+  .nav-tools .search-form input[type="search"] {
+    width: 120px;
+  }
+}
+
 /* Mobile styles */
-@media (width <=899px) {
+@media (width <=1024px) {
   header {
     height: 73px;
   }
@@ -467,7 +473,6 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
   /* Mobile Tools Menu Styling */
   .mobile-tools-menu {
     display: none; /* Hide by default */
-    margin-top: 30px;
     width: 100%;
     text-align: center;
     border-bottom: 1px solid #E6E6E6;
@@ -476,6 +481,7 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
   /* Only show when navigation is expanded */
   nav[aria-expanded="true"] .mobile-tools-menu {
     display: block;
+    z-index: 1;
   }
   
   .mobile-tools-menu ul {

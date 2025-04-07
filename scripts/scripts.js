@@ -73,18 +73,23 @@ async function decorateTemplates(main) {
     // Get the current pathname
     const currentPath = window.location.pathname;
 
-    // Check if the path contains any pattern AND is not exactly that pattern
-    const isNewsArticle = basePatterns.some((pattern) => (
-      currentPath.includes(pattern)
-        && currentPath !== pattern
-        && currentPath !== pattern.slice(0, -1)
-    ));
+    // Check if we're on the homepage
+    if (currentPath === '/' || currentPath === '') {
+      template = 'feed';
+    } else {
+      // Check if the path contains any pattern AND is not exactly that pattern
+      const isNewsArticle = basePatterns.some((pattern) => (
+        currentPath.includes(pattern)
+          && currentPath !== pattern
+          && currentPath !== pattern.slice(0, -1)
+      ));
 
-    if (isNewsArticle) {
-      template = 'article';
+      if (isNewsArticle) {
+        template = 'article';
+      }
     }
 
-    const templates = ['article'];
+    const templates = ['article', 'feed'];
 
     if (templates.includes(template)) {
       const mod = await import(`../templates/${template}/${template}.js`);
