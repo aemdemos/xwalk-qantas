@@ -1,6 +1,6 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 import { moveInstrumentation } from '../../scripts/scripts.js';
-import { formatDate, formatDateNoTime } from '../../scripts/util.js';
+import { formatDate, formatDateNoTime, sortDataByDate } from '../../scripts/util.js';
 
 export default async function decorate(block) {
   // Helper function to optimize images
@@ -198,11 +198,7 @@ export default async function decorate(block) {
       }
 
       // Sort by publisheddate (newest first)
-      const sortedData = [...galleryData.data].sort((a, b) => {
-        const dateA = a.publisheddate ? new Date(a.publisheddate).getTime() : 0;
-        const dateB = b.publisheddate ? new Date(b.publisheddate).getTime() : 0;
-        return dateB - dateA; // Descending order (newest first)
-      });
+      const sortedData = sortDataByDate(galleryData.data);
 
       // Take only the first 4 entries
       const latestGalleries = sortedData.slice(0, 4);
@@ -240,6 +236,12 @@ export default async function decorate(block) {
       const data = await response.json();
 
       if (data && data.data && Array.isArray(data.data)) {
+        // Sort the data by date (newest first)
+        const sortedData = sortDataByDate(data.data);
+
+        // Update the data object with sorted data
+        const sortedDataObj = { ...data, data: sortedData };
+
         const ul = document.createElement('ul');
         const cardsPerLoad = 9; // Show 9 cards initially
         let currentIndex = 0;
@@ -255,7 +257,7 @@ export default async function decorate(block) {
           currentIndex = createCards(
             currentIndex,
             cardsPerLoad,
-            data,
+            sortedDataObj,
             ul,
             loadMoreContainer,
           );
@@ -264,13 +266,13 @@ export default async function decorate(block) {
         loadMoreContainer.appendChild(loadMoreButton);
 
         // Initial load of first 9 cards
-        currentIndex = createCards(0, cardsPerLoad, data, ul, loadMoreContainer);
+        currentIndex = createCards(0, cardsPerLoad, sortedDataObj, ul, loadMoreContainer);
 
         // Add elements to block
         block.appendChild(ul);
 
         // Only show load more button if there are more cards to load
-        if (currentIndex < data.data.length) {
+        if (currentIndex < sortedData.length) {
           block.appendChild(loadMoreContainer);
         }
       }
@@ -365,7 +367,7 @@ export default async function decorate(block) {
             if (matchingGallery.publisheddate) {
               const dateP = document.createElement('p');
               dateP.className = 'card-publisheddate';
-              dateP.textContent = 'POSTED ON ' + formatDateNoTime(matchingGallery.publisheddate);
+              dateP.textContent = `POSTED ON ${formatDateNoTime(matchingGallery.publisheddate)}`;
               metadataBody.appendChild(dateP);
             }
 
