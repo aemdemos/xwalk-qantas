@@ -91,7 +91,7 @@ function addSidebarInfoToMetadata(document, meta) {
         topics.push(link.className)
       }
     });
-    meta['pageTopics'] = topics;
+    meta['pageTopics'] = topics.join(',');
   }
 }
 
