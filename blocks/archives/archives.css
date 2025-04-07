@@ -178,3 +178,28 @@
   text-align: center;
   display: block !important;
 }
+
+@media (max-width: 1199px) {
+  main>.section>.archives-wrapper {
+    margin-right: 30px;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .section.news-feed-container.archives-container {
+    flex-direction: column;
+  }
+
+  main>.section>.archives-wrapper {
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+  }
+}
+
+@media (max-width: 580px) {
+  main>.section>.archives-wrapper {
+    display: none;
+  }
+}

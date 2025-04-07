@@ -1,0 +1,16 @@
+main>.section>.feed-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+  font-family: 'Europa', sans-serif;
+  margin-right: 2.35765%;
+  width: 67%;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  main>.section>.feed-content {
+    width: unset;
+    margin: 0 30px;
+  }
+}

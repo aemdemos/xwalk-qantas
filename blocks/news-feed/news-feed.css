@@ -109,29 +109,29 @@ main > .section > .news-feed-wrapper {
   object-fit: cover;
 }
 
+@media (max-width: 1199px) {
+  main>.section>.news-feed-wrapper {
+    margin-left: 35px;
+  }
+}
+
 /* Responsive Styles */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+  main>.section>.news-feed-wrapper {
+    width: unset;
+    margin: 0 30px;
+  }
+
   .news-feed {
     float: none;
     width: 100%;
     margin-right: 0;
   }
 
-  .post-item {
-    flex-direction: column-reverse;
-    /* Image on top, text below on mobile */
-    padding: 15px 0;
-  }
-
   .post-text {
     max-width: 100%;
     padding-right: 0;
     margin-top: 20px;
-  }
-
-  .post-image {
-    width: 100%;
-    max-width: 100%;
   }
 }
 
