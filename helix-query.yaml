@@ -34,7 +34,8 @@ indices:
           attribute(el, 'content')
       publishDateTime:
         select: head > meta[name="published-time"]
-        value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
+        value: |
+          attribute(el, 'content')
       publishedlocation:
         select: head > meta[name="publishedlocation"]
         value: |
@@ -59,10 +60,12 @@ indices:
         value: attribute(el, 'content')
       publisheddate:
         select: head > meta[name="publisheddate"]
-        value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
+        value: |
+          attribute(el, 'content')
       publishDateTime:
         select: head > meta[name="published-time"]
-        value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
+        value: |
+          attribute(el, 'content')
       publishedlocation:
         select: head > meta[name="publishedlocation"]
         value: |
@@ -92,7 +95,8 @@ indices:
           attribute(el, 'content')
       publishDateTime:
         select: head > meta[name="published-time"]
-        value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
+        value: |
+          attribute(el, 'content')
       publishedlocation:
         select: head > meta[name="publishedlocation"]
         value: |
@@ -121,7 +125,8 @@ indices:
           attribute(el, 'content')
       publishDateTime:
         select: head > meta[name="published-time"]
-        value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
+        value: |
+          attribute(el, 'content')
       publishedlocation:
         select: head > meta[name="publishedlocation"]
         value: |
@@ -150,7 +155,8 @@ indices:
           attribute(el, 'content')
       publishDateTime:
         select: head > meta[name="published-time"]
-        value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
+        value: |
+          attribute(el, 'content')
       image:
         select: head > meta[property="og:image"]
         value: |
