@@ -45,6 +45,7 @@ function getTopicLink(topic) {
 }
 
 export default async function decorate(block) {
+  const isMainPage = window.location.pathname === '/';
   // Get all the main sections (divs) of the side-navigation
   const sections = block.children;
   const headingSection = sections[0];
@@ -55,6 +56,9 @@ export default async function decorate(block) {
   if (window.location.href.toLowerCase().includes('/roo-tales/')) {
     headingSection.classList.add('heading');
     headingSection.textContent = 'Follow us on twitter';
+  } else if (isMainPage) {
+    // if content is coming from authored page, just add the class for right styling
+    headingSection.classList.add('heading');
   } else {
     headingSection.remove();
   }
@@ -86,75 +90,83 @@ export default async function decorate(block) {
       topicElement.appendChild(linkElement);
       topicsSection.appendChild(topicElement);
     });
+  } else if (isMainPage) {
+    // if content is coming from authored page, just add the class for right styling
+    topicsSection.classList.add('topics');
   } else {
     // If no topics found, remove the topics section
     topicsSection.remove();
   }
 
   // related posts module
-  try {
-    // Fetch top 3 entries from query index
-    const response = await fetch(getQueryIndexJsonEndpoint());
-    const data = await response.json();
+  if (isMainPage) {
+    // if content is coming from authored page, just add the class for right styling
+    relatedPostsSection.classList.add('related-posts');
+  } else {
+    try {
+      // Fetch top 3 entries from query index
+      const response = await fetch(getQueryIndexJsonEndpoint());
+      const data = await response.json();
 
-    // Get the top 3 entries by publishDateTime
-    const sortedEntries = data.data
-    .filter((entry) => entry.publisheddate || entry.publishDateTime)
-    .sort((a, b) => {
-      const dateA = new Date(a.publisheddate || a.publishDateTime);
-      const dateB = new Date(b.publisheddate || b.publishDateTime);
-      return dateB - dateA;
-    })
-    .slice(0, 3); // Take top 3 after sorting
+      // Get the top 3 entries by publishDateTime
+      const sortedEntries = data.data
+      .filter((entry) => entry.publisheddate || entry.publishDateTime)
+      .sort((a, b) => {
+        const dateA = new Date(a.publisheddate || a.publishDateTime);
+        const dateB = new Date(b.publisheddate || b.publishDateTime);
+        return dateB - dateA;
+      })
+      .slice(0, 3); // Take top 3 after sorting
 
-    if (sortedEntries.length > 0) {
-      relatedPostsSection.classList.add('related-posts');
+      if (sortedEntries.length > 0) {
+        relatedPostsSection.classList.add('related-posts');
 
-      // Create a container for the entries
-      const entriesContainer = document.createElement('div');
-      entriesContainer.className = 'recent-entries';
+        // Create a container for the entries
+        const entriesContainer = document.createElement('div');
+        entriesContainer.className = 'recent-entries';
 
-      // Add entries to the container
-      sortedEntries.forEach((entry) => {
-        const entryElement = document.createElement('div');
-        entryElement.className = 'entry';
+        // Add entries to the container
+        sortedEntries.forEach((entry) => {
+          const entryElement = document.createElement('div');
+          entryElement.className = 'entry';
 
-        // Create title with link
-        const titleElement = document.createElement('p');
-        const linkElement = document.createElement('a');
-        linkElement.href = entry.path;
-        linkElement.textContent = entry.title;
-        titleElement.appendChild(linkElement);
+          // Create title with link
+          const titleElement = document.createElement('p');
+          const linkElement = document.createElement('a');
+          linkElement.href = entry.path;
+          linkElement.textContent = entry.title;
+          titleElement.appendChild(linkElement);
 
-        // Create date element
-        const dateElement = document.createElement('p');
-        dateElement.className = 'date';
-        const publishedLocation = entry.publishedlocation ? `${entry.publishedlocation} • ` : '';
-        const formattedDate = formatDate(entry.publisheddate || entry.publishDateTime);
-        dateElement.textContent = publishedLocation + formattedDate;
+          // Create date element
+          const dateElement = document.createElement('p');
+          dateElement.className = 'date';
+          const publishedLocation = entry.publishedlocation ? `${entry.publishedlocation} • ` : '';
+          const formattedDate = formatDate(entry.publisheddate || entry.publishDateTime);
+          dateElement.textContent = publishedLocation + formattedDate;
 
-        // Add elements to entry
-        entryElement.appendChild(titleElement);
-        entryElement.appendChild(dateElement);
+          // Add elements to entry
+          entryElement.appendChild(titleElement);
+          entryElement.appendChild(dateElement);
 
-        // Add entry to container
-        entriesContainer.appendChild(entryElement);
-      });
+          // Add entry to container
+          entriesContainer.appendChild(entryElement);
+        });
 
-      // Clear existing content
-      relatedPostsSection.innerHTML = '';
-      // Add a title to the section
-      const titleElement = document.createElement('div');
-      titleElement.className = 'title';
-      titleElement.textContent = 'Related Posts';
-      relatedPostsSection.appendChild(titleElement);
+        // Clear existing content
+        relatedPostsSection.innerHTML = '';
+        // Add a title to the section
+        const titleElement = document.createElement('div');
+        titleElement.className = 'title';
+        titleElement.textContent = 'Related Posts';
+        relatedPostsSection.appendChild(titleElement);
 
-      relatedPostsSection.appendChild(entriesContainer);
-    } else {
-      // If no entries found, remove the related posts section
-      relatedPostsSection.remove();
+        relatedPostsSection.appendChild(entriesContainer);
+      } else {
+        // If no entries found, remove the related posts section
+        relatedPostsSection.remove();
+      }
+    } catch (error) {
+      console.error(`Error fetching data from ${jsonEndpoint}:`, error);
     }
-  } catch (error) {
-    console.error(`Error fetching data from ${jsonEndpoint}:`, error);
   }
 }
