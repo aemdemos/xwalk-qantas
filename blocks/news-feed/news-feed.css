@@ -96,16 +96,16 @@ main > .section > .news-feed-wrapper {
 
 /* Post Image */
 .post-image {
-  width: 28%;
   width: 130px;
   height: 130px;
   order: 2;
-  /* Ensures image is on the right */
+  position: relative;
+  overflow: hidden;
 }
 
 .post-image img {
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
 }
 
