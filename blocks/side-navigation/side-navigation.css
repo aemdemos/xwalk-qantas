@@ -1,5 +1,5 @@
 .side-navigation-wrapper {
-  width: 28%;
+  width: 29%;
   background-color: #f7f7f7;
   padding: 40px 20px;
   display: inline-block;
@@ -18,36 +18,47 @@
 
 .side-navigation {
   padding-bottom: 30px;
-}
-/* Targeting with the new class names */
-.side-navigation .heading {
-  padding: 35px 0px 0px 0px;
+  padding-right: 14px;
+  padding-left: 14px;
 }
 
-.side-navigation .heading h1 {
-  padding-bottom: 10px;
-  color: #1c1d1e;
+.side-navigation .heading {
+  padding: 35px 0px 0px 0px;
   text-transform: uppercase;
+  font-size: 16px;
   font-weight: 600;
-  font-size: 15px;
+  color: #1c1d1e;
 }
 
 .side-navigation .topics {
   position: relative;
+  margin-top: 40px;
   margin-bottom: 40px;
 }
 
-.side-navigation .posts .entry{
+.side-navigation .related-posts{
+  margin-top: 40px;
+}
+
+.side-navigation .related-posts .title{
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1c1d1e;
+}
+
+.side-navigation .related-posts .entry{
   margin-bottom: 20px;
 }
 
-.side-navigation .posts p {
+.side-navigation .related-posts p {
   font-size: 14px;
   color: #515151;
   margin-top: 4px;;
 }
 
-.side-navigation .posts p a {
+.side-navigation .related-posts p a {
   color: #1c1d1e;
   text-transform: uppercase;
   font-size: 14px;
@@ -70,6 +81,7 @@
   width: 40px;
   height: 40px;
 }
+
 .side-navigation .topics .icon img {
   filter: brightness(0); /* Convert white to black */
 }
@@ -169,6 +181,29 @@
   content: "";
   display: table;
   clear: both;
+}
+
+.topics .topic {
+  margin-bottom: 14px;
+}
+
+.topics .topic a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.topics .topic a img {
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+  filter: brightness(0) saturate(100%);
+}
+
+.topics .topic a div {
+  font-size: 12px;
+  color: #1c1d1e;
+  text-transform: uppercase;
 }
 
 @media (max-width: 1199px) {
