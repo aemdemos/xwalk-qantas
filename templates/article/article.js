@@ -1,5 +1,5 @@
 import { div } from '../../scripts/dom-helpers.js';
-import { formatDate } from '../../scripts/util.js';
+import { formatDate, normalizeISODateString } from '../../scripts/util.js';
 
 class ArticleManager {
   constructor() {
@@ -161,13 +161,13 @@ class ArticleManager {
     // Try to get published date from meta tags
     const metaPublished = document.querySelector('meta[name="publisheddate"]');
     if (metaPublished && metaPublished.content) {
-      return new Date(metaPublished.content);
+      return new Date(normalizeISODateString(metaPublished.content));
     }
 
     // Fallback to other meta tags
     const metaDate = document.querySelector('meta[name="published-time"]');
     if (metaDate && metaDate.content) {
-      return new Date(metaDate.content);
+      return new Date(normalizeISODateString(metaDate.content));
     }
 
     return null;
