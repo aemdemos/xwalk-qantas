@@ -1,4 +1,4 @@
-import { formatDate } from '../../scripts/util.js';
+import { formatDate, sortDataByDate } from '../../scripts/util.js';
 
 export default async function decorate(block) {
   // Check if the block is for speeches or qantas-responds by examining its conten
@@ -105,9 +105,7 @@ export default async function decorate(block) {
   }
 
   async function loadPage(page) {
-    // Calculate offset based on page number
-    const offset = (page - 1) * limit;
-
+    // Calculate offset based on page number - variable still needed for search function
     // For search, fetch from all sources
     if (isSearchBlock && searchQuery) {
       // Clear existing conten
@@ -199,7 +197,7 @@ export default async function decorate(block) {
             const postMeta = document.createElement('p');
             postMeta.className = 'post-meta';
             const publishedLocation = item.publishedlocation ? `${item.publishedlocation} • ` : '';
-            const formattedDate = formatDate(item.publisheddate || item.publicationDate);
+            const formattedDate = formatDate(item.publisheddate || item.publishDateTime);
             postMeta.textContent = `${publishedLocation}Posted on ${formattedDate}`;
 
             postText.appendChild(postMeta);
@@ -255,13 +253,13 @@ export default async function decorate(block) {
       }
     }
 
-    // Regular (non-search) fetching logic for a single endpoin
-    let endpoint = `/media-releases.json?limit=${limit}&offset=${offset}`;
+    // Regular (non-search) fetching logic - fetch full JSON and sort manually
+    let endpoint = '/media-releases.json';
 
     if (blockContent.includes('speeches')) {
-      endpoint = `/speeches.json?limit=${limit}&offset=${offset}`;
+      endpoint = '/speeches.json';
     } else if (blockContent.includes('qantas-responds')) {
-      endpoint = `/qantas-responds.json?limit=${limit}&offset=${offset}`;
+      endpoint = '/qantas-responds.json';
     }
 
     // Fetch the data from the appropriate API endpoin
@@ -273,11 +271,15 @@ export default async function decorate(block) {
 
     // Check if we have data
     if (data && data.data && Array.isArray(data.data)) {
-      const filteredData = data.data;
+      // Sort the data by date (newest first)
+      const sortedData = sortDataByDate(data.data);
+
+      // Get paginated slice of the sorted data
+      const paginatedData = sortedData.slice((page - 1) * limit, page * limit);
 
       // Process each news item
-      if (filteredData.length > 0) {
-        filteredData.forEach((item) => {
+      if (paginatedData.length > 0) {
+        paginatedData.forEach((item) => {
           // Create a post item container that will hold both image and tex
           const postItem = document.createElement('div');
           postItem.className = 'post-item';
@@ -315,7 +317,7 @@ export default async function decorate(block) {
           const postMeta = document.createElement('p');
           postMeta.className = 'post-meta';
           const publishedLocation = item.publishedlocation ? `${item.publishedlocation} • ` : '';
-          const formattedDate = formatDate(item.publisheddate || item.publicationDate);
+          const formattedDate = formatDate(item.publisheddate || item.publishDateTime);
           postMeta.textContent = `${publishedLocation}Posted on ${formattedDate}`;
 
           postText.appendChild(postMeta);

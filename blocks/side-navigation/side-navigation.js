@@ -1,4 +1,4 @@
-import { formatDate } from '../../scripts/util.js';
+import { formatDate, sortDataByDate } from '../../scripts/util.js';
 
 /**
  * Get the page topics from the meta tag.
