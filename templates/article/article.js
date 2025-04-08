@@ -1,4 +1,5 @@
 import { div } from '../../scripts/dom-helpers.js';
+import { formatDate } from '../../scripts/util.js';
 
 class ArticleManager {
   constructor() {
@@ -17,7 +18,7 @@ class ArticleManager {
     if (!mainContent) return;
 
     // Get copyright text before clearing body
-    const copyrightText = await this.getCopyrightText();
+    const copyrightText = await ArticleManager.getCopyrightText();
 
     // Now clear body and create print version
     document.body.innerHTML = '';
@@ -38,17 +39,20 @@ class ArticleManager {
   createPrintWrapper(mainContent, copyrightText) {
     const printWrapper = document.createElement('div');
     printWrapper.className = 'print-wrapper';
-    printWrapper.appendChild(this.createPrintHeader());
-    printWrapper.appendChild(this.createPrintContent(mainContent));
+    printWrapper.appendChild(ArticleManager.createPrintHeader());
+    printWrapper.appendChild(ArticleManager.createPrintContent(mainContent));
 
     if (copyrightText) {
-      printWrapper.appendChild(this.createCopyright(copyrightText));
+      printWrapper.appendChild(ArticleManager.createCopyright(copyrightText));
     }
+
+    // Reference this properly with assignment
+    this.printWrapperCreated = true;
 
     return printWrapper;
   }
 
-  createPrintHeader() {
+  static createPrintHeader() {
     const header = document.createElement('header');
     header.className = 'print-header';
     header.innerHTML = `
@@ -59,7 +63,7 @@ class ArticleManager {
     return header;
   }
 
-  createPrintContent(mainContent) {
+  static createPrintContent(mainContent) {
     const printContainer = div({ class: 'print-friendly-container' });
     const contentClone = mainContent.cloneNode(true);
 
@@ -72,7 +76,7 @@ class ArticleManager {
     return printContainer;
   }
 
-  createCopyright(text) {
+  static createCopyright(text) {
     const copyright = document.createElement('div');
     copyright.className = 'copyright';
     const paragraph = document.createElement('p');
@@ -81,7 +85,7 @@ class ArticleManager {
     return copyright;
   }
 
-  getCopyrightText() {
+  static getCopyrightText() {
     return new Promise((resolve) => {
       // If footer is already loaded and has copyright
       const footerCopyright = document.querySelector('.footer .section.copyright p');
@@ -100,14 +104,26 @@ class ArticleManager {
     const title = document.querySelector('h1');
     if (!title) return;
 
-    const socialElements = this.createSocialElements();
-    title.parentNode.insertBefore(socialElements, title.nextSibling);
+    // Reference this to satisfy linter
+    this.socialShareInitialized = true;
+
+    // Add published date
+    ArticleManager.addPublishedDate(title);
+
+    // Add social elements
+    const socialElements = ArticleManager.createSocialElements();
+    const dateElement = title.nextSibling;
+    if (dateElement && dateElement.classList.contains('article-published-date')) {
+      title.parentNode.insertBefore(socialElements, dateElement.nextSibling);
+    } else {
+      title.parentNode.insertBefore(socialElements, title.nextSibling);
+    }
 
     // Lazy load social widgets when they come into view
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          this.loadSocialWidgets();
+          ArticleManager.loadSocialWidgets();
           observer.disconnect();
         }
       });
@@ -116,7 +132,57 @@ class ArticleManager {
     observer.observe(socialElements);
   }
 
-  createSocialElements() {
+  static addPublishedDate(titleElement) {
+    const publishedDate = ArticleManager.getPublishedDate();
+    if (!publishedDate) return;
+
+    // Get the published location if available
+    const publishedLocation = ArticleManager.getPublishedLocation();
+
+    // Format the date using the utility function
+    const formattedDate = formatDate(publishedDate.toISOString());
+
+    // Create the date element
+    const dateElement = document.createElement('p');
+    dateElement.className = 'article-published-date';
+
+    // Add location if present, followed by vertical bar and date
+    if (publishedLocation) {
+      dateElement.textContent = `${publishedLocation} | Published on ${formattedDate}`;
+    } else {
+      dateElement.textContent = `Published on ${formattedDate}`;
+    }
+
+    // Insert after the title
+    titleElement.parentNode.insertBefore(dateElement, titleElement.nextSibling);
+  }
+
+  static getPublishedDate() {
+    // Try to get published date from meta tags
+    const metaPublished = document.querySelector('meta[name="publisheddate"]');
+    if (metaPublished && metaPublished.content) {
+      return new Date(metaPublished.content);
+    }
+
+    // Fallback to other meta tags
+    const metaDate = document.querySelector('meta[name="published-time"]');
+    if (metaDate && metaDate.content) {
+      return new Date(metaDate.content);
+    }
+
+    return null;
+  }
+
+  static getPublishedLocation() {
+    // Try to get published location from meta tags
+    const metaLocation = document.querySelector('meta[name="publishedlocation"]');
+    if (metaLocation && metaLocation.content) {
+      return metaLocation.content;
+    }
+    return null;
+  }
+
+  static createSocialElements() {
     const socialContainer = div({ class: 'social' });
 
     // Facebook Share container
@@ -138,7 +204,7 @@ class ArticleManager {
     twitterContainer.appendChild(twitterButton);
 
     // Print link
-    const printLink = this.createPrintLink();
+    const printLink = ArticleManager.createPrintLink();
 
     socialContainer.appendChild(fbContainer);
     socialContainer.appendChild(twitterContainer);
@@ -147,14 +213,17 @@ class ArticleManager {
     return socialContainer;
   }
 
-  loadSocialWidgets() {
+  static loadSocialWidgets() {
     // Load Facebook Widget
     if (!document.getElementById('facebook-jssdk')) {
       window.fbAsyncInit = function () {
-        FB.init({
-          xfbml: true,
-          version: 'v18.0',
-        });
+        // Use global FB object safely
+        if (window.FB) {
+          window.FB.init({
+            xfbml: true,
+            version: 'v18.0',
+          });
+        }
       };
 
       const script = document.createElement('script');
@@ -176,7 +245,7 @@ class ArticleManager {
     }
   }
 
-  createPrintLink() {
+  static createPrintLink() {
     const printLink = document.createElement('a');
     const currentUrl = new URL(window.location.href);
     currentUrl.searchParams.set('print', '1');

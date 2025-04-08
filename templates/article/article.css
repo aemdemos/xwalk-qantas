@@ -123,6 +123,16 @@ main > .section > .article-wrapper > .content-wrapper p {
   padding-bottom: 5px;
 }
 
+.article-wrapper .content-wrapper .default-content-wrapper .article-published-date {
+  color: #515151;
+  font-size: 14px;
+  font-style: normal;
+  font-family: 'Europa', sans-serif;
+  line-height: 14px;
+  display: block;
+  text-transform: uppercase;
+}
+
 @media (max-width: 1024px) {
   .article-wrapper {
     flex-direction: column;
