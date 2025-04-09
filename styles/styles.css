@@ -37,7 +37,7 @@
   --heading-font-size-xs: 22px;
 
   /* nav height */
-  --nav-height: 245px;
+  --nav-height: 229px;
 }
 
 
@@ -98,6 +98,10 @@ body {
 
 body.appear {
   display: block;
+}
+
+header {
+  height: var(--nav-height);
 }
 
 header .header,
