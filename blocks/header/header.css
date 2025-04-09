@@ -2,7 +2,6 @@
 .header {
   width: 100%;
   position: relative;
-  height: 229px; /* Fixed height to prevent CLS */
 }
 
 /* Top white section */
@@ -12,7 +11,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%; /* Ensure full height */
 }
 
 nav {
@@ -264,7 +262,6 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
   display: flex;
   justify-content: center;
   font-family: Europa, sans-serif;
-  height: 83px;
 }
 
 .nav-tools .default-content-wrapper {
@@ -283,12 +280,6 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
 
 .nav-tools .button-container {
   margin: 0;
-  display: flex;
-  align-items: center;
-  min-width: 100px; /* Explicit minimum width to reserve space */
-  height: 83px; /* Fixed height to prevent CLS */
-  box-sizing: border-box;
-  position: relative; /* For proper child element positioning */
 }
 
 .nav-tools .button {
@@ -329,11 +320,6 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
 .nav-tools .search-container {
   margin-left: auto;
   padding: 0 20px;
-  min-width: 220px; /* Reserve space for search container */
-  height: 83px; /* Fixed height to match other elements */
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
 }
 
 .nav-tools .search-form {
