@@ -40,63 +40,34 @@
   --nav-height: 245px;
 }
 
-/* fallback fonts */
-@font-face {
-  font-family: roboto-condensed-fallback;
-  size-adjust: 88.82%;
-  src: local('Arial');
-}
 
-@font-face {
-  font-family: roboto-fallback;
-  size-adjust: 99.529%;
-  src: local('Arial');
-}
+    /* fallback font for europa Fallback (normal - 400) */
+    @font-face {
+      font-family: "europa-fallback-normal-400-fallback";
+      size-adjust: 98.73%;
+      src: local("Arial");
+    }
 
-/* fallback fonts */
-@font-face {
-  font-family:"europa Fallback";
-  font-style:normal;
-  font-weight:700;
-  src:local("Arial Bold");
-  ascent-override:106.73%;
-  descent-override:28.52%;
-  line-gap-override:0.00%;
-  size-adjust:96.78%;
-}
+    /* fallback font for europa (normal - 400) */
+    @font-face {
+      font-family: "europa-normal-400-fallback";
+      size-adjust: 97.499%;
+      src: local("Arial");
+    }
 
-@font-face {
-  font-family:"europa Fallback";
-  font-style:normal;
-  font-weight:400;
-  src:local("Arial");
-  ascent-override:104.59%;
-  descent-override:27.94%;
-  line-gap-override:0.00%;
-  size-adjust:98.77%;
-}
+    /* fallback font for FontAwesome (normal - 400) */
+    @font-face {
+      font-family: "fontawesome-normal-400-fallback";
+      size-adjust: 91.389%;
+      src: local("Arial");
+    }
 
-@font-face {
-  font-family:"europa Fallback";
-  font-style:normal;
-  font-weight:300;
-  src:local("Arial");
-  ascent-override:106.16%;
-  descent-override:28.36%;
-  line-gap-override:0.00%;
-  size-adjust:97.31%;
-}
-
-@font-face {
-  font-family:"FontAwesome Fallback";
-  font-style:normal;
-  font-weight:400;
-  src:local("Arial");
-  ascent-override:85.71%;
-  descent-override:14.29%;
-  line-gap-override:0.00%;
-  size-adjust:100.00%;
-}
+    /* fallback font for CiutadellaRegular (normal - 400) */
+    @font-face {
+      font-family: "ciutadellaregular-normal-400-fallback";
+      size-adjust: 88.559%;
+      src: local("Arial");
+    }
 
 @media (width >= 900px) {
   :root {
