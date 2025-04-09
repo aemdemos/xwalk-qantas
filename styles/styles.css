@@ -227,6 +227,19 @@ button.secondary {
   color: var(--text-color);
 }
 
+main .default-content-wrapper picture > img {
+  width: 100% !important;
+}
+
+main .default-content-wrapper a {
+  color: #eb000a;
+  transition: color .2s ease-out;
+}
+
+main .default-content-wrapper .button-container {
+  text-align: center;
+}
+
 main img {
   max-width: 100%;
   width: auto;
