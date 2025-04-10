@@ -226,6 +226,23 @@
   margin: 0;
 }
 
+/* Filter title styles */
+.filter-title {
+  text-align: left;
+  margin: 0 0 30px 0;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.filter-title h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+  font-family: europa, sans-serif;
+}
+
 @media (width <= 1024px) {
   .cards-wrapper > .cards.block.new-galleries .overlay-text h3 {
     line-height: 14px;

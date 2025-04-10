@@ -231,6 +231,11 @@ export default async function decorate(block) {
     block.textContent = '';
 
     try {
+      // Check for tag filtering in the URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const tagFilter = urlParams.get('tag') || '';
+      const isRooTalesTopic = window.location.pathname.includes('roo-tales-topic');
+
       // Fetch data from roo-tales.json
       const response = await fetch('/roo-tales.json');
       const data = await response.json();
@@ -239,8 +244,34 @@ export default async function decorate(block) {
         // Sort the data by date (newest first)
         const sortedData = sortDataByDate(data.data);
 
-        // Update the data object with sorted data
-        const sortedDataObj = { ...data, data: sortedData };
+        // Filter data by tag if on roo-tales-topic page with tag parameter
+        let filteredData = sortedData;
+        if (isRooTalesTopic && tagFilter) {
+          // Add a title showing the filtered tag
+          const filterTitle = document.createElement('div');
+          filterTitle.className = 'filter-title';
+          filterTitle.innerHTML = `<h1>- ${tagFilter}</h1>`;
+          block.appendChild(filterTitle);
+          filteredData = sortedData.filter((item) => {
+            const checkTagString = (tagString) => {
+              if (typeof tagString !== 'string') return false;
+              const tags = tagString.split(',').map((t) => t.trim());
+              return tags.some((tag) => tag.toLowerCase() === tagFilter.toLowerCase());
+            };
+
+            // Check all possible tag locations
+            return checkTagString(item.pagetopics);
+          });
+
+          // Show filter results coun
+          const countElement = document.createElement('p');
+          countElement.className = 'filter-count';
+          countElement.textContent = `${filteredData.length} items found`;
+          filterTitle.appendChild(countElement);
+        }
+
+        // Update the data object with filtered data
+        const sortedDataObj = { ...data, data: filteredData };
 
         const ul = document.createElement('ul');
         const cardsPerLoad = 9; // Show 9 cards initially
@@ -272,7 +303,7 @@ export default async function decorate(block) {
         block.appendChild(ul);
 
         // Only show load more button if there are more cards to load
-        if (currentIndex < sortedData.length) {
+        if (currentIndex < filteredData.length) {
           block.appendChild(loadMoreContainer);
         }
       }
