@@ -10,7 +10,7 @@ export default async function decorate(block) {
   const limit = 5;
 
   // Get search query if this is a search block
-  const searchQuery = urlParams.get('q') || urlParams.get('tag') || '';
+  const searchQuery = urlParams.get('q') || urlParams.get('location') || urlParams.get('tag') || (urlParams.get('year') && urlParams.get('month')) || '';
   const isSearchBlock = block.classList.contains('search');
 
   // Create containers firs
@@ -230,6 +230,9 @@ export default async function decorate(block) {
 
         // Filter based on search query
         const isTopicTagUrl = window.location.href.toLowerCase().includes('topic?tag=');
+        const isYearMonthFilter = urlParams.get('year') && urlParams.get('month');
+        const isLocationFilter = urlParams.get('location') !== null;
+
         const filteredData = allData.filter((item) => {
           // If this is a topic?tag= URL, filter by pagetopics
           if (isTopicTagUrl) {
@@ -237,6 +240,27 @@ export default async function decorate(block) {
             const itemTopics = (item.pagetopics || '').toString().toLowerCase();
             return itemTopics.split(',').map((t) => t.trim()).some((topic) => topic === tag);
           }
+
+          // If year and month parameters are present, filter by date
+          if (isYearMonthFilter) {
+            const year = urlParams.get('year');
+            const month = urlParams.get('month').padStart(2, '0'); // Ensure month is 2 digits
+            const datePrefix = `${year}-${month}`;
+
+            // Check publisheddate and publishDateTime fields
+            const publishedDate = item.publisheddate || item.publishDateTime || '';
+
+            // If the date starts with our year-month prefix, it's a match
+            return publishedDate.startsWith(datePrefix);
+          }
+
+          // If location parameter is present, only filter by location
+          if (isLocationFilter) {
+            const location = (item.publishedlocation || '').toLowerCase();
+            const query = searchQuery.toLowerCase();
+            return location.includes(query);
+          }
+
           // Otherwise use standard search filtering
           const title = (item.title || '').toLowerCase();
           const description = (item.description || '').toLowerCase();
@@ -250,8 +274,23 @@ export default async function decorate(block) {
         // Add search header
         const searchHeader = document.createElement('div');
         searchHeader.className = 'search-results-header';
+
+        // Format nice display text for year-month queries
+        let displayQuery = searchQuery;
+        if (urlParams.get('year') && urlParams.get('month')) {
+          const year = urlParams.get('year');
+          const monthNum = parseInt(urlParams.get('month'), 10);
+          // Convert month number to month name
+          const monthNames = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December',
+          ];
+          const monthName = monthNames[monthNum - 1]; // Adjust for zero-based array
+          displayQuery = `${monthName} ${year}`;
+        }
+
         const resultsHeading = document.createElement('h2');
-        resultsHeading.textContent = `Search results for "${searchQuery}"`;
+        resultsHeading.textContent = `Search results for "${displayQuery}"`;
         const resultsCount = document.createElement('p');
         resultsCount.textContent = `${filteredData.length} results found`;
         searchHeader.appendChild(resultsHeading);

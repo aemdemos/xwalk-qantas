@@ -118,7 +118,7 @@ export default async function decorate(block) {
 
         const link = document.createElement('a');
         const monthNum = (monthOrder.indexOf(month) + 1).toString().padStart(2, '0');
-        link.href = `https://www.qantasnewsroom.com.au/search/${year}/${monthNum}/`;
+        link.href = `?year=${year}&month=${monthNum}`;
         link.title = `${month} ${year}`;
         link.className = 'button';
         link.textContent = `${month} ${year}`;
