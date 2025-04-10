@@ -273,14 +273,14 @@ function getBoldRowsAndCols(table) {
 }
 
 function createTableBlock(table, maxColumnCount, boldRowColClasses) {
-  const tableCells = [['Table' + (boldRowColClasses ? ' (no-header, ' + boldRowColClasses + ')' : ' (no-header)')]];
+  const tableCells = [['Table (no-header)']];
 
   table.querySelectorAll("tr").forEach((row) => {
     const cells = [tableColsMap[maxColumnCount]]; // add the modelId as the first cell in the rows
     const cols = row.querySelectorAll("td, th");
     let thisColCount = cols.length;
     cols.forEach((col) => { // add the data from page table
-      cells.push(col.innerText? col.innerText : '');
+      cells.push(col.innerHTML? col.innerHTML : '');
     });
     // fill in empty cells for missing column data
     while (thisColCount++ < maxColumnCount) {
