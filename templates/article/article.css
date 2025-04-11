@@ -133,6 +133,10 @@ main > .section > .article-wrapper > .content-wrapper p {
   text-transform: uppercase;
 }
 
+.article-wrapper .content-wrapper .default-content-wrapper .article-published-date a {
+  color: #515151;
+}
+
 @media (max-width: 1024px) {
   .article-wrapper {
     flex-direction: column;
