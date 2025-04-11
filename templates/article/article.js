@@ -148,7 +148,13 @@ class ArticleManager {
 
     // Add location if present, followed by vertical bar and date
     if (publishedLocation) {
-      dateElement.textContent = `${publishedLocation} | Published on ${formattedDate}`;
+      const locationLink = document.createElement('a');
+      locationLink.href = `/search?location=${encodeURIComponent(publishedLocation)}`;
+      locationLink.textContent = publishedLocation;
+      locationLink.className = 'location-link';
+
+      dateElement.appendChild(locationLink);
+      dateElement.appendChild(document.createTextNode(` | Published on ${formattedDate}`));
     } else {
       dateElement.textContent = `Published on ${formattedDate}`;
     }

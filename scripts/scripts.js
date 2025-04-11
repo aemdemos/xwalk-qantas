@@ -65,6 +65,7 @@ async function decorateTemplates(main) {
 
     const basePatterns = [
       '/qantas-responds/',
+      '/featured/',
       '/roo-tales/',
       '/speeches/',
       '/media-releases/',
