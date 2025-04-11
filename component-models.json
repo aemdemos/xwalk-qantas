@@ -403,30 +403,12 @@
     "id": "table",
     "fields": [
       {
-        "component": "multiselect",
+        "component": "select",
         "name": "classes",
         "value": "",
         "label": "Options",
         "valueType": "string",
-        "multi": true,
         "options": [
-          {
-            "name": "Bold",
-            "children": [
-              {
-                "name": "Bold Column 1",
-                "value": "bold-col-1"
-              },
-              {
-                "name": "Bold Column 2",
-                "value": "bold-col-2"
-              },
-              {
-                "name": "Bold Row 1",
-                "value": "bold-row-1"
-              }
-            ]
-          },
           {
             "name": "Header",
             "children": [

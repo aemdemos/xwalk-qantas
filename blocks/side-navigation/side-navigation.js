@@ -18,7 +18,7 @@ function getQueryIndexJsonEndpoint() {
   let jsonEndpoint = '/media-releases.json'; // Default
   const currentUrl = window.location.href.toLowerCase();
 
-  if (currentUrl.includes('qantas-responds')) {
+  if (currentUrl.includes('qantas-responds') || currentUrl.includes('featured')) {
     jsonEndpoint = '/qantas-responds.json';
   } else if (currentUrl.includes('speeches')) {
     jsonEndpoint = '/speeches.json';
@@ -37,9 +37,9 @@ function getTopicLink(topic) {
   const currentUrl = window.location.href.toLowerCase();
   let topicLink = window.location.origin;
   if (currentUrl.includes('/media-releases/')) {
-    topicLink += `/topic/${topic}`;
+    topicLink += `/topic?tag=${topic}`;
   } else if (currentUrl.includes(('/roo-tales/'))) {
-    topicLink += `/roo-tales-topic/${topic}`;
+    topicLink += `/roo-tales-topic?tag=${topic}`;
   }
   return topicLink;
 }
@@ -76,7 +76,7 @@ export default async function decorate(block) {
       linkElement.href = getTopicLink(topic);
       linkElement.className = topic;
 
-      if (linkElement.href.endsWith(`/topic/${topic}`)) {
+      if (linkElement.href.endsWith(`/topic?tag=${topic}`)) {
         const iconImg = document.createElement('img');
         iconImg.src = `/icons/${topic}.svg`;
         iconImg.alt = topic;
@@ -110,13 +110,13 @@ export default async function decorate(block) {
 
       // Get the top 3 entries by publishDateTime
       const sortedEntries = data.data
-      .filter((entry) => entry.publisheddate || entry.publishDateTime)
-      .sort((a, b) => {
-        const dateA = new Date(a.publisheddate || a.publishDateTime);
-        const dateB = new Date(b.publisheddate || b.publishDateTime);
-        return dateB - dateA;
-      })
-      .slice(0, 3); // Take top 3 after sorting
+        .filter((entry) => entry.publisheddate || entry.publishDateTime)
+        .sort((a, b) => {
+          const dateA = new Date(a.publisheddate || a.publishDateTime);
+          const dateB = new Date(b.publisheddate || b.publishDateTime);
+          return dateB - dateA;
+        })
+        .slice(0, 3); // Take top 3 after sorting
 
       if (sortedEntries.length > 0) {
         relatedPostsSection.classList.add('related-posts');
@@ -166,7 +166,7 @@ export default async function decorate(block) {
         relatedPostsSection.remove();
       }
     } catch (error) {
-      console.error(`Error fetching data from ${jsonEndpoint}:`, error);
+      console.error('Error fetching data', error);
     }
   }
 }

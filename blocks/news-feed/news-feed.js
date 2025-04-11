@@ -10,7 +10,7 @@ export default async function decorate(block) {
   const limit = 5;
 
   // Get search query if this is a search block
-  const searchQuery = urlParams.get('q') || '';
+  const searchQuery = urlParams.get('q') || urlParams.get('tag') || '';
   const isSearchBlock = block.classList.contains('search');
 
   // Create containers firs
@@ -20,6 +20,102 @@ export default async function decorate(block) {
   const paginationContainer = !blockContent.includes('home') ? document.createElement('div') : null;
   if (paginationContainer) {
     paginationContainer.className = 'pagination';
+  }
+
+  // Function to create a post item
+  function createPostItem(item) {
+    // Create a post item container that will hold both image and tex
+    const postItem = document.createElement('div');
+    postItem.className = 'post-item';
+
+    // Add the image if available
+    if (item.image) {
+      const postImage = document.createElement('div');
+      postImage.className = 'post-image';
+
+      const img = document.createElement('img');
+      img.src = item.image;
+      img.alt = item.title || 'Image';
+      img.loading = 'lazy';
+
+      postImage.appendChild(img);
+      postItem.appendChild(postImage);
+    }
+
+    // Create the post text container
+    const postText = document.createElement('div');
+    postText.className = 'post-text';
+
+    // Create and add the title with link
+    const postTitle = document.createElement('h2');
+    postTitle.className = 'post-title';
+
+    const titleLink = document.createElement('a');
+    titleLink.href = item.path || '#';
+    titleLink.textContent = item.title || 'Untitled';
+
+    postTitle.appendChild(titleLink);
+    postText.appendChild(postTitle);
+
+    // Create and add the publication date
+    const postMeta = document.createElement('p');
+    postMeta.className = 'post-meta';
+    const publishedLocation = item.publishedlocation ? `${item.publishedlocation} • ` : '';
+    const formattedDate = formatDate(item.publisheddate || item.publishDateTime);
+    postMeta.textContent = `${publishedLocation}Posted on ${formattedDate}`;
+
+    postText.appendChild(postMeta);
+
+    // Create and add the excerpt wrapper and excerp
+    const postExcerptWrap = document.createElement('div');
+    postExcerptWrap.className = 'post-excerpt-wrap';
+
+    const postExcerpt = document.createElement('div');
+    postExcerpt.className = 'post-excerpt';
+
+    const excerptText = document.createElement('p');
+    excerptText.textContent = item.description || '';
+
+    postExcerpt.appendChild(excerptText);
+    postExcerptWrap.appendChild(postExcerpt);
+    postText.appendChild(postExcerptWrap);
+
+    // Create and add the read more link
+    const readMore = document.createElement('a');
+    readMore.className = 'read-more';
+    readMore.href = item.path || '#';
+    readMore.textContent = 'Read more';
+
+    postText.appendChild(readMore);
+
+    // Add the post text to the post item container
+    postItem.appendChild(postText);
+
+    return postItem;
+  }
+
+  // Function to create no results message
+  function createNoResultsMessage() {
+    const noResults = document.createElement('div');
+    noResults.className = 'no-results';
+    noResults.innerHTML = `
+      <h3>No results found</h3>
+      <p>Your search did not match any documents. Please try different keywords or browse our sections.</p>
+    `;
+    return noResults;
+  }
+
+  // Function to display items in the news container
+  function displayItems(items) {
+    // Clear existing conten
+    if (items.length > 0) {
+      items.forEach((item) => {
+        const postItem = createPostItem(item);
+        newsContainer.appendChild(postItem);
+      });
+    } else {
+      newsContainer.appendChild(createNoResultsMessage());
+    }
   }
 
   // Function declarations at root level
@@ -133,7 +229,15 @@ export default async function decorate(block) {
         });
 
         // Filter based on search query
+        const isTopicTagUrl = window.location.href.toLowerCase().includes('topic?tag=');
         const filteredData = allData.filter((item) => {
+          // If this is a topic?tag= URL, filter by pagetopics
+          if (isTopicTagUrl) {
+            const tag = searchQuery.toLowerCase();
+            const itemTopics = (item.pagetopics || '').toString().toLowerCase();
+            return itemTopics.split(',').map((t) => t.trim()).some((topic) => topic === tag);
+          }
+          // Otherwise use standard search filtering
           const title = (item.title || '').toLowerCase();
           const description = (item.description || '').toLowerCase();
           const location = (item.publishedlocation || '').toLowerCase();
@@ -158,87 +262,7 @@ export default async function decorate(block) {
         const paginatedData = filteredData.slice((page - 1) * limit, page * limit);
 
         // Display results
-        if (paginatedData.length > 0) {
-          paginatedData.forEach((item) => {
-            // Create a post item container that will hold both image and tex
-            const postItem = document.createElement('div');
-            postItem.className = 'post-item';
-
-            // Add the image if available
-            if (item.image) {
-              const postImage = document.createElement('div');
-              postImage.className = 'post-image';
-
-              const img = document.createElement('img');
-              img.src = item.image;
-              img.alt = item.title || 'Image';
-              img.loading = 'lazy';
-
-              postImage.appendChild(img);
-              postItem.appendChild(postImage);
-            }
-
-            // Create the post text container
-            const postText = document.createElement('div');
-            postText.className = 'post-text';
-
-            // Create and add the title with link
-            const postTitle = document.createElement('h2');
-            postTitle.className = 'post-title';
-
-            const titleLink = document.createElement('a');
-            titleLink.href = item.path || '#';
-            titleLink.textContent = item.title || 'Untitled';
-
-            postTitle.appendChild(titleLink);
-            postText.appendChild(postTitle);
-
-            // Create and add the publication date
-            const postMeta = document.createElement('p');
-            postMeta.className = 'post-meta';
-            const publishedLocation = item.publishedlocation ? `${item.publishedlocation} • ` : '';
-            const formattedDate = formatDate(item.publisheddate || item.publishDateTime);
-            postMeta.textContent = `${publishedLocation}Posted on ${formattedDate}`;
-
-            postText.appendChild(postMeta);
-
-            // Create and add the excerpt wrapper and excerp
-            const postExcerptWrap = document.createElement('div');
-            postExcerptWrap.className = 'post-excerpt-wrap';
-
-            const postExcerpt = document.createElement('div');
-            postExcerpt.className = 'post-excerpt';
-
-            const excerptText = document.createElement('p');
-            excerptText.textContent = item.description || '';
-
-            postExcerpt.appendChild(excerptText);
-            postExcerptWrap.appendChild(postExcerpt);
-            postText.appendChild(postExcerptWrap);
-
-            // Create and add the read more link
-            const readMore = document.createElement('a');
-            readMore.className = 'read-more';
-            readMore.href = item.path || '#';
-            readMore.textContent = 'Read more';
-
-            postText.appendChild(readMore);
-
-            // Add the post text to the post item container
-            postItem.appendChild(postText);
-
-            // Add the completed post item to the news container
-            newsContainer.appendChild(postItem);
-          });
-        } else {
-          const noResults = document.createElement('div');
-          noResults.className = 'no-results';
-          noResults.innerHTML = `
-            <h3>No results found</h3>
-            <p>Your search did not match any documents. Please try different keywords or browse our sections.</p>
-          `;
-          newsContainer.appendChild(noResults);
-        }
+        displayItems(paginatedData);
 
         // Update pagination
         if (!blockContent.includes('home')) {
@@ -247,7 +271,6 @@ export default async function decorate(block) {
 
         return; // Exit early since we've handled search separately
       } catch (error) {
-        console.error('Error fetching search results:', error);
         newsContainer.innerHTML = '<p>An error occurred while searching. Please try again later.</p>';
         return;
       }
@@ -256,118 +279,43 @@ export default async function decorate(block) {
     // Regular (non-search) fetching logic - fetch full JSON and sort manually
     let endpoint = '/media-releases.json';
 
-    if (blockContent.includes('speeches')) {
+    const currentUrl = window.location.href.toLowerCase();
+    if (currentUrl.includes('/speeches/')) {
       endpoint = '/speeches.json';
-    } else if (blockContent.includes('qantas-responds')) {
+    } else if (currentUrl.includes('/qantas-responds/')
+      || currentUrl.includes('/featured/')) {
       endpoint = '/qantas-responds.json';
     }
 
-    // Fetch the data from the appropriate API endpoin
-    const response = await fetch(endpoint);
-    const data = await response.json();
+    try {
+      // Fetch the data from the appropriate API endpoin
+      const response = await fetch(endpoint);
+      const data = await response.json();
 
-    // Clear existing conten
-    newsContainer.innerHTML = '';
+      // Check if we have data
+      if (data && data.data && Array.isArray(data.data)) {
+        // Sort the data by date (newest first)
+        const sortedData = sortDataByDate(data.data);
 
-    // Check if we have data
-    if (data && data.data && Array.isArray(data.data)) {
-      // Sort the data by date (newest first)
-      const sortedData = sortDataByDate(data.data);
+        // Get paginated slice of the sorted data
+        const paginatedData = sortedData.slice((page - 1) * limit, page * limit);
 
-      // Get paginated slice of the sorted data
-      const paginatedData = sortedData.slice((page - 1) * limit, page * limit);
+        // Display the items
+        displayItems(paginatedData);
 
-      // Process each news item
-      if (paginatedData.length > 0) {
-        paginatedData.forEach((item) => {
-          // Create a post item container that will hold both image and tex
-          const postItem = document.createElement('div');
-          postItem.className = 'post-item';
-
-          // Add the image if available
-          if (item.image) {
-            const postImage = document.createElement('div');
-            postImage.className = 'post-image';
-
-            const img = document.createElement('img');
-            img.src = item.image;
-            img.alt = item.title || 'Image';
-            img.loading = 'lazy';
-
-            postImage.appendChild(img);
-            postItem.appendChild(postImage);
-          }
-
-          // Create the post text container
-          const postText = document.createElement('div');
-          postText.className = 'post-text';
-
-          // Create and add the title with link
-          const postTitle = document.createElement('h2');
-          postTitle.className = 'post-title';
-
-          const titleLink = document.createElement('a');
-          titleLink.href = item.path || '#';
-          titleLink.textContent = item.title || 'Untitled';
-
-          postTitle.appendChild(titleLink);
-          postText.appendChild(postTitle);
-
-          // Create and add the publication date
-          const postMeta = document.createElement('p');
-          postMeta.className = 'post-meta';
-          const publishedLocation = item.publishedlocation ? `${item.publishedlocation} • ` : '';
-          const formattedDate = formatDate(item.publisheddate || item.publishDateTime);
-          postMeta.textContent = `${publishedLocation}Posted on ${formattedDate}`;
-
-          postText.appendChild(postMeta);
-
-          // Create and add the excerpt wrapper and excerp
-          const postExcerptWrap = document.createElement('div');
-          postExcerptWrap.className = 'post-excerpt-wrap';
-
-          const postExcerpt = document.createElement('div');
-          postExcerpt.className = 'post-excerpt';
-
-          const excerptText = document.createElement('p');
-          excerptText.textContent = item.description || '';
-
-          postExcerpt.appendChild(excerptText);
-          postExcerptWrap.appendChild(postExcerpt);
-          postText.appendChild(postExcerptWrap);
-
-          // Create and add the read more link
-          const readMore = document.createElement('a');
-          readMore.className = 'read-more';
-          readMore.href = item.path || '#';
-          readMore.textContent = 'Read more';
-
-          postText.appendChild(readMore);
-
-          // Add the post text to the post item container
-          postItem.appendChild(postText);
-
-          // Add the completed post item to the news container
-          newsContainer.appendChild(postItem);
-        });
+        // Only show pagination if not on home page
+        if (!blockContent.includes('home')) {
+          updatePagination(data.total, limit, page);
+        }
       } else {
-        const noResults = document.createElement('div');
-        noResults.className = 'no-results';
-        noResults.innerHTML = `
-          <h3>No results found</h3>
-          <p>Your search did not match any documents. Please try different keywords or browse our sections.</p>
-        `;
-        newsContainer.appendChild(noResults);
+        const errorMessage = document.createElement('p');
+        errorMessage.textContent = 'No items found.';
+        newsContainer.innerHTML = '';
+        newsContainer.appendChild(errorMessage);
       }
-
-      // Only show pagination if not on home page
-      if (!blockContent.includes('home')) {
-        updatePagination(data.total, limit, page);
-      }
-    } else {
-      const errorMessage = document.createElement('p');
-      errorMessage.textContent = 'No items found.';
-      newsContainer.appendChild(errorMessage);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      newsContainer.innerHTML = '<p>An error occurred while loading the content.</p>';
     }
   }
 
