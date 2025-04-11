@@ -157,7 +157,7 @@ function innerGalleryCards(main) {
 function getGalleryCards(main) {
   const cells = [['Cards (thumbnail)']];
   main.querySelectorAll(".galleries-module ul li").forEach((item) => {
-    const href = item.querySelector(".gallery-image")?.getAttribute("href");
+    let href = item.querySelector(".gallery-image")?.getAttribute("href");
     href = href.replace(/\/$/, ''); // remove trailing slash (if any)
     const img = item.querySelector(".gallery-image img");
     const meta = item.querySelector(".gallery-meta").innerText;
