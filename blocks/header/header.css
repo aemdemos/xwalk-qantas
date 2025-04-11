@@ -75,19 +75,15 @@ nav {
 .nav-sections .default-content-wrapper {
   width: 100%;
   max-width: 1200px;
-  position: static;
+  position: relative;
 }
 
 .nav-sections ul {
   list-style: none;
   display: flex;
-  gap: 4rem;
+  gap: 2rem;
   margin: 0;
   padding: 0 1rem;
-}
-
-.nav-sections li {
-  position: relative;
 }
 
 .nav-sections .nav-drop {
@@ -96,7 +92,7 @@ nav {
   border-color: transparent;
   display: block;
   color: #fff;
-  padding: 22px 12px 21px;
+  padding: 22px 24px 21px;
 }
 
 .nav-sections .nav-drop>p {
@@ -128,14 +124,16 @@ nav {
 /* Dropdown styling - hide by default */
 .nav-drop ul {
   display: none;
-  position: fixed;
-  top: 147px;
-  left: 350px;
+  position: absolute;
+  top: 73px;
+  left: 0;
   background: white;
   box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
   padding: 2em;
   border-radius: 4px;
   width: 1000px;
+  max-width: calc(100vw - 40px);
+  z-index: 1000;
 }
 
 /* Show dropdown content with flex */
@@ -173,19 +171,21 @@ nav {
   top: 8px;
 }
 
-/* Update the dropdown arrow */
+/* Comment out the rule for the white arrow pointing up from the dropdown */
+/*
 .nav-drop ul::before {
   content: '';
   position: absolute;
   top: -8px;
-  left: 24px;
+  left: var(--arrow-position, 24px);
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
   border-bottom: 8px solid white;
 }
+*/
 
 /* Dropdown arrow */
-.nav-drop::after {
+.nav-drop p::after {
   content: '';
   display: inline-block;
   width: 5px;
@@ -193,9 +193,9 @@ nav {
   border: solid #838282;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
-  position: absolute;
-  right: -5px;
-  top: 32px;
+  margin-left: 10px;
+  position: relative;
+  top: -4px;
 }
 
 /* Alternatively, you can add margin to the second picture */
@@ -300,16 +300,6 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
 /* Desktop styles */
 .nav-hamburger {
   display: none;
-}
-
-.nav-drop ul::before {
-  content: '';
-  position: absolute;
-  top: -8px;
-  left: 2rem;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-bottom: 8px solid #323232;
 }
 
 .nav-drop:hover>ul,
@@ -577,4 +567,20 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
   .mobile-tools-menu .search-form button.search-button:hover::before {
     color: #E3001B;
   }
+}
+
+/* Hover effect for the main dropdown trigger */
+.nav-sections .nav-drop:hover {
+  background-color: white;
+}
+
+/* Change text color of the link inside the dropdown trigger on hover */
+.nav-sections .nav-drop:hover a {
+  color: #E3001B; /* Theme red color */
+  opacity: 1;
+}
+
+/* Change the arrow color on hover */
+.nav-sections .nav-drop:hover p::after {
+  border-color: #E3001B; /* Match the text color */
 }
