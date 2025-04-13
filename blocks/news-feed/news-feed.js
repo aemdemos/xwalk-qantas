@@ -1,8 +1,8 @@
 import { formatDate, sortDataByDate } from '../../scripts/util.js';
 
 export default async function decorate(block) {
-  // Check if the block is for speeches or qantas-responds by examining its conten
-  const blockContent = block.textContent.trim().toLowerCase();
+  // Add class name directly to the block element
+  block.classList.add('news-feed-block-content'); // Add your desired class name here
 
   // Get current page from URL if available
   const urlParams = new URLSearchParams(window.location.search);
@@ -13,11 +13,12 @@ export default async function decorate(block) {
   const searchQuery = urlParams.get('q') || urlParams.get('location') || urlParams.get('tag') || (urlParams.get('year') && urlParams.get('month')) || '';
   const isSearchBlock = block.classList.contains('search');
 
-  // Create containers firs
+  // Create containers first
   const newsContainer = document.createElement('div');
   newsContainer.className = 'news-container';
 
-  const paginationContainer = !blockContent.includes('home') ? document.createElement('div') : null;
+  // Create pagination container only if not on the home page
+  const paginationContainer = window.location.pathname !== '/' ? document.createElement('div') : null;
   if (paginationContainer) {
     paginationContainer.className = 'pagination';
   }
@@ -304,7 +305,7 @@ export default async function decorate(block) {
         displayItems(paginatedData);
 
         // Update pagination
-        if (!blockContent.includes('home')) {
+        if (window.location.pathname !== '/') {
           updatePagination(filteredData.length, limit, page);
         }
 
@@ -343,7 +344,7 @@ export default async function decorate(block) {
         displayItems(paginatedData);
 
         // Only show pagination if not on home page
-        if (!blockContent.includes('home')) {
+        if (window.location.pathname !== '/') {
           updatePagination(data.total, limit, page);
         }
       } else {
@@ -359,9 +360,13 @@ export default async function decorate(block) {
   }
 
   try {
-    // Clear the block conten
-    block.textContent = '';
-
+    const firstChildDiv = block.querySelector(':scope > div');
+    if (firstChildDiv) {
+      firstChildDiv.classList.add('news-feed-block-heading');
+      if (window.location.pathname === '/') {
+        firstChildDiv.classList.add('home-page');
+      }
+    }
     // Add containers to the block
     block.appendChild(newsContainer);
     if (paginationContainer) {

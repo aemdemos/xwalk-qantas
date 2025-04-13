@@ -364,6 +364,22 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
   color: #E3001B;
 }
 
+/* Hover effect for the main dropdown trigger */
+.nav-sections .nav-drop:hover {
+  background-color: white;
+}
+
+/* Change text color of the link inside the dropdown trigger on hover */
+.nav-sections .nav-drop:hover a {
+  color: #E3001B; /* Theme red color */
+  opacity: 1;
+}
+
+/* Change the arrow color on hover */
+.nav-sections .nav-drop:hover p::after {
+  border-color: #E3001B; /* Match the text color */
+}
+
 @media (width <=1199px) {
   header {
     height: 89px;
@@ -567,20 +583,4 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
   .mobile-tools-menu .search-form button.search-button:hover::before {
     color: #E3001B;
   }
-}
-
-/* Hover effect for the main dropdown trigger */
-.nav-sections .nav-drop:hover {
-  background-color: white;
-}
-
-/* Change text color of the link inside the dropdown trigger on hover */
-.nav-sections .nav-drop:hover a {
-  color: #E3001B; /* Theme red color */
-  opacity: 1;
-}
-
-/* Change the arrow color on hover */
-.nav-sections .nav-drop:hover p::after {
-  border-color: #E3001B; /* Match the text color */
 }

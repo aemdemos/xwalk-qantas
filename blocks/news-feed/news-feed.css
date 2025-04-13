@@ -28,6 +28,48 @@ main > .section > .news-feed-wrapper {
   display: block;
 }
 
+.news-feed .news-feed-block-heading {
+  line-height: 20px;
+  font-size: 15px;
+}
+
+.news-feed .news-feed-block-heading h4 {
+  font-size: 15px;
+  padding-bottom: 20px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.news-feed .news-feed-block-heading p {
+  max-width: 600px;
+}
+
+.news-feed .news-feed-block-heading p:last-of-type {
+  margin-bottom: 20px;
+}
+
+/* Homepage specific styles for heading */
+.news-feed .news-feed-block-heading.home-page > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.news-feed .news-feed-block-heading.home-page h4 {
+  margin: 0; /* Remove default margins */
+}
+
+/* Style for the right-aligned H4 link */
+.news-feed .news-feed-block-heading.home-page h4#all-media-releases a {
+  color: grey;
+  text-decoration: none;
+  font-weight: 400;
+}
+
+.news-feed .news-feed-block-heading.home-page h4#all-media-releases a:hover {
+  text-decoration: underline;
+}
+
 /* Post Item Styling */
 .post-item {
   display: flex;
