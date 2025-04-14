@@ -95,6 +95,17 @@
   display: none;
 }
 
+/* Banner card aspect ratio */
+.cards-wrapper > .cards.block.banner > ul > li > .cards-card-image {
+  aspect-ratio: 1 / 1;
+  overflow: hidden; /* Ensure content doesn't spill out */
+}
+
+.cards-wrapper > .cards.block.banner > ul > li > .cards-card-image img {
+  width: 100%;
+  height: 100%;
+}
+
 .cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body {
   color: #000;
   background-color: white;
