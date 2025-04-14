@@ -146,10 +146,19 @@ function getGalleyCategoryCards(galleries) {
   return cells;
 }
 
-function innerGalleryCards(main) {
+function innerGalleryCards(gallery) {
   const cells = [['Cards (banner)']];
-  main.querySelectorAll(".swipebox").forEach((item) => {
-    cells.push([item.querySelector("img")]);
+  gallery.querySelectorAll(".swipebox").forEach((item) => {
+    // default image
+    let img = item.querySelector('img');
+
+    // use higher resolution images if present
+    let imgSrc = item.getAttribute('data-original') ? item.getAttribute('data-original') : img.getAttribute('href');
+    if (imgSrc) {
+      img.src = imgSrc;
+    }
+    
+    cells.push([img]);
   });
   return cells;
 }
@@ -210,12 +219,16 @@ function addGalleryImages(main) {
   if (fullWidthContainer) {
     const gallery = main.querySelector(".gallery"); // eg. https://www.qantasnewsroom.com.au/gallery/singapore-first-lounge-concepts/
     if (gallery) {
-      const cells = innerGalleryCards(main);
+      const cells = innerGalleryCards(gallery);
       const table = WebImporter.DOMUtils.createTable(cells, document);
       fullWidthContainer.replaceWith(table);
     } else { // eg. https://www.qantasnewsroom.com.au/gallery/qantas-crew-mini-uniforms/
       const cells = [['Cards (banner)']];
       fullWidthContainer.querySelectorAll("img").forEach((img) => {
+        // check to see if there is a higher resolution image available
+        if (img.parentElement.tagName.toLowerCase() === 'a' && img.parentElement.getAttribute('href')) {
+          img.src = img.parentElement.getAttribute('href');
+        }
         cells.push([img]);
       });
       const table = WebImporter.DOMUtils.createTable(cells, document);
@@ -243,34 +256,6 @@ const tableColsMap = {
   6: "table-col-6",
   7: "table-col-7"
 };
-
-function getBoldRowsAndCols(table) {
-    const rows = [...table.querySelectorAll("tr")];
-    const colCount = rows[0].querySelectorAll("td, th").length;
-    
-    let boldRows = new Set();
-    let boldCols = new Array(colCount).fill(true);
-    
-    rows.forEach((row, rowIndex) => {
-        const cells = [...row.querySelectorAll("td, th")];
-        
-        if (cells.every(cell => cell.querySelector("strong"))) {
-            boldRows.add(`bold-row-${rowIndex + 1}`);
-        }
-        
-        cells.forEach((cell, colIndex) => {
-            if (!cell.querySelector("strong")) {
-                boldCols[colIndex] = false;
-            }
-        });
-    });
-    
-    let boldColResults = boldCols
-      .map((isBold, index) => isBold ? `bold-col-${index + 1}` : null)
-      .filter(Boolean);
-    
-    return [...boldRows, ...boldColResults].join(", ");
-}
 
 function createTableBlock(table, maxColumnCount, boldRowColClasses) {
   const tableCells = [['Table (no-header)']];
