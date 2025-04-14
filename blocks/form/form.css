@@ -1,3 +1,8 @@
+main > .form-container h1 {
+  font-size: var(--heading-font-size-xl);
+  margin: 35px 0;
+}
+
 .form .field-wrapper {
   display: grid;
   grid-auto-flow: row;

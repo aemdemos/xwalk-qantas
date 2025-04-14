@@ -75,19 +75,15 @@ nav {
 .nav-sections .default-content-wrapper {
   width: 100%;
   max-width: 1200px;
-  position: static;
+  position: relative;
 }
 
 .nav-sections ul {
   list-style: none;
   display: flex;
-  gap: 4rem;
+  gap: 2rem;
   margin: 0;
   padding: 0 1rem;
-}
-
-.nav-sections li {
-  position: relative;
 }
 
 .nav-sections .nav-drop {
@@ -96,7 +92,7 @@ nav {
   border-color: transparent;
   display: block;
   color: #fff;
-  padding: 22px 12px 21px;
+  padding: 22px 24px 21px;
 }
 
 .nav-sections .nav-drop>p {
@@ -128,14 +124,16 @@ nav {
 /* Dropdown styling - hide by default */
 .nav-drop ul {
   display: none;
-  position: fixed;
-  top: 147px;
-  left: 350px;
+  position: absolute;
+  top: 73px;
+  left: 0;
   background: white;
   box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
   padding: 2em;
   border-radius: 4px;
   width: 1000px;
+  max-width: calc(100vw - 40px);
+  z-index: 1000;
 }
 
 /* Show dropdown content with flex */
@@ -173,19 +171,21 @@ nav {
   top: 8px;
 }
 
-/* Update the dropdown arrow */
+/* Comment out the rule for the white arrow pointing up from the dropdown */
+/*
 .nav-drop ul::before {
   content: '';
   position: absolute;
   top: -8px;
-  left: 24px;
+  left: var(--arrow-position, 24px);
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
   border-bottom: 8px solid white;
 }
+*/
 
 /* Dropdown arrow */
-.nav-drop::after {
+.nav-drop p::after {
   content: '';
   display: inline-block;
   width: 5px;
@@ -193,9 +193,9 @@ nav {
   border: solid #838282;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
-  position: absolute;
-  right: -5px;
-  top: 32px;
+  margin-left: 10px;
+  position: relative;
+  top: -4px;
 }
 
 /* Alternatively, you can add margin to the second picture */
@@ -302,16 +302,6 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
   display: none;
 }
 
-.nav-drop ul::before {
-  content: '';
-  position: absolute;
-  top: -8px;
-  left: 2rem;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-bottom: 8px solid #323232;
-}
-
 .nav-drop:hover>ul,
 .nav-drop:focus-within>ul {
   display: block;
@@ -374,6 +364,22 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
   color: #E3001B;
 }
 
+/* Hover effect for the main dropdown trigger */
+.nav-sections .nav-drop:hover {
+  background-color: white;
+}
+
+/* Change text color of the link inside the dropdown trigger on hover */
+.nav-sections .nav-drop:hover a {
+  color: #E3001B; /* Theme red color */
+  opacity: 1;
+}
+
+/* Change the arrow color on hover */
+.nav-sections .nav-drop:hover p::after {
+  border-color: #E3001B; /* Match the text color */
+}
+
 @media (width <=1199px) {
   header {
     height: 89px;
@@ -407,6 +413,7 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
   /* Adjust container width for icon */
   .nav-tools .default-content-wrapper>p:first-child {
     width: 210px;
+    margin-bottom: 0;
   }
 
   .nav-tools .button {
@@ -477,6 +484,11 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
     width: 100%;
     text-align: center;
     border-bottom: 1px solid #E6E6E6;
+    font-family: Europa, sans-serif;
+    font-size: 14px;
+    line-height: 14px;
+    text-transform: uppercase;
+    color: rgb(28, 29, 30);
   }
   
   /* Only show when navigation is expanded */
@@ -504,13 +516,71 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
   .mobile-tools-menu a.button {
     color: black;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 14px;
     text-transform: uppercase;
     display: block;
-    padding: 5px 0;
+    padding: 9px;
   }
 
   .nav-tools .search-container {
     display: none;
+  }
+  
+  .mobile-tools-menu .search-container {
+    width: 60%;
+    margin: 0 auto;
+    max-width: 300px;
+  }
+  
+  .mobile-tools-menu .search-form {
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: 45px;
+  }
+  
+  .mobile-tools-menu .search-form input[type="search"] {
+    padding: 8px 12px;
+    border: 1px solid #E6E6E6;
+    border-radius: 20px;
+    font-size: 14px;
+    width: 100%;
+    height: 32px;
+    transition: all 0.3s ease;
+  }
+  
+  /* Hide the clear/X button in search inputs */
+  .mobile-tools-menu .search-form input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    display: none;
+  }
+  
+  .mobile-tools-menu .search-form input[type="search"]:focus {
+    outline: none;
+    border-color: #9D9D9D;
+  }
+  
+  .mobile-tools-menu .search-form button.search-button {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+  }
+  
+  .mobile-tools-menu .search-form button.search-button::before {
+    color: #9D9D9D;
+    font-family: FontAwesome;
+    font-size: 17px;
+    content: "\f002";
+  }
+  
+  .mobile-tools-menu .search-form button.search-button:hover::before {
+    color: #E3001B;
   }
 }

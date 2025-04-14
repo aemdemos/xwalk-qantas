@@ -62,6 +62,19 @@ function toggleAllNavSections(sections, expanded = false) {
   });
 }
 
+// Helper function to create a search bar container
+function createSearchBar() {
+  const searchBar = document.createElement('div');
+  searchBar.className = 'search-container';
+  searchBar.innerHTML = `
+    <form class="search-form" role="search" action="/search">
+      <input type="search" name="q" aria-label="Search">
+      <button type="submit" aria-label="Submit search" class="search-button"></button>
+    </form>
+  `;
+  return searchBar;
+}
+
 /**
  * Creates and adds a mobile menu section with the nav-tools buttons
  * @param {Element} navSections The nav sections container
@@ -81,6 +94,14 @@ function setupMobileToolsMenu(nav) {
   // Clone button containers
   const buttonContainers = navTools.querySelectorAll('.button-container');
   const buttonList = document.createElement('ul');
+
+  // Add search bar as first item in the list
+  const searchLi = document.createElement('li');
+  searchLi.className = 'nav-button search-button-item';
+  const searchBar = createSearchBar();
+  searchLi.appendChild(searchBar);
+  buttonList.appendChild(searchLi);
+
   buttonContainers.forEach((container) => {
     const listItem = document.createElement('li');
     const button = container.querySelector('a.button');
@@ -180,6 +201,16 @@ export default async function decorate(block) {
         }
       });
     });
+
+    const searchContainer = document.querySelector('.nav-tools .search-container');
+    if (searchContainer) {
+      // Clone the desktop search but adjust action to mobile version
+      const searchBar = createSearchBar();
+      const mobileSearchWrapper = document.createElement('div');
+      mobileSearchWrapper.className = 'mobile-search-wrapper';
+      mobileSearchWrapper.appendChild(searchBar);
+      navSections.appendChild(mobileSearchWrapper);
+    }
   }
 
   // Highlight current section in nav-tools based on URL
@@ -209,24 +240,7 @@ export default async function decorate(block) {
     // Add search bar at the end of nav-tools
     const navToolsContent = navTools.querySelector('.default-content-wrapper');
     if (navToolsContent) {
-      const searchBar = document.createElement('div');
-      searchBar.className = 'search-container';
-      searchBar.innerHTML = `
-        <form class="search-form" role="search" action="/search">
-          <input type="search" name="q" aria-label="Search">
-          <button type="submit" aria-label="Submit search" class="search-button"></button>
-        </form>
-      `;
-
-      // Add event listener to handle search form submission
-      const searchForm = searchBar.querySelector('.search-form');
-      searchForm.addEventListener('submit', (e) => {
-        const searchInput = searchForm.querySelector('input[type="search"]');
-        if (!searchInput.value.trim()) {
-          e.preventDefault();
-        }
-      });
-
+      const searchBar = createSearchBar();
       navToolsContent.appendChild(searchBar);
     }
   }
