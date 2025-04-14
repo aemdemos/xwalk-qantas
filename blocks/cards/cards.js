@@ -227,7 +227,7 @@ export default async function decorate(block) {
   }
 
   if (block.classList.contains('roo-tales')) {
-    // Clear existing conten
+    // Clear existing content
     block.textContent = '';
 
     try {
@@ -252,6 +252,13 @@ export default async function decorate(block) {
           filterTitle.className = 'filter-title';
           filterTitle.innerHTML = `<h1>- ${tagFilter}</h1>`;
           block.appendChild(filterTitle);
+
+          const subTitle = document.querySelector(".cards-container .default-content-wrapper > p");
+          if (subTitle) {
+            filterTitle.appendChild(subTitle);
+            document.querySelector(".cards-container .default-content-wrapper").remove();
+          }
+
           filteredData = sortedData.filter((item) => {
             const checkTagString = (tagString) => {
               if (typeof tagString !== 'string') return false;
@@ -262,12 +269,6 @@ export default async function decorate(block) {
             // Check all possible tag locations
             return checkTagString(item.pagetopics);
           });
-
-          // Show filter results coun
-          const countElement = document.createElement('p');
-          countElement.className = 'filter-count';
-          countElement.textContent = `${filteredData.length} items found`;
-          filterTitle.appendChild(countElement);
         }
 
         // Update the data object with filtered data

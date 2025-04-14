@@ -7,7 +7,6 @@
 .cards-wrapper > .cards.block {
   display: flex; /* Use flexbox for the overall card container */
   flex-flow: row wrap; /* Allow cards to wrap into multiple rows */ /* Ensure cards are side-by-side */
-  justify-content: center; /* Center align all cards */
   gap: 16px; /* Reduce spacing between cards to match original layout */
   padding: 0;
   padding-top: 20px;
@@ -40,7 +39,7 @@
 .cards-wrapper>.cards.block.roo-tales>ul>li {
   border: 1px solid #ccc; /* Add a border for separation */
   border-radius: 8px; /* Optional: Rounded corners */
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 .cards-wrapper > .cards.block > ul > li > .cards-card-image {
@@ -229,13 +228,12 @@
 /* Filter title styles */
 .filter-title {
   text-align: left;
-  margin: 0 0 30px 0;
+  margin: 20px 0 30px 0;
   padding-bottom: 15px;
-  border-bottom: 1px solid #e6e6e6;
 }
 
 .filter-title h1 {
-  font-size: 28px;
+  font-size: 36px;
   font-weight: 600;
   color: #333;
   margin: 0 0 10px 0;
@@ -254,7 +252,7 @@
   .cards-wrapper > .cards.block > ul > li {
     flex: 0 1 calc(50% - 16px);
   }
-  
+
   .cards-wrapper > .cards.block.new-galleries > ul.gallery-grid-two-per-row > li {
     flex: 0 1 calc(50% - 15px);
   }
