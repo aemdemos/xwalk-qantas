@@ -129,6 +129,8 @@ export default async function decorate(block) {
   if (isMainPage) {
     // if content is coming from authored page, just add the class for right styling
     relatedPostsSection.classList.add('related-posts');
+  } else if (isGalleryBlock) {
+    relatedPostsSection.classList.add('related-posts');
   } else {
     try {
       // Fetch top 3 entries from query index
@@ -194,6 +196,7 @@ export default async function decorate(block) {
       }
     } catch (error) {
       // Also handle potential error case
+      console.error('Error fetching related posts:', error);
       if (relatedPostsSection) {
         relatedPostsSection.remove();
       }

@@ -1,3 +1,7 @@
+main > .section.cards-container:has(.cards) {
+  margin-top: 0px;
+}
+
 .cards-wrapper {
   display: flex;
   flex-direction: column; /* Stack top-level elements vertically */
