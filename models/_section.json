@@ -54,8 +54,8 @@
         "news-feed",
         "side-navigation",
         "archives",
-        "gallery-cards",
-        "form"
+        "form",
+        "image-with-link"
       ]
     }
   ]
