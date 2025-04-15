@@ -46,6 +46,7 @@ function getTopicLink(topic) {
 
 export default async function decorate(block) {
   const isMainPage = window.location.pathname === '/';
+  const isGalleryBlock = block.classList.contains('gallery');
   // Get all the main sections (divs) of the side-navigation
   const sections = block.children;
   const headingSection = sections[0];
@@ -93,6 +94,8 @@ export default async function decorate(block) {
   } else if (isMainPage) {
     // if content is coming from authored page, just add the class for right styling
     topicsSection.classList.add('topics');
+  } else if (isGalleryBlock) {
+    topicsSection.classList.add('gallery');
   } else {
     // If no topics found, remove the topics section
     topicsSection.remove();
@@ -102,6 +105,8 @@ export default async function decorate(block) {
   if (isMainPage) {
     // if content is coming from authored page, just add the class for right styling
     relatedPostsSection.classList.add('related-posts');
+  } else if (isGalleryBlock) {
+    relatedPostsSection.classList.add('gallery');
   } else {
     try {
       // Fetch top 3 entries from query index
