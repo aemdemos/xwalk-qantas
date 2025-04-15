@@ -264,5 +264,5 @@ main .section.highlight {
 
 main .section.page-intro {
   margin: 0;
-  padding-top: 40px;
+  padding: 40px 0 20px 0;
 }
