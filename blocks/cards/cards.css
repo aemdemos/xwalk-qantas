@@ -260,6 +260,10 @@ main > .section.cards-container:has(.cards) {
   .cards-wrapper > .cards.block.new-galleries .overlay-text h3 {
     line-height: 14px;
   }
+
+  .cards-wrapper > .cards.block.roo-tales > ul > li {
+    flex: 0 1 calc(50% - 16px);
+  }
 }
 
 /* Ensure they're 50% width on medium screens too */
@@ -279,6 +283,10 @@ main > .section.cards-container:has(.cards) {
   }
 
   .cards-wrapper > .cards.block.new-galleries > ul.gallery-grid-two-per-row > li {
+    flex: 0 1 100%;
+  }
+
+  .cards-wrapper > .cards.block.roo-tales > ul > li {
     flex: 0 1 100%;
   }
 }
@@ -308,4 +316,19 @@ main > .section.cards-container:has(.cards) {
 .cards-load-more-button:hover {
   background-color: white;
   color: black;
+}
+
+/* Ensure consistent image height for roo-tales cards */
+.cards-wrapper > .cards.block.roo-tales .cards-card-image {
+  position: relative;
+  width: 100%;
+  height: 250px; /* Fixed height for all roo-tales card images */
+  overflow: hidden; /* Prevent image overflow */
+}
+
+.cards-wrapper > .cards.block.roo-tales .cards-card-image img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover; /* Maintain aspect ratio and cover the container */
+  object-position: center; /* Center the image within container */
 }
