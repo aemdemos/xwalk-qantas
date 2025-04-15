@@ -332,12 +332,13 @@ function removePagePublishedDiv(main) {
 
 function removeSidebar(main, url) {
   const sidebar = main.querySelector('.sidebar');
-  if (url.includes("/qantas-responds/")
-      || url.includes("/media-releases/")
-      || url.includes("/speeches/")
-      || url.includes("/roo-tales/")
-      || url.includes("/uncategorized/")
-      || url.includes("/featured/")
+  const urlPath = new URL(url).pathname;
+  if (urlPath.includes("/qantas-responds/")
+      || urlPath.includes("/media-releases/")
+      || urlPath.includes("/speeches/")
+      || urlPath.includes("/roo-tales/")
+      || urlPath.includes("/uncategorized/")
+      || urlPath.includes("/featured/")
     ) {
     const cells = [["Side Navigation (article)"]];
     sidebar?.replaceWith(WebImporter.DOMUtils.createTable(cells, document));
@@ -349,12 +350,14 @@ function removeSidebar(main, url) {
     if (mainSection && sideNav) {
       parent.insertBefore(sideNav, mainSection);
     }
-  } else if (url.includes("/gallery/")
-    || url.includes("/gallery-category/")) {
+  } else if (urlPath.includes("/gallery/")
+    || urlPath.includes("/gallery-category/")) {
     const cells = [["Side Navigation (gallery)"]];
-    const sideNavContent = sidebar.querySelector(".sidebar-intro")?.innerHTML || '';
-    cells.push([""]);
-    cells.push([sideNavContent]);
+    if (urlPath.match(/\/gallery\/[^\/]+\/?$/) === null) { // skip for gallery child pages
+      const sideNavContent = sidebar.querySelector(".sidebar-intro")?.innerHTML || '';
+      cells.push([""]);
+      cells.push([sideNavContent]);
+    }
     sidebar.replaceWith(WebImporter.DOMUtils.createTable(cells, document));
 
     // rearrange the title (and text) and side nav into a separate section, by adding a thematicBreak (<hr> tag) after the side nav
