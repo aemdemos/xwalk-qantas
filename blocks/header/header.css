@@ -30,7 +30,7 @@ nav {
   justify-content: center;
 }
 
-.nav-brand .default-content-wrapper {
+.nav-brand .brand-wrapper {
   width: 100%;
   max-width: 1200px;
   padding: 1rem 2rem 0.5rem;
@@ -53,15 +53,74 @@ nav {
   height: auto;
 }
 
-.nav-brand .default-content-wrapper p:first-of-type img {
+.nav-brand .brand-wrapper .image-with-link-wrapper:first-of-type img {
   width: 202px;
   height: 40px;
   margin-left: 3rem;
 }
 
-.nav-brand .default-content-wrapper p:last-of-type img {
+.nav-brand .brand-wrapper .image-with-link-wrapper:nth-child(2) img {
   height: 40px;
   width: auto;
+}
+
+/* Brand search bar styling */
+.nav-brand .brand-search {
+  margin-left: auto;
+  margin-right: 4rem;
+  align-self: center;
+}
+
+.nav-brand .brand-search .search-form {
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 36px;
+}
+
+.nav-brand .brand-search .search-form input[type="search"] {
+  padding: 8px 12px;
+  border: 1px solid #E6E6E6;
+  font-size: 14px;
+  width: 135px;
+  height: 35px;
+}
+
+/* Hide the clear/X button in search inputs */
+.nav-brand .brand-search .search-form input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  display: none;
+}
+
+.nav-brand .brand-search .search-form input[type="search"]::-ms-clear {
+  display: none;
+}
+
+.nav-brand .brand-search .search-form button.search-button {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.nav-brand .brand-search .search-form button.search-button::before {
+  color: #9D9D9D;
+  font-family: FontAwesome;
+  font-size: 17px;
+  content: "\f002";
+}
+
+/* Make brand container a flex container to align items */
+.nav-brand .brand-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* Navigation section */
@@ -199,7 +258,7 @@ nav {
 }
 
 /* Alternatively, you can add margin to the second picture */
-.nav-brand .default-content-wrapper p:last-of-type {
+.nav-brand .brand-wrapper .image-with-link-wrapper:nth-child(2) {
   margin-left: 2rem;
 }
 
@@ -295,6 +354,8 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
 
 .nav-tools .default-content-wrapper>p:first-child {
   width: 140px;
+  position: relative;
+  top: 2px;
 }
 
 /* Desktop styles */
@@ -393,6 +454,10 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
     display: none;
   }
 
+  .nav-tools .icon-logo-grey-news-room {
+    padding-bottom: 0;
+  }
+
   .nav-tools .icon-logo-grey-news-room img {
     display: none;
   }
@@ -465,6 +530,10 @@ nav[aria-expanded="true"] .nav-hamburger-icon::after {
     overflow-y: auto;
     z-index: 1000;
     padding: 20px;
+  }
+
+  .nav-brand .brand-search {
+    display: none;
   }
 
   /* Mobile navigation styles */

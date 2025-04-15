@@ -206,6 +206,21 @@
           }
         },
         {
+          "title": "Image with Link",
+          "id": "image-with-link",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "Image with Link",
+                  "model": "image-with-link"
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "News-Feed",
           "id": "news-feed",
           "plugins": {
