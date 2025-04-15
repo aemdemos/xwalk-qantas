@@ -1,7 +1,6 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 import { moveInstrumentation } from '../../scripts/scripts.js';
 import { formatDate, formatDateNoTime, sortDataByDate } from '../../scripts/util.js';
-import { initGalleryCarousel } from '../../scripts/gallery-carousel.js';
 
 export default async function decorate(block) {
   // Helper function to optimize images
@@ -467,21 +466,5 @@ export default async function decorate(block) {
     });
     block.textContent = '';
     block.append(ul);
-  }
-
-  // Initialize gallery carousel only when block has both 'cards' and 'banner' classes
-  if (block.classList.contains('cards') && block.classList.contains('banner')) {
-    const galleryImages = block.querySelectorAll('.cards-card-image img');
-    if (galleryImages.length > 0) {
-      // Remove any existing links around the images
-      galleryImages.forEach(img => {
-        const wrapper = img.closest('a');
-        if (wrapper) {
-          wrapper.replaceWith(img);
-        }
-      });
-      // Initialize gallery carousel
-      initGalleryCarousel(Array.from(galleryImages));
-    }
   }
 }

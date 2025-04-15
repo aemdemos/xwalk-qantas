@@ -77,6 +77,8 @@ async function decorateTemplates(main) {
     // Check if we're on the homepage
     if (currentPath === '/' || currentPath === '') {
       template = 'feed';
+    } else if (currentPath.includes('/gallery/')) {
+      template = 'gallery-carousel';
     } else {
       // Check if the path contains any pattern AND is not exactly that pattern
       const isNewsArticle = basePatterns.some((pattern) => (
@@ -90,7 +92,7 @@ async function decorateTemplates(main) {
       }
     }
 
-    const templates = ['article', 'feed'];
+    const templates = ['article', 'feed', 'gallery-carousel'];
 
     if (templates.includes(template)) {
       const mod = await import(`../templates/${template}/${template}.js`);
