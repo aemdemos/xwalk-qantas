@@ -45,12 +45,6 @@
           "valueType": "string",
           "name": "topics",
           "label": "Topics"
-        },
-        {
-          "component": "text",
-          "valueType": "string",
-          "name": "most-viewed",
-          "label": "Most-Viewed"
         }
       ]
     }
