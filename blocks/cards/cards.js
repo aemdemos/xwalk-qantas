@@ -366,7 +366,7 @@ export default async function decorate(block) {
     // Fetch gallery data and enhance teaser cards
     fetch('/gallery.json')
       .then((response) => response.json())
-      .then((galleryData) => {
+      .then((galleryData) => {  
         if (galleryData && galleryData.data && Array.isArray(galleryData.data)) {
           // Process each card to find matches and add data
           ul.querySelectorAll('li').forEach((card) => {

@@ -189,6 +189,33 @@ export default async function decorate(block) {
     brandLink.closest('.button-container').className = '';
   }
 
+  // Wrap all children of nav-brand in a brand-wrapper
+  if (navBrand) {
+    const brandWrapper = document.createElement('div');
+    brandWrapper.className = 'brand-wrapper';
+    // Move all children to the wrapper
+    while (navBrand.firstChild) {
+      brandWrapper.appendChild(navBrand.firstChild);
+    }
+    // Add the wrapper back to navBrand
+    navBrand.appendChild(brandWrapper);
+  }
+
+  // Add search bar to navBrand
+  const navBrandContent = navBrand.querySelector('.brand-wrapper');
+  if (navBrandContent) {
+    // Create a custom search bar for the brand section
+    const searchBar = document.createElement('div');
+    searchBar.className = 'search-container brand-search';
+    searchBar.innerHTML = `
+      <form class="search-form" role="search" action="https://qantas.resultspage.com/search">
+        <input type="search" name="w" aria-label="Search" placeholder="Search...">
+        <button type="submit" aria-label="Submit search" class="search-button"></button>
+      </form>
+    `;
+    navBrandContent.appendChild(searchBar);
+  }
+
   const navSections = nav.querySelector('.nav-sections');
   if (navSections) {
     navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {
@@ -218,6 +245,19 @@ export default async function decorate(block) {
   const navTools = nav.querySelector('.nav-tools');
   if (navTools) {
     const navLinks = navTools.querySelectorAll('.button');
+
+    // Make the first paragraph in navTools a link to the homepage
+    const firstP = navTools.querySelector('.default-content-wrapper > p:first-child');
+    if (firstP && !firstP.querySelector('a')) {
+      const img = firstP.querySelector('img');
+      const linkContent = img ? img.outerHTML : firstP.innerHTML;
+      const homeLink = document.createElement('a');
+      homeLink.href = '/';
+      homeLink.innerHTML = linkContent;
+      homeLink.classList.add('icon-logo-grey-news-room');
+      firstP.innerHTML = '';
+      firstP.appendChild(homeLink);
+    }
 
     // Check if URL is just the host (home page)
     const isHomePage = new URL(currentUrl).pathname === '/' || new URL(currentUrl).pathname === '';
