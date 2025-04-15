@@ -46,7 +46,7 @@ function convertToISO(dateString) {
     return `${year}-${monthNumber}-${day.padStart(2, '0')}T${formattedHours}:${formattedMinutes}:00.00`;
 }
 
-// for article, add the published date and intro to the page metadata 
+// for article, add the published date and intro to the page metadata
 function addPageIntroAndPublishedMetadata(document, meta, url) {
   const pathname = new URL(url).pathname;
   const pageContent = document.querySelector(".page-content")?.innerText.trim();
@@ -157,7 +157,7 @@ function innerGalleryCards(gallery) {
     if (imgSrc) {
       img.src = imgSrc;
     }
-    
+
     cells.push([img]);
   });
   return cells;
@@ -183,7 +183,7 @@ function getTopicCards(topicsModule) {
     const backgroundImg = topic.querySelector(".topics-background");
     const overlayImg = topic.querySelector(".topic-overlay img");
     overlayImg.classList.replace("hide-ie", "overylay-image")
-    const href = topic.querySelector(".topic-overlay")?.getAttribute("href");
+    let href = topic.querySelector(".topic-overlay")?.getAttribute("href");
     href = href.replace(/\/$/, ''); // remove trailing slash (if any)
     const cell = [backgroundImg, overlayImg, href, topicTitle];
     cells.push(cell);
@@ -311,7 +311,7 @@ function addVideos(main) {
       const iframeSrc = iframe.src;
       if (iframeSrc && (iframeSrc.includes('youtube') || iframeSrc?.includes('youtu.be'))) {
         cells.push([iframeSrc]);
-        
+
         const table = WebImporter.DOMUtils.createTable(cells, document);
         iframe.replaceWith(table);
       }
@@ -331,7 +331,7 @@ function removePagePublishedDiv(main) {
 }
 
 function removeSidebar(main, url) {
-  const sidebar = main.querySelector(".sidebar");
+  const sidebar = main.querySelector('.sidebar');
   if (url.includes("/qantas-responds/")
       || url.includes("/media-releases/")
       || url.includes("/speeches/")
@@ -342,15 +342,29 @@ function removeSidebar(main, url) {
     const cells = [["Side Navigation (article)"]];
     sidebar?.replaceWith(WebImporter.DOMUtils.createTable(cells, document));
 
-    // rearrange the side bar to be on top of the main content.
+    // rearrange the sidebar to be on top of the main content.
     const parent = main.querySelector(".content-wrap");
     const mainSection = parent.children[0];
     const sideNav = parent.children[1];
     if (mainSection && sideNav) {
       parent.insertBefore(sideNav, mainSection);
     }
+  } else if (url.includes("/gallery/")
+    || url.includes("/gallery-category/")) {
+    const cells = [["Side Navigation (gallery)"]];
+    const sideNavContent = sidebar.querySelector(".sidebar-intro")?.innerHTML || '';
+    cells.push([""]);
+    cells.push([sideNavContent]);
+    sidebar.replaceWith(WebImporter.DOMUtils.createTable(cells, document));
+
+    // rearrange the title (and text) and side nav into a separate section, by adding a thematicBreak (<hr> tag) after the side nav
+    const parent = main.querySelector(".content-wrap");
+    const galleryContainer = parent.children[2];
+    const sectionBreak = document.createElement('hr');
+    parent.insertBefore(sectionBreak, galleryContainer);
+  } else {
+    sidebar?.remove();
   }
-  sidebar?.remove();
 }
 
 export default {
