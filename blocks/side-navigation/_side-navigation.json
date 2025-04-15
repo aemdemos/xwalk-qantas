@@ -30,7 +30,8 @@
           "valueType": "string",
           "options": [
             { "name": "Main", "value": "main" },
-            { "name": "Article", "value": "article" }
+            { "name": "Article", "value": "article" },
+            { "name": "Gallery", "value": "gallery" }
           ]
         },
         {
@@ -44,12 +45,6 @@
           "valueType": "string",
           "name": "topics",
           "label": "Topics"
-        },
-        {
-          "component": "text",
-          "valueType": "string",
-          "name": "most-viewed",
-          "label": "Most-Viewed"
         }
       ]
     }

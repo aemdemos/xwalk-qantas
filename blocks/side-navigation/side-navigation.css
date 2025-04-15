@@ -1,3 +1,21 @@
+/* Parent container styling */
+.section.side-navigation-container:has(.side-navigation.gallery) {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+  min-height: 250px;
+  max-height: 500px;
+}
+
+.section.side-navigation-container:has(.gallery.metadata) {
+  min-height: 100px;
+}
+
 .side-navigation-wrapper {
   width: 29%;
   background-color: #f7f7f7;
@@ -16,10 +34,27 @@
   padding-bottom: 0;
 }
 
+main>.section>.side-navigation-wrapper:has(.side-navigation.gallery) {
+  margin-left: auto;
+  margin-right: 0;
+  width: 26%;
+  padding-top: 50px;
+}
+
+main>.section.side-navigation-container>.default-content-wrapper {
+  margin-left: 0;
+  text-transform: uppercase;
+}
+
 .side-navigation {
   padding-bottom: 30px;
   padding-right: 14px;
   padding-left: 14px;
+}
+
+.side-navigation.gallery {
+  padding-right: 0px;
+  padding-left: 0px;
 }
 
 .side-navigation .heading {
@@ -56,6 +91,11 @@
   font-size: 14px;
   color: #515151;
   margin-top: 4px;;
+}
+
+.side-navigation .gallery p {
+  font-size: 15px;
+  margin-top: 5px;;
 }
 
 .side-navigation .related-posts p a {

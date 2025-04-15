@@ -1,4 +1,4 @@
-import { formatDate, sortDataByDate } from '../../scripts/util.js';
+import { formatDate, formatDateNoTime } from '../../scripts/util.js';
 
 /**
  * Get the page topics from the meta tag.
@@ -46,6 +46,11 @@ function getTopicLink(topic) {
 
 export default async function decorate(block) {
   const isMainPage = window.location.pathname === '/';
+  const isGalleryBlock = block.classList.contains('gallery');
+  const isGalleryPage = window.location.pathname.toLowerCase().includes('/gallery/');
+  const isChildGalleryPage = isGalleryPage
+    && window.location.pathname.split('/').filter((p) => p).length > 1;
+
   // Get all the main sections (divs) of the side-navigation
   const sections = block.children;
   const headingSection = sections[0];
@@ -93,6 +98,28 @@ export default async function decorate(block) {
   } else if (isMainPage) {
     // if content is coming from authored page, just add the class for right styling
     topicsSection.classList.add('topics');
+  } else if (isGalleryBlock) {
+    topicsSection.classList.add('gallery');
+    if (isChildGalleryPage) {
+      topicsSection.classList.add('metadata');
+      const imageCount = document.querySelector('meta[name="imagecount"]')?.getAttribute('content');
+      const publishedTime = document.querySelector('meta[name="published-time"]')?.getAttribute('content');
+
+      if (imageCount || publishedTime) {
+        topicsSection.textContent = '';
+        if (imageCount) {
+          const countElement = document.createElement('p');
+          countElement.textContent = `${imageCount} Images`;
+          topicsSection.appendChild(countElement);
+        }
+
+        if (publishedTime) {
+          const dateElement = document.createElement('p');
+          dateElement.textContent = `Posted on ${formatDateNoTime(publishedTime)}`;
+          topicsSection.appendChild(dateElement);
+        }
+      }
+    }
   } else {
     // If no topics found, remove the topics section
     topicsSection.remove();
@@ -161,12 +188,15 @@ export default async function decorate(block) {
         relatedPostsSection.appendChild(titleElement);
 
         relatedPostsSection.appendChild(entriesContainer);
-      } else {
-        // If no entries found, remove the related posts section
+      } else if (relatedPostsSection) {
+        // If no entries found and section exists, remove it
         relatedPostsSection.remove();
       }
     } catch (error) {
-      console.error('Error fetching data', error);
+      // Also handle potential error case
+      if (relatedPostsSection) {
+        relatedPostsSection.remove();
+      }
     }
   }
 }
