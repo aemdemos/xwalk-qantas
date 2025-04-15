@@ -189,8 +189,20 @@ export default async function decorate(block) {
     brandLink.closest('.button-container').className = '';
   }
 
+  // Wrap all children of nav-brand in a brand-wrapper
+  if (navBrand) {
+    const brandWrapper = document.createElement('div');
+    brandWrapper.className = 'brand-wrapper';
+    // Move all children to the wrapper
+    while (navBrand.firstChild) {
+      brandWrapper.appendChild(navBrand.firstChild);
+    }
+    // Add the wrapper back to navBrand
+    navBrand.appendChild(brandWrapper);
+  }
+
   // Add search bar to navBrand
-  const navBrandContent = navBrand.querySelector('.default-content-wrapper');
+  const navBrandContent = navBrand.querySelector('.brand-wrapper');
   if (navBrandContent) {
     // Create a custom search bar for the brand section
     const searchBar = document.createElement('div');

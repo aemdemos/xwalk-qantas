@@ -30,7 +30,7 @@ nav {
   justify-content: center;
 }
 
-.nav-brand .default-content-wrapper {
+.nav-brand .brand-wrapper {
   width: 100%;
   max-width: 1200px;
   padding: 1rem 2rem 0.5rem;
@@ -53,13 +53,13 @@ nav {
   height: auto;
 }
 
-.nav-brand .default-content-wrapper p:first-of-type img {
+.nav-brand .brand-wrapper .image-with-link-wrapper:first-of-type img {
   width: 202px;
   height: 40px;
   margin-left: 3rem;
 }
 
-.nav-brand .default-content-wrapper p:last-of-type img {
+.nav-brand .brand-wrapper .image-with-link-wrapper:nth-child(2) img {
   height: 40px;
   width: auto;
 }
@@ -117,7 +117,7 @@ nav {
 }
 
 /* Make brand container a flex container to align items */
-.nav-brand .default-content-wrapper {
+.nav-brand .brand-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -258,7 +258,7 @@ nav {
 }
 
 /* Alternatively, you can add margin to the second picture */
-.nav-brand .default-content-wrapper p:last-of-type {
+.nav-brand .brand-wrapper .image-with-link-wrapper:nth-child(2) {
   margin-left: 2rem;
 }
 
