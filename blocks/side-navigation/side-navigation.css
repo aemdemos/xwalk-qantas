@@ -8,8 +8,12 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0;
-  min-height: 100px;
+  min-height: 250px;
   max-height: 500px;
+}
+
+.section.side-navigation-container:has(.gallery.metadata) {
+  min-height: 100px;
 }
 
 .side-navigation-wrapper {

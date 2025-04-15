@@ -101,6 +101,7 @@ export default async function decorate(block) {
   } else if (isGalleryBlock) {
     topicsSection.classList.add('gallery');
     if (isChildGalleryPage) {
+      topicsSection.classList.add('metadata');
       const imageCount = document.querySelector('meta[name="imagecount"]')?.getAttribute('content');
       const publishedTime = document.querySelector('meta[name="published-time"]')?.getAttribute('content');
 
