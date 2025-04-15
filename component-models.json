@@ -376,6 +376,10 @@
           {
             "name": "Article",
             "value": "article"
+          },
+          {
+            "name": "Gallery",
+            "value": "gallery"
           }
         ]
       },
