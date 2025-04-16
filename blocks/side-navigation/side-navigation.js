@@ -55,7 +55,11 @@ export default async function decorate(block) {
   const sections = block.children;
   const headingSection = sections[0];
   const topicsSection = sections[1];
-  const relatedPostsSection = sections[2];
+  let relatedPostsSection = sections[2];
+  if (!relatedPostsSection) {
+    relatedPostsSection = document.createElement('div');
+    block.appendChild(relatedPostsSection);
+  }
 
   // Add class names to each section
   if (window.location.href.toLowerCase().includes('/roo-tales/')) {
