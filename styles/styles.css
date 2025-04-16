@@ -261,3 +261,8 @@ main .section.highlight {
   margin: 0;
   padding: 40px 0;
 }
+
+main .section.page-intro {
+  margin: 0;
+  padding: 40px 0 20px 0;
+}

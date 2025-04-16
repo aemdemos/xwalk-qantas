@@ -33,6 +33,10 @@
             {
               "name": "Highlight",
               "value": "highlight"
+            },
+            {
+              "name": "Page Intro",
+              "value": "page-intro"
             }
           ]
         }
