@@ -132,9 +132,9 @@ export default async function decorate(block) {
   // related posts module
   if (isMainPage) {
     // if content is coming from authored page, just add the class for right styling
-    relatedPostsSection.classList.add('related-posts');
+    relatedPostsSection.remove();//classList.add('related-posts');
   } else if (isGalleryBlock) {
-    relatedPostsSection.classList.add('related-posts');
+    relatedPostsSection.remove();
   } else {
     try {
       // Fetch top 3 entries from query index
