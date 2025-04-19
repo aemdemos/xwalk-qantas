@@ -253,10 +253,10 @@ export default async function decorate(block) {
           filterTitle.innerHTML = `<h1>- ${tagFilter}</h1>`;
           block.appendChild(filterTitle);
 
-          const subTitle = document.querySelector(".cards-container .default-content-wrapper > p");
+          const subTitle = document.querySelector('.cards-container .default-content-wrapper > p');
           if (subTitle) {
             filterTitle.appendChild(subTitle);
-            document.querySelector(".cards-container .default-content-wrapper").remove();
+            document.querySelector('.cards-container .default-content-wrapper').remove();
           }
 
           filteredData = sortedData.filter((item) => {
@@ -340,9 +340,13 @@ export default async function decorate(block) {
               wrapper.href = link.href;
               // Wrap the picture element with the anchor
               const picture = imageDiv.querySelector('picture');
-              if (picture) {
+              if (picture && picture.parentNode === imageDiv) {
                 imageDiv.removeChild(picture);
                 wrapper.appendChild(picture);
+                imageDiv.appendChild(wrapper);
+              } else if (picture) {
+                // If picture exists but isn't a direct child of imageDiv
+                wrapper.appendChild(picture.cloneNode(true));
                 imageDiv.appendChild(wrapper);
               }
             }
@@ -366,7 +370,7 @@ export default async function decorate(block) {
     // Fetch gallery data and enhance teaser cards
     fetch('/gallery.json')
       .then((response) => response.json())
-      .then((galleryData) => {  
+      .then((galleryData) => {
         if (galleryData && galleryData.data && Array.isArray(galleryData.data)) {
           // Process each card to find matches and add data
           ul.querySelectorAll('li').forEach((card) => {
@@ -442,9 +446,13 @@ export default async function decorate(block) {
               wrapper.href = link.href;
               // Wrap the picture element with the anchor
               const picture = imageDiv.querySelector('picture');
-              if (picture) {
+              if (picture && picture.parentNode === imageDiv) {
                 imageDiv.removeChild(picture);
                 wrapper.appendChild(picture);
+                imageDiv.appendChild(wrapper);
+              } else if (picture) {
+                // If picture exists but isn't a direct child of imageDiv
+                wrapper.appendChild(picture.cloneNode(true));
                 imageDiv.appendChild(wrapper);
               }
             }

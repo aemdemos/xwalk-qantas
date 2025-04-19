@@ -75,6 +75,13 @@ main > .section.cards-container:has(.cards) {
   font-size: 18px;
   font-weight: 400;
   min-height: 100px;
+  line-height: 1.4;
+}
+
+.cards-wrapper>.cards.block.teaser>ul>li>.cards-card-body p:nth-child(2) {
+  line-height: 12px;
+  font-size: 12px;
+  text-transform: none;
 }
 
 .cards-wrapper>.cards.block.teaser>ul>li>.cards-card-body:nth-of-type(2) {
