@@ -339,3 +339,35 @@ main > .section.cards-container:has(.cards) {
   object-fit: cover; /* Maintain aspect ratio and cover the container */
   object-position: center; /* Center the image within container */
 }
+
+/* YouTube video play button styling */
+.cards-wrapper > .cards.block.teaser .cards-card-video {
+  position: relative;
+}
+
+.cards-wrapper > .cards.block.teaser .cards-card-video::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.cards-wrapper > .cards.block.teaser .cards-card-video::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-40%, -50%);
+  width: 0;
+  height: 0;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-left: 20px solid white;
+  z-index: 3;
+}

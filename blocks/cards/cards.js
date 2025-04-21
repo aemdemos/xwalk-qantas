@@ -3,6 +3,15 @@ import { moveInstrumentation } from '../../scripts/scripts.js';
 import { formatDate, formatDateNoTime, sortDataByDate } from '../../scripts/util.js';
 
 export default async function decorate(block) {
+  // Get published-time from page metadata
+  function getPagePublishedDate() {
+    const publishedTimeMeta = document.querySelector('meta[name="published-time"]');
+    return publishedTimeMeta?.content || '';
+  }
+
+  // Store the page's published date for fallback
+  const pagePublishedDate = getPagePublishedDate();
+
   // Helper function to optimize images
   function optimizeImages(container) {
     container.querySelectorAll('picture > img:not([data-optimized])').forEach((img) => {
@@ -139,10 +148,11 @@ export default async function decorate(block) {
       }
 
       // Add published date if available
-      if (tale.publisheddate) {
+      const dateSource = tale.publisheddate || tale.publishDateTime || pagePublishedDate;
+      if (dateSource) {
         const dateP = document.createElement('p');
         dateP.className = 'card-publisheddate';
-        dateP.textContent = formatDate(tale.publisheddate);
+        dateP.textContent = formatDate(dateSource);
         bodyDiv.appendChild(dateP);
       }
 
@@ -331,23 +341,32 @@ export default async function decorate(block) {
           if (div.querySelector('picture')) {
             div.className = 'cards-card-image';
           } else if (div.querySelector('a')) {
-            // If div contains only an anchor tag
             const link = div.querySelector('a');
             const imageDiv = li.querySelector('.cards-card-image');
             if (imageDiv) {
               // Create a new wrapper anchor
               const wrapper = document.createElement('a');
               wrapper.href = link.href;
+              // Check if it's a YouTube link
+              const isYouTube = link.href.includes('youtube.com') || link.href.includes('youtu.be');
               // Wrap the picture element with the anchor
               const picture = imageDiv.querySelector('picture');
               if (picture && picture.parentNode === imageDiv) {
                 imageDiv.removeChild(picture);
                 wrapper.appendChild(picture);
                 imageDiv.appendChild(wrapper);
+                // Add YouTube class if needed
+                if (isYouTube) {
+                  imageDiv.classList.add('cards-card-video');
+                }
               } else if (picture) {
                 // If picture exists but isn't a direct child of imageDiv
                 wrapper.appendChild(picture.cloneNode(true));
                 imageDiv.appendChild(wrapper);
+                // Add YouTube class if needed
+                if (isYouTube) {
+                  imageDiv.classList.add('cards-card-video');
+                }
               }
             }
             // Remove the div containing only the anchor
@@ -394,27 +413,36 @@ export default async function decorate(block) {
             const matchingGallery = galleryData.data.find((item) => item.path === cardPath
               || (item.path.startsWith('/') && item.path.substring(1) === cardPath)
               || (cardPath.startsWith('/') && cardPath.substring(1) === item.path));
-            if (!matchingGallery) return;
-
             const metadataBody = document.createElement('div');
             metadataBody.className = 'cards-card-body';
 
-            // Add published date if available
-            if (matchingGallery.publisheddate) {
+            if (matchingGallery) {
+              // Add published date if available
+              const galleryDateSource = matchingGallery.publisheddate
+                || matchingGallery.publishDateTime
+                || pagePublishedDate;
+              if (galleryDateSource) {
+                const dateP = document.createElement('p');
+                dateP.className = 'card-publisheddate';
+                dateP.textContent = `POSTED ON ${formatDateNoTime(galleryDateSource)}`;
+                metadataBody.appendChild(dateP);
+              }
+
+              // Add imagecount if available
+              if (matchingGallery.imagecount) {
+                const imageCountP = document.createElement('p');
+                imageCountP.className = 'card-image-count';
+                imageCountP.textContent = `${matchingGallery.imagecount}`;
+                metadataBody.appendChild(imageCountP);
+              }
+            } else {
+              // Create default structure when no matching gallery is found
+              // Use page published date if available
               const dateP = document.createElement('p');
               dateP.className = 'card-publisheddate';
-              dateP.textContent = `POSTED ON ${formatDateNoTime(matchingGallery.publisheddate)}`;
+              dateP.textContent = `POSTED ON ${formatDateNoTime(pagePublishedDate)}`;
               metadataBody.appendChild(dateP);
             }
-
-            // Add imagecount if available
-            if (matchingGallery.imagecount) {
-              const imageCountP = document.createElement('p');
-              imageCountP.className = 'card-image-count';
-              imageCountP.textContent = `${matchingGallery.imagecount}`;
-              metadataBody.appendChild(imageCountP);
-            }
-
             // Create a new card body for metadata instead of adding to the existing one
             if (metadataBody.children.length > 0) {
               card.insertBefore(metadataBody, cardBody);
@@ -437,7 +465,6 @@ export default async function decorate(block) {
           if (div.querySelector('picture')) {
             div.className = 'cards-card-image';
           } else if (div.querySelector('a')) {
-            // If div contains only an anchor tag
             const link = div.querySelector('a');
             const imageDiv = li.querySelector('.cards-card-image');
             if (imageDiv) {
