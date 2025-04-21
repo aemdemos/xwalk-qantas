@@ -340,34 +340,33 @@ main > .section.cards-container:has(.cards) {
   object-position: center; /* Center the image within container */
 }
 
-/* YouTube video play button styling */
+/* YouTube video play button styling using FontAwesome */
 .cards-wrapper > .cards.block.teaser .cards-card-video {
   position: relative;
 }
 
-.cards-wrapper > .cards.block.teaser .cards-card-video::before {
-  content: "";
+.cards-wrapper > .cards.block.teaser .cards-card-video a picture::before {
+  content: "\f144"; /* FontAwesome play-circle icon */
+  font-family: "FontAwesome", sans-serif;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 60px;
-  height: 60px;
-  background-color: rgba(0, 0, 0, 0.7);
-  border-radius: 50%;
+  font-size: 60px;
+  color: white;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   z-index: 2;
+  opacity: 0.9;
 }
 
-.cards-wrapper > .cards.block.teaser .cards-card-video::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-40%, -50%);
-  width: 0;
-  height: 0;
-  border-top: 12px solid transparent;
-  border-bottom: 12px solid transparent;
-  border-left: 20px solid white;
-  z-index: 3;
+/* Remove old pseudo-element styles */
+.cards-wrapper > .cards.block.teaser .cards-card-video::after,
+.cards-wrapper > .cards.block.teaser .video-play-icon {
+  display: none;
+}
+
+/* Hide play button when not in video filter mode */
+.cards-wrapper > .cards.block.teaser .hide-video-icon .cards-card-video::before,
+.cards-wrapper > .cards.block.teaser .hide-video-icon .cards-card-video::after {
+  display: none;
 }

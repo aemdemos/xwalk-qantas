@@ -330,12 +330,19 @@ export default async function decorate(block) {
     block.appendChild(cardsContainer);
   } else if (block.classList.contains('teaser')) {
     // Handle teaser cards
+    // Check if we're filtering by gallery_type
+    const urlParams = new URLSearchParams(window.location.search);
+    const galleryType = urlParams.get('gallery_type');
+    const isVideoFilter = galleryType === 'video';
+    
     /* change to ul, li */
     const ul = document.createElement('ul');
     [...block.children].forEach((row) => {
       const li = document.createElement('li');
       moveInstrumentation(row, li);
       while (row.firstElementChild) li.append(row.firstElementChild);
+      let hasYouTubeLink = false;
+      
       [...li.children].forEach((div) => {
         if (div.children.length === 1) {
           if (div.querySelector('picture')) {
@@ -349,6 +356,7 @@ export default async function decorate(block) {
               wrapper.href = link.href;
               // Check if it's a YouTube link
               const isYouTube = link.href.includes('youtube.com') || link.href.includes('youtu.be');
+              hasYouTubeLink = isYouTube; // Store this for filtering
               // Wrap the picture element with the anchor
               const picture = imageDiv.querySelector('picture');
               if (picture && picture.parentNode === imageDiv) {
@@ -378,6 +386,12 @@ export default async function decorate(block) {
           div.className = 'cards-card-body';
         }
       });
+      // If we're filtering by video type, hide non-video cards
+      if (isVideoFilter && !hasYouTubeLink) {
+        li.style.display = 'none';
+      } else if (!isVideoFilter && hasYouTubeLink) {
+        li.style.display = 'none';
+      }
       ul.append(li);
     });
     ul.querySelectorAll('picture > img').forEach((img) => {
