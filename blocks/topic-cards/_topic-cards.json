@@ -38,28 +38,51 @@
         {
           "component": "reference",
           "valueType": "string",
-          "name": "background-image",
+          "name": "background_image",
           "label": "Background Image",
           "multi": false
         },
         {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "background_imageAlt",
+          "value": "",
+          "label": "Background Image ALT"
+        },
+        {
           "component": "reference",
           "valueType": "string",
-          "name": "overlay-image",
-          "label": "Overlay Image",
+          "name": "icon_image",
+          "label": "Icon Image",
           "multi": false
         },
         {
-          "component": "aem-content",
-          "name": "link",
-          "label": "Link"
+          "component": "richtext",
+          "valueType": "string",
+          "name": "icon_imageAlt",
+          "value": "",
+          "label": "Icon Image ALT"
         },
         {
-          "component": "richtext",
-          "name": "text",
+          "component": "text",
+          "valueType": "string",
+          "name": "content_title",
           "value": "",
-          "label": "Text",
-          "valueType": "string"
+          "label": "Title"
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "link",
+          "label": "Link",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "linkAlt",
+          "value": "",
+          "label": "Link ALT"
         }
       ]
     }
