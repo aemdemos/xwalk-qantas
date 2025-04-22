@@ -75,6 +75,13 @@ main > .section.cards-container:has(.cards) {
   font-size: 18px;
   font-weight: 400;
   min-height: 100px;
+  line-height: 1.4;
+}
+
+.cards-wrapper>.cards.block.teaser>ul>li>.cards-card-body p:nth-child(2) {
+  line-height: 12px;
+  font-size: 12px;
+  text-transform: none;
 }
 
 .cards-wrapper>.cards.block.teaser>ul>li>.cards-card-body:nth-of-type(2) {
@@ -331,4 +338,35 @@ main > .section.cards-container:has(.cards) {
   height: 250px;
   object-fit: cover; /* Maintain aspect ratio and cover the container */
   object-position: center; /* Center the image within container */
+}
+
+/* YouTube video play button styling using FontAwesome */
+.cards-wrapper > .cards.block.teaser .cards-card-video {
+  position: relative;
+}
+
+.cards-wrapper > .cards.block.teaser .cards-card-video a picture::before {
+  content: "\f144"; /* FontAwesome play-circle icon */
+  font-family: "FontAwesome", sans-serif;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 60px;
+  color: white;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  opacity: 0.9;
+}
+
+/* Remove old pseudo-element styles */
+.cards-wrapper > .cards.block.teaser .cards-card-video::after,
+.cards-wrapper > .cards.block.teaser .video-play-icon {
+  display: none;
+}
+
+/* Hide play button when not in video filter mode */
+.cards-wrapper > .cards.block.teaser .hide-video-icon .cards-card-video::before,
+.cards-wrapper > .cards.block.teaser .hide-video-icon .cards-card-video::after {
+  display: none;
 }

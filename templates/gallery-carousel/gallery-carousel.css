@@ -41,6 +41,67 @@
   cursor: zoom-out;
 }
 
+/* Video Carousel Specific Styles */
+.video-carousel-player {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Skip to video embed link styling */
+.skipVideo,
+.skipVideo:visited {
+  display: inline-block;
+  position: absolute;
+  background-color: red;
+  color: white !important;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  z-index: 2100;
+  border: none;
+  top: 0;
+  left: -9999px;
+}
+
+.skipVideo.active {
+  left: 0;
+}
+
+.skipVideo:focus {
+  outline: 2px solid white;
+}
+
+.video-carousel-player .block.embed {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.video-embed-container,
+.video-carousel-player .embed > div {
+  width: 100%;
+  max-width: 1200px;
+  height: 0;
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+.video-embed-container iframe,
+.video-carousel-player .embed iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* End Video Carousel Specific Styles */
+
 .gallery-carousel-controls {
   height: 40px;
   background: rgb(0, 0, 0);
@@ -90,7 +151,9 @@
   gap: 20px;
 }
 
-.gallery-carousel-nav {
+/* Make sure both image and video carousel have consistent button styling */
+.gallery-carousel-container .gallery-carousel-nav,
+.video-carousel-container .gallery-carousel-nav {
   background: none;
   border: none;
   color: white;
@@ -101,10 +164,26 @@
   line-height: 1;
 }
 
+.gallery-carousel-container .gallery-carousel-close,
+.video-carousel-container .gallery-carousel-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  opacity: 0.8;
+}
+
 .gallery-carousel-close:hover,
 .gallery-carousel-download:hover,
 .gallery-carousel-nav:hover {
   opacity: 1;
+}
+
+/* Cards video styles */
+.cards-card-video .embed-placeholder-play button {
+  cursor: pointer;
 }
 
 /* Media Queries for Mobile */
@@ -120,5 +199,9 @@
 
   .controls-center {
     display: none;
+  }
+  
+  .video-embed-container {
+    max-width: 100%;
   }
 }

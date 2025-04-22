@@ -88,6 +88,13 @@ main > .section > .topic-cards-wrapper {
   letter-spacing: 1px;
 }
 
+/* Card body styling update for second paragraph */
+.topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-body p:nth-child(2) {
+  line-height: 12px;
+  font-size: 12px;
+  text-transform: none;
+}
+
 .topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-link {
   position: absolute;
   top: 0;
