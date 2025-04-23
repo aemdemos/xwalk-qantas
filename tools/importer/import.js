@@ -46,6 +46,65 @@ function convertToISO(dateString) {
     return `${year}-${monthNumber}-${day.padStart(2, '0')}T${formattedHours}:${formattedMinutes}:00.00`;
 }
 
+// Cache for article thumbnail mapping
+let articleThumbnailMap = null;
+
+// Function to fetch article thumbnail mapping
+function fetchArticleThumbnailMap() {
+  if (articleThumbnailMap) return articleThumbnailMap;
+  
+  try {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://localhost:3001/tools/importer/article_thumbnail_map.json', false); // false makes it synchronous
+    xhr.send();
+    
+    if (xhr.status === 200) {
+      articleThumbnailMap = JSON.parse(xhr.responseText);
+      return articleThumbnailMap;
+    } else {
+      throw new Error(`HTTP error! status: ${xhr.status}`);
+    }
+  } catch (error) {
+    console.error('Error fetching article thumbnail map:', error);
+    return {};
+  }
+}
+
+// Function to get thumbnail URL for an article
+function getArticleThumbnail(url) {
+  const localhostUrl = new URL(url);
+  const lookupUrl = 'https://www.qantasnewsroom.com.au' + localhostUrl.pathname;
+  const map = fetchArticleThumbnailMap();
+  return map[lookupUrl] || null;
+}
+
+// Function to set the page metadata image.
+// For article pages, it first tries to get the image from the article_thumbnail_map.json, if not found, it will fallback to the default one. 
+function setPageMetadataImage(meta, document, url) {
+  if ('Image' in meta) {
+    // somehow the img in the meta has the url appended twice, hence this song and dance
+    delete meta['Image'];
+    let img = document.createElement("img");
+    
+    // Try to get thumbnail from the mapping first
+    const thumbnailUrl = getArticleThumbnail(url);
+    if (thumbnailUrl) {
+      img.src = thumbnailUrl;
+    } else {
+      // Fallback to if no thumbnail found
+      // for the gallery child pages, set the first image as the page image (for main page listing)
+      if (url.includes('/gallery/') && document.querySelector(".full-width")) {
+        img.src = document.querySelector(".full-width img")?.getAttribute('src');
+      } else {
+        // if not present, use the default one
+        img.src = document.querySelector('meta[property="og:image"]')?.getAttribute("content");
+      }      
+    }
+    // Rename "Image" to "image" if it exists
+    meta['image'] = img;
+  }
+}
+
 // for article, add the published date and intro to the page metadata
 function addPageIntroAndPublishedMetadata(document, meta, url) {
   const pathname = new URL(url).pathname;
@@ -111,20 +170,7 @@ function setMetadata(meta, document, url) {
     delete meta['Description'];
   }
 
-  // Rename "Image" to "image" if it exists
-  if ('Image' in meta) {
-    // somehow the img in the meta has the url appended twice, hence this song and dance
-    delete meta['Image'];
-    let img = document.createElement("img");
-    // for the gallery child pages, set the first image as the page image (for main page listing)
-    if (url.includes('/gallery/') && document.querySelector(".full-width")) {
-      img.src = document.querySelector(".full-width img")?.getAttribute('src');
-    } else {
-      // if not present, use the default one
-      img.src = document.querySelector('meta[property="og:image"]')?.getAttribute("content");
-    }
-    meta['image'] = img;
-  }
+  setPageMetadataImage(meta, document, url);
 
   addPageIntroAndPublishedMetadata(document, meta, url);
   addSidebarInfoToMetadata(document, meta);
