@@ -1,7 +1,7 @@
 /* Footer base styles */
 .footer-wrapper {
   margin-top: 50px;
-  padding: 12px 0 30px;
+  padding: 10px 0 7px;
   background-color: #1c1d1e;
   color: #999;
 }
@@ -12,7 +12,7 @@
   padding: 20px 24px 24px;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 25px;
 }
 
 /* Create a wrapper for nav sections */
@@ -62,15 +62,15 @@
 
 .footer .copyright p {
   color: #e6e6e6;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .footer .logos p:first-child {
-  margin: 0 0 30px;
+  margin: 0 0 20px;
 }
 
 .footer .logos p:first-child img {
-  width: 65px;
+  width: 55px;
   height: auto;
 }
 
@@ -79,6 +79,7 @@
   display: flex;
   gap: 12px;
   margin-left: auto;
+  margin-top: -15px;
 }
 
 /* Common styles for social media icons */
@@ -150,8 +151,9 @@
 .footer .useful-links .default-content-wrapper {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  row-gap: 1px;
+  row-gap: 0px;
   width: 400px;
+  line-height: 1.1;
 }
 
 /* Style the "Useful Links" heading */

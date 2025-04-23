@@ -23,4 +23,18 @@ export default function decorate(block) {
   });
   block.textContent = '';
   block.append(ul);
+
+  // Make entire card clickable and redirect to the link
+  ul.querySelectorAll('li').forEach((card) => {
+    const linkElement = card.querySelector('.cards-card-link a');
+    if (linkElement) {
+      const href = linkElement.getAttribute('href');
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', (e) => {
+        if (!e.target.closest('a')) {
+          window.location.href = href;
+        }
+      });
+    }
+  });
 }

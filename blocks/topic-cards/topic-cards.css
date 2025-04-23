@@ -1,9 +1,12 @@
+main > .section > .topic-cards-wrapper {
+  margin-top: 40px;
+}
+
 .topic-cards-wrapper > .block.topic-cards {
   display: flex;
   flex-wrap: wrap; /* Allow rows to wrap for responsive layout */
   justify-content: space-between; /* Distribute cards evenly */
   gap: 20px; /* Add spacing between rows and columns */
-  width: 65.88078%
 }
 
 .topic-cards-wrapper > .block.topic-cards > ul {
@@ -85,6 +88,13 @@
   letter-spacing: 1px;
 }
 
+/* Card body styling update for second paragraph */
+.topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-body p:nth-child(2) {
+  line-height: 12px;
+  font-size: 12px;
+  text-transform: none;
+}
+
 .topic-cards-wrapper > .block.topic-cards > ul > li .cards-card-link {
   position: absolute;
   top: 0;
@@ -126,6 +136,10 @@
 
 /* Responsive styling */
 @media (max-width: 1024px) {
+
+  main > .section > .topic-cards-wrapper {
+    order: 2;
+  }
   /* Full width for screens smaller than 1024px */
   .topic-cards-wrapper > .block.topic-cards {
     width: 100%;

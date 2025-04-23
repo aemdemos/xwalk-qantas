@@ -239,6 +239,12 @@
           "urlHash": "be55da6290efe33d23ea35eed79b3f0fbb5a961f",
           "uuid": "be55da62-02-517a94db4be9e28b45ddc57a88330ab3a851dd0d",
           "xpath": "/html[1]/body[1]/div[3]/div[1]"
+        },
+        {
+          "url": "https://www.qantasnewsroom.com.au",
+          "urlHash": "4b507ebc843d1ddd9bad94de769306d884b416e8",
+          "uuid": "4b507ebc-08-e2bd6861ab74d284e116ce33287261b1f9e98b3f",
+          "xpath": "/html[1]/body[1]/div[3]/div[1]/div[1]/div[2]/ul[1]"
         }
       ]
     },

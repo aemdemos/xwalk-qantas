@@ -77,7 +77,7 @@ async function decorateTemplates(main) {
     // Check if we're on the homepage
     if (currentPath === '/' || currentPath === '') {
       template = 'feed';
-    } else if (currentPath.includes('/gallery/')) {
+    } else if (currentPath.includes('/gallery/') || (currentPath.includes('/gallery-category/') && window.location.search.includes('gallery_type=video'))) {
       template = 'gallery-carousel';
     } else {
       // Check if the path contains any pattern AND is not exactly that pattern

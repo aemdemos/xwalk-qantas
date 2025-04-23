@@ -223,3 +223,22 @@ main > .form-container h1 {
   font-size: 16px;
   line-height: 1.5;
 }
+
+/* reCAPTCHA styling */
+.form .recaptcha-wrapper {
+  margin: 20px 0;
+}
+
+.form .recaptcha-error {
+  color: #eb000a;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* Ensure reCAPTCHA is responsive */
+@media (max-width: 300px) {
+  .g-recaptcha {
+    transform-origin: 0 0;
+    transform: scale(0.8);
+  }
+}
