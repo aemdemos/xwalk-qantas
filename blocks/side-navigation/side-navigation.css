@@ -265,6 +265,25 @@ main>.section.side-navigation-container>.default-content-wrapper {
 
 /* Responsive adjustments */
 @media (max-width: 1024px) {
+
+  .section.side-navigation-container:has(.side-navigation.gallery) {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0;
+    min-height: 250px;
+  }
+
+  main>.section>.side-navigation-wrapper:has(.side-navigation.gallery) {
+    margin: auto;
+    width: 90%;
+    padding-top: 30px;
+  }
+
   .section.news-feed-container.side-navigation-container {
     flex-direction: column;
   }
