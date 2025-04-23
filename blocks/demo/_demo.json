@@ -1,0 +1,73 @@
+{
+  "definitions": [
+    {
+      "id": "gallery",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Gallery",
+              "filter": "gallery"
+            }
+          }
+        }
+      },
+      "title": "Gallery"
+    },
+    {
+      "id": "gallery-item",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Gallery Item",
+              "model": "gallery-item"
+            }
+          }
+        }
+      },
+      "title": "Gallery Item"
+    }
+  ],
+  "filters": [
+    {
+      "id": "gallery",
+      "components": [
+        "gallery-item"
+      ]
+    }
+  ],
+  "models": [
+    {
+      "id": "gallery-item",
+      "fields": [
+        {
+          "component": "reference",
+          "name": "thumbnailImage",
+          "label": "Thumbnail Image",
+          "valueType": "string"
+        },
+        {
+          "component": "reference",
+          "name": "largeImage",
+          "label": "Large Image Link",
+          "valueType": "string"
+        },
+        {
+          "component": "reference",
+          "name": "originalImage",
+          "label": "Original Image Link",
+          "valueType": "string"
+        },
+        {
+          "component": "text",
+          "name": "imageTitle",
+          "label": "Image Title",
+          "valueType": "string"
+        }
+      ]
+    }
+  ]
+}
