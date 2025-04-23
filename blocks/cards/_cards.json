@@ -1,32 +1,32 @@
 {
   "definitions": [
     {
-      "title": "Cards",
-      "id": "cards",
+      "title": "Gallery",
+      "id": "gallery",
       "plugins": {
         "xwalk": {
           "page": {
             "resourceType": "core/franklin/components/block/v1/block",
             "template": {
-              "name": "Cards",
-              "filter": "cards",
-              "model": "cards",
-              "classes": "thumbnail"
+              "name": "Gallery",
+              "filter": "gallery",
+              "key-value": true,
+              "classes": "gallery"
             }
           }
         }
       }
     },
     {
-      "title": "Card",
-      "id": "card",
+      "title": "Gallery Item",
+      "id": "gallery-item",
       "plugins": {
         "xwalk": {
           "page": {
             "resourceType": "core/franklin/components/block/v1/block/item",
             "template": {
-              "name": "Card",
-              "model": "card"
+              "name": "Gallery Item",
+              "model": "gallery-item"
             }
           }
         }
@@ -35,26 +35,7 @@
   ],
   "models": [
     {
-      "id": "cards",
-      "fields": [
-        {
-          "component": "select",
-          "name": "classes",
-          "value": "",
-          "label": "Cards Layout Options",
-          "valueType": "string",
-          "options": [
-            { "name": "Thumbnail", "value": "thumbnail" },
-            { "name": "Teaser", "value": "teaser" },
-            { "name": "Banner", "value": "banner" },
-            { "name": "Roo-tales", "value": "roo-tales" },
-            { "name": "New Galleries", "value": "new-galleries" }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "card",
+      "id": "gallery-item",
       "fields": [
         {
           "component": "reference",
@@ -65,24 +46,50 @@
         },
         {
           "component": "richtext",
-          "name": "text",
+          "valueType": "string",
+          "name": "imageAlt",
           "value": "",
-          "label": "Text",
-          "valueType": "string"
+          "label": "Alt"
         },
         {
-          "component": "aem-content",
+          "component": "richtext",
+          "valueType": "string",
+          "name": "title",
+          "value": "",
+          "label": "Title"
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
           "name": "link",
-          "label": "Link"
+          "label": "Link",
+          "multi": false
+        },
+        {
+          "component": "select",
+          "valueType": "string",
+          "name": "classes",
+          "value": "",
+          "label": "Options",
+          "options": [
+            {
+              "name": "default",
+              "value": ""
+            },
+            {
+              "name": "Gallery Item Highlight",
+              "value": "highlight"
+            }
+          ]
         }
       ]
     }
   ],
   "filters": [
     {
-      "id": "cards",
+      "id": "gallery",
       "components": [
-        "card"
+        "gallery-item"
       ]
     }
   ]
