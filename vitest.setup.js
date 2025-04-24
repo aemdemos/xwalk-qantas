@@ -18,7 +18,7 @@ Object.defineProperty(window, 'matchMedia', {
       },
       removeEventListener() {},
       dispatchEvent() {},
-      listeners: []
+      listeners: [],
     };
   },
-}); 
+});

@@ -12,179 +12,164 @@
 /* global WebImporter */
 /* eslint-disable no-console, class-methods-use-this */
 
-// Convert text date in the format 'Published on 28th October 2015 at 9:17' to '2015-10-28T9:17:00.000Z' format
+// Convert text date in the format 'Published on 28th October 2015 at 9:17' to ISO format
 function convertToISO(dateString) {
-    // Extracting the date and time (optional) using regex
-    const regex = /(Published|Posted) on (\d{1,2})(?:st|nd|rd|th)? (\w+) (\d{4})(?: at (\d{1,2}):(\d{2}))?/;
-    const match = dateString.match(regex);
+  const regex = /(Published|Posted) on (\d{1,2})(?:st|nd|rd|th)? (\w+) (\d{4})(?: at (\d{1,2}):(\d{2}))?/;
+  const match = dateString.match(regex);
 
-    if (!match) {
-        return null;
-    }
+  if (!match) {
+    return null;
+  }
 
-    // Extracting parts
-    const [, , day, month, year, hours, minutes] = match;
+  const [, , day, month, year, hours, minutes] = match;
 
-    // Month mapping
-    const monthMap = {
-        January: "01", February: "02", March: "03", April: "04",
-        May: "05", June: "06", July: "07", August: "08",
-        September: "09", October: "10", November: "11", December: "12"
-    };
+  const monthMap = {
+    January: '01',
+    February: '02',
+    March: '03',
+    April: '04',
+    May: '05',
+    June: '06',
+    July: '07',
+    August: '08',
+    September: '09',
+    October: '10',
+    November: '11',
+    December: '12',
+  };
 
-    const monthNumber = monthMap[month];
+  const monthNumber = monthMap[month];
 
-    if (!monthNumber) {
-        return null;
-    }
+  if (!monthNumber) {
+    return null;
+  }
 
-    // Use default time if missing
-    const formattedHours = hours ? hours.padStart(2, '0') : "00";
-    const formattedMinutes = minutes ? minutes.padStart(2, '0') : "00";
+  const formattedHours = hours ? hours.padStart(2, '0') : '00';
+  const formattedMinutes = minutes ? minutes.padStart(2, '0') : '00';
 
-    // Construct ISO format
-    return `${year}-${monthNumber}-${day.padStart(2, '0')}T${formattedHours}:${formattedMinutes}:00.00`;
+  return `${year}-${monthNumber}-${day.padStart(2, '0')}T${formattedHours}:${formattedMinutes}:00.00`;
 }
 
-// Cache for article thumbnail mapping
 let articleThumbnailMap = null;
 
-// Function to fetch article thumbnail mapping
 function fetchArticleThumbnailMap() {
   if (articleThumbnailMap) return articleThumbnailMap;
-  
+
   try {
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:3001/tools/importer/article_thumbnail_map.json', false); // false makes it synchronous
+    xhr.open('GET', 'http://localhost:3001/tools/importer/article_thumbnail_map.json', false);
     xhr.send();
-    
+
     if (xhr.status === 200) {
       articleThumbnailMap = JSON.parse(xhr.responseText);
       return articleThumbnailMap;
-    } else {
-      throw new Error(`HTTP error! status: ${xhr.status}`);
     }
+    throw new Error(`HTTP error! status: ${xhr.status}`);
   } catch (error) {
     console.error('Error fetching article thumbnail map:', error);
     return {};
   }
 }
 
-// Function to get thumbnail URL for an article
 function getArticleThumbnail(url) {
-  const localhostUrl = new URL(url);
-  const lookupUrl = 'https://www.qantasnewsroom.com.au' + localhostUrl.pathname;
+  const { pathname } = new URL(url);
+  const lookupUrl = `https://www.qantasnewsroom.com.au${pathname}`;
   const map = fetchArticleThumbnailMap();
   return map[lookupUrl] || null;
 }
 
-// Function to set the page metadata image.
-// For article pages, it first tries to get the image from the article_thumbnail_map.json, if not found, it will fallback to the default one. 
 function setPageMetadataImage(meta, document, url) {
   if ('Image' in meta) {
-    // somehow the img in the meta has the url appended twice, hence this song and dance
-    delete meta['Image'];
-    let img = document.createElement("img");
-    
-    // Try to get thumbnail from the mapping first
+    delete meta.Image;
+    const img = document.createElement('img');
+
     const thumbnailUrl = getArticleThumbnail(url);
     if (thumbnailUrl) {
       img.src = thumbnailUrl;
+    } else if (url.includes('/gallery/') && document.querySelector('.full-width')) {
+      img.src = document.querySelector('.full-width img')?.getAttribute('src');
     } else {
-      // Fallback to if no thumbnail found
-      // for the gallery child pages, set the first image as the page image (for main page listing)
-      if (url.includes('/gallery/') && document.querySelector(".full-width")) {
-        img.src = document.querySelector(".full-width img")?.getAttribute('src');
-      } else {
-        // if not present, use the default one
-        img.src = document.querySelector('meta[property="og:image"]')?.getAttribute("content");
-      }      
+      img.src = document.querySelector('meta[property="og:image"]')?.getAttribute('content');
     }
-    // Rename "Image" to "image" if it exists
-    meta['image'] = img;
+    meta.image = img;
   }
 }
 
 // for article, add the published date and intro to the page metadata
-function addPageIntroAndPublishedMetadata(document, meta, url) {
-  const pathname = new URL(url).pathname;
-  const pageContent = document.querySelector(".page-content")?.innerText.trim();
+function addPageIntroAndPublishedMetadata(document, meta) {
+  const pageContent = document.querySelector('.page-content')?.innerText.trim();
   let intro;
   if (pageContent && pageContent.length > 400) {
     let trimmedContent = pageContent.slice(0, 400);
-
     // Ensure we don't cut off in the middle of a word
-    let lastSpaceIndex = trimmedContent.lastIndexOf(" ");
+    const lastSpaceIndex = trimmedContent.lastIndexOf(' ');
     if (lastSpaceIndex > 0) {
-        trimmedContent = trimmedContent.slice(0, lastSpaceIndex);
+      trimmedContent = trimmedContent.slice(0, lastSpaceIndex);
     }
 
-    intro = trimmedContent + " […]"; // Append the indicator for more content
+    intro = `${trimmedContent} […]`; // Append the indicator for more content
   } else {
-    intro = pageContent; // If it's less than 300 characters, keep it as is
+    intro = pageContent;
   }
-  meta['intro'] = intro || "";
-  const pageIntro = document.querySelector(".page-intro");
+  meta.intro = intro || '';
+  const pageIntro = document.querySelector('.page-intro');
   if (pageIntro) {
-    const publishedDateStr = pageIntro.querySelector(".page-published-date")?.innerText.trim() || "";
-    meta['publishedDate'] = convertToISO(publishedDateStr) || '';
-    meta['publishedLocation'] = pageIntro.querySelector(".page-published-location")?.innerText.trim() || '';
+    const publishedDateStr = pageIntro.querySelector('.page-published-date')?.innerText.trim() || '';
+    meta.publishedDate = convertToISO(publishedDateStr) || '';
+    meta.publishedLocation = pageIntro.querySelector('.page-published-location')?.innerText.trim() || '';
   }
 }
 
 function addSidebarInfoToMetadata(document, meta) {
-  const sidebarIntro = document.querySelector(".sidebar-intro");
+  const sidebarIntro = document.querySelector('.sidebar-intro');
   // add the sidebar metadata for gallery-template-default page
-  if (sidebarIntro && document.querySelector(".gallery-template-default")) {
-    const paragraphs = sidebarIntro.querySelectorAll("p");
-    meta['imageCount'] = paragraphs[0]?.textContent.trim() || '';
-    meta['publishedDate'] = convertToISO(paragraphs[1]?.textContent.trim()) || '';
+  if (sidebarIntro && document.querySelector('.gallery-template-default')) {
+    const paragraphs = sidebarIntro.querySelectorAll('p');
+    meta.imageCount = paragraphs[0]?.textContent.trim() || '';
+    meta.publishedDate = convertToISO(paragraphs[1]?.textContent.trim()) || '';
   }
 
   // add the topics (if present) for /media-releases/<articles>
-  if (document.querySelector(".sidebar-topics")) {
+  if (document.querySelector('.sidebar-topics')) {
     const topics = [];
-    document.querySelectorAll(".sidebar-topic").forEach((topic) => {
-      const link = topic.querySelector("a"); // Get the anchor element
+    document.querySelectorAll('.sidebar-topic').forEach((topic) => {
+      const link = topic.querySelector('a');
       if (link) {
-        topics.push(link.className)
+        topics.push(link.className);
       }
     });
-    meta['pageTopics'] = topics.join(',');
+    meta.pageTopics = topics.join(',');
   }
 }
 
 function setMetadata(meta, document, url) {
   delete meta['og:title'];
   delete meta['og:description'];
-  delete meta['twitter'];
+  delete meta.twitter;
 
-  // Rename "Title" to "jcr:title" if it exists
   if ('Title' in meta) {
-    meta['jcr:title'] = meta['Title'];
-    delete meta['Title'];
+    meta['jcr:title'] = meta.Title;
+    delete meta.Title;
   }
-  // Rename "Description" to "jcr:description" if it exists
   if ('Description' in meta) {
-    meta['jcr:description'] = meta['Description'];
-    delete meta['Description'];
+    meta['jcr:description'] = meta.Description;
+    delete meta.Description;
   }
 
   setPageMetadataImage(meta, document, url);
-
-  addPageIntroAndPublishedMetadata(document, meta, url);
+  addPageIntroAndPublishedMetadata(document, meta);
   addSidebarInfoToMetadata(document, meta);
 }
 
 function getGalleyCategoryCards(galleries) {
   const cells = [['Cards (teaser)']];
   galleries.forEach((gallery) => {
-    let href = gallery.querySelector(".gallery-image")?.getAttribute("href") || "";
+    let href = gallery.querySelector('.gallery-image')?.getAttribute('href') || '';
     href = href.replace(/\/$/, ''); // remove trailing slash (if any)
-    const img = gallery.querySelector(".gallery-image img");
-    const text = gallery.querySelector(".gallery-text");
-    const title = text.querySelector(".title").innerText;
-    const description = text.querySelector(".gallery-description")?.innerText;
+    const img = gallery.querySelector('.gallery-image img');
+    const text = gallery.querySelector('.gallery-text');
+    const title = text.querySelector('.title').innerText;
+    const description = text.querySelector('.gallery-description')?.innerText;
     const formattedText = description ? `<p>${title}</p>\n<p>${description}</p>` : `<p>${title}</p>`;
     const cell = [img, formattedText, href];
     cells.push(cell);
@@ -194,16 +179,14 @@ function getGalleyCategoryCards(galleries) {
 
 function innerGalleryCards(gallery) {
   const cells = [['Cards (banner)']];
-  gallery.querySelectorAll(".swipebox").forEach((item) => {
+  gallery.querySelectorAll('.swipebox').forEach((item) => {
     // default image
-    let img = item.querySelector('img');
-
+    const img = item.querySelector('img');
     // use higher resolution images if present
-    let imgSrc = item.getAttribute('data-original') ? item.getAttribute('data-original') : img.getAttribute('href');
+    const imgSrc = item.getAttribute('data-original') || img.getAttribute('href');
     if (imgSrc) {
       img.src = imgSrc;
     }
-
     cells.push([img]);
   });
   return cells;
@@ -211,11 +194,11 @@ function innerGalleryCards(gallery) {
 
 function getGalleryCards(main) {
   const cells = [['Cards (thumbnail)']];
-  main.querySelectorAll(".galleries-module ul li").forEach((item) => {
-    let href = item.querySelector(".gallery-image")?.getAttribute("href");
+  main.querySelectorAll('.galleries-module ul li').forEach((item) => {
+    let href = item.querySelector('.gallery-image')?.getAttribute('href');
     href = href.replace(/\/$/, ''); // remove trailing slash (if any)
-    const img = item.querySelector(".gallery-image img");
-    const meta = item.querySelector(".gallery-meta").innerText;
+    const img = item.querySelector('.gallery-image img');
+    const meta = item.querySelector('.gallery-meta').innerText;
     const cell = [img, meta, href];
     cells.push(cell);
   });
@@ -224,12 +207,12 @@ function getGalleryCards(main) {
 
 function getTopicCards(topicsModule) {
   const cells = [['Topic Cards']];
-  topicsModule.querySelectorAll("li").forEach((topic) => {
-    const topicTitle = topic.querySelector(".topic-title")?.innerText;
-    const backgroundImg = topic.querySelector(".topics-background");
-    const overlayImg = topic.querySelector(".topic-overlay img");
-    overlayImg.classList.replace("hide-ie", "overylay-image")
-    let href = topic.querySelector(".topic-overlay")?.getAttribute("href");
+  topicsModule.querySelectorAll('li').forEach((topic) => {
+    const topicTitle = topic.querySelector('.topic-title')?.innerText;
+    const backgroundImg = topic.querySelector('.topics-background');
+    const overlayImg = topic.querySelector('.topic-overlay img');
+    overlayImg.classList.replace('hide-ie', 'overylay-image');
+    let href = topic.querySelector('.topic-overlay')?.getAttribute('href');
     href = href.replace(/\/$/, ''); // remove trailing slash (if any)
     const cell = [backgroundImg, overlayImg, href, topicTitle];
     cells.push(cell);
@@ -238,39 +221,39 @@ function getTopicCards(topicsModule) {
 }
 
 function addCards(main) {
-  const galleriesModule = main.querySelector(".galleries-module");
+  const galleriesModule = main.querySelector('.galleries-module');
   if (galleriesModule) {
     let cells;
-    const galleries = galleriesModule.querySelectorAll(".gallery");
+    const galleries = galleriesModule.querySelectorAll('.gallery');
     if (galleries && galleries.length > 0) {
       cells = getGalleyCategoryCards(galleries);
-      main.querySelector(".pagination")?.remove(); // remove the pagination text
+      main.querySelector('.pagination')?.remove();
     } else {
       cells = getGalleryCards(main);
     }
     const table = WebImporter.DOMUtils.createTable(cells, document);
     galleriesModule.replaceWith(table);
   } else {
-    const topicsModule = main.querySelector(".topics-module");
+    const topicsModule = main.querySelector('.topics-module');
     if (topicsModule) {
       const cells = getTopicCards(topicsModule);
       const table = WebImporter.DOMUtils.createTable(cells, document);
       topicsModule.replaceWith(table);
     }
   }
-};
+}
 
 function addGalleryImages(main) {
-  const fullWidthContainer = main.querySelector(".full-width");
+  const fullWidthContainer = main.querySelector('.full-width');
   if (fullWidthContainer) {
-    const gallery = main.querySelector(".gallery"); // eg. https://www.qantasnewsroom.com.au/gallery/singapore-first-lounge-concepts/
+    const gallery = main.querySelector('.gallery'); // eg. https://www.qantasnewsroom.com.au/gallery/singapore-first-lounge-concepts/
     if (gallery) {
       const cells = innerGalleryCards(gallery);
       const table = WebImporter.DOMUtils.createTable(cells, document);
       fullWidthContainer.replaceWith(table);
     } else { // eg. https://www.qantasnewsroom.com.au/gallery/qantas-crew-mini-uniforms/
       const cells = [['Cards (banner)']];
-      fullWidthContainer.querySelectorAll("img").forEach((img) => {
+      fullWidthContainer.querySelectorAll('img').forEach((img) => {
         // check to see if there is a higher resolution image available
         if (img.parentElement.tagName.toLowerCase() === 'a' && img.parentElement.getAttribute('href')) {
           img.src = img.parentElement.getAttribute('href');
@@ -286,36 +269,37 @@ function addGalleryImages(main) {
 // Get the number of columns in the table - return max column count in it's rows
 function getMaxColumnCount(table) {
   let maxColumns = 0;
-  table?.querySelectorAll("tr").forEach((row) => {
-    const columnCount = row.querySelectorAll("td, th").length;
+  table?.querySelectorAll('tr').forEach((row) => {
+    const columnCount = row.querySelectorAll('td, th').length;
     maxColumns = Math.max(maxColumns, columnCount);
   });
   return maxColumns;
 }
 
 const tableColsMap = {
-  1: "table-col-1",
-  2: "table-col-2",
-  3: "table-col-3",
-  4: "table-col-4",
-  5: "table-col-5",
-  6: "table-col-6",
-  7: "table-col-7"
+  1: 'table-col-1',
+  2: 'table-col-2',
+  3: 'table-col-3',
+  4: 'table-col-4',
+  5: 'table-col-5',
+  6: 'table-col-6',
+  7: 'table-col-7',
 };
 
-function createTableBlock(table, maxColumnCount, boldRowColClasses) {
+function createTableBlock(table, maxColumnCount) {
   const tableCells = [['Table (no-header)']];
 
-  table.querySelectorAll("tr").forEach((row) => {
+  table.querySelectorAll('tr').forEach((row) => {
     const cells = [tableColsMap[maxColumnCount]]; // add the modelId as the first cell in the rows
-    const cols = row.querySelectorAll("td, th");
+    const cols = row.querySelectorAll('td, th');
     let thisColCount = cols.length;
     cols.forEach((col) => { // add the data from page table
-      cells.push(col.innerHTML? col.innerHTML : '');
+      cells.push(col.innerHTML || '');
     });
     // fill in empty cells for missing column data
-    while (thisColCount++ < maxColumnCount) {
+    while (thisColCount < maxColumnCount) {
       cells.push('');
+      thisColCount += 1;
     }
     tableCells.push(cells);
   });
@@ -323,13 +307,15 @@ function createTableBlock(table, maxColumnCount, boldRowColClasses) {
 }
 
 function addTables(main) {
-  const tables = main.querySelectorAll("table").forEach((table) => {
+  main.querySelectorAll('table').forEach((table) => {
     const columnCount = getMaxColumnCount(table);
-    let boldRowColClasses = getBoldRowsAndCols(table);
     try {
-      const blockTable = WebImporter.DOMUtils.createTable(createTableBlock(table, columnCount, boldRowColClasses), document);
+      const blockTable = WebImporter.DOMUtils.createTable(
+        createTableBlock(table, columnCount),
+        document,
+      );
       table.replaceWith(blockTable);
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
   });
@@ -337,11 +323,11 @@ function addTables(main) {
 
 // eg. https://www.qantasnewsroom.com.au/media-releases/hugh-jackman-and-qantas-announce-initiative-to-champion-a-new-generation-of-young-indigenous-leaders/
 function handleLinkImages(main) {
-  const pageContent = main.querySelector(".page-content");
+  const pageContent = main.querySelector('.page-content');
   if (pageContent) {
     // check for links which contain images
-    pageContent.querySelectorAll("a")?.forEach((item) => {
-      const img = item.querySelector("img");
+    pageContent.querySelectorAll('a')?.forEach((item) => {
+      const img = item.querySelector('img');
       if (img) {
         item.replaceWith(img);
       }
@@ -357,7 +343,6 @@ function addVideos(main) {
       const iframeSrc = iframe.src;
       if (iframeSrc && (iframeSrc.includes('youtube') || iframeSrc?.includes('youtu.be'))) {
         cells.push([iframeSrc]);
-
         const table = WebImporter.DOMUtils.createTable(cells, document);
         iframe.replaceWith(table);
       }
@@ -366,48 +351,48 @@ function addVideos(main) {
 }
 
 function removeSocial(main) {
-  const social = main.querySelector(".social");
+  const social = main.querySelector('.social');
   social?.remove();
 }
 
 // this will come from the page metadata
 function removePagePublishedDiv(main) {
-  const pagePublished = main.querySelector(".page-published");
+  const pagePublished = main.querySelector('.page-published');
   pagePublished?.remove();
 }
 
 function removeSidebar(main, url) {
   const sidebar = main.querySelector('.sidebar');
   const urlPath = new URL(url).pathname;
-  if (urlPath.includes("/qantas-responds/")
-      || urlPath.includes("/media-releases/")
-      || urlPath.includes("/speeches/")
-      || urlPath.includes("/roo-tales/")
-      || urlPath.includes("/uncategorized/")
-      || urlPath.includes("/featured/")
-    ) {
-    const cells = [["Side Navigation (article)"]];
+  if (urlPath.includes('/qantas-responds/')
+    || urlPath.includes('/media-releases/')
+    || urlPath.includes('/speeches/')
+    || urlPath.includes('/roo-tales/')
+    || urlPath.includes('/uncategorized/')
+    || urlPath.includes('/featured/')) {
+    const cells = [['Side Navigation (article)']];
     sidebar?.replaceWith(WebImporter.DOMUtils.createTable(cells, document));
 
     // rearrange the sidebar to be on top of the main content.
-    const parent = main.querySelector(".content-wrap");
+    const parent = main.querySelector('.content-wrap');
     const mainSection = parent.children[0];
     const sideNav = parent.children[1];
     if (mainSection && sideNav) {
       parent.insertBefore(sideNav, mainSection);
     }
-  } else if (urlPath.includes("/gallery/")
-    || urlPath.includes("/gallery-category/")) {
-    const cells = [["Side Navigation (gallery)"]];
-    if (urlPath.match(/\/gallery\/[^\/]+\/?$/) === null) { // skip for gallery child pages
-      const sideNavContent = sidebar.querySelector(".sidebar-intro")?.innerHTML || '';
-      cells.push([""]);
+  } else if (urlPath.includes('/gallery/')
+    || urlPath.includes('/gallery-category/')) {
+    const cells = [['Side Navigation (gallery)']];
+    if (!urlPath.match(/\/gallery\/[^/]+\/?$/)) { // skip for gallery child pages
+      const sideNavContent = sidebar.querySelector('.sidebar-intro')?.innerHTML || '';
+      cells.push(['']);
       cells.push([sideNavContent]);
     }
     sidebar.replaceWith(WebImporter.DOMUtils.createTable(cells, document));
 
-    // rearrange the title (and text) and side nav into a separate section, by adding a thematicBreak (<hr> tag) after the side nav
-    const parent = main.querySelector(".content-wrap");
+    // rearrange the title (and text) and side nav into a separate section,
+    // by adding a thematicBreak (<hr> tag) after the side nav
+    const parent = main.querySelector('.content-wrap');
     const galleryContainer = parent.children[2];
     const sectionBreak = document.createElement('hr');
     parent.insertBefore(sectionBreak, galleryContainer);
@@ -471,7 +456,7 @@ export default {
     WebImporter.rules.convertIcons(main, document);
 
     // remove skip link block
-    main.querySelector(".skiplinks")?.remove();
+    main.querySelector('.skiplinks')?.remove();
     return main;
   },
 
@@ -494,10 +479,10 @@ export default {
     }
 
     return decodeURIComponent(p)
-    .toLowerCase()
-    .replace(/\.html$/, '')
-    .replace(/[^a-z0-9/]/gm, '-')
-    .replace(/-+/g, '-')
-    .replace(/(^-|-$)/g, '');
+      .toLowerCase()
+      .replace(/\.html$/, '')
+      .replace(/[^a-z0-9/]/gm, '-')
+      .replace(/-+/g, '-')
+      .replace(/(^-|-$)/g, '');
   },
 };

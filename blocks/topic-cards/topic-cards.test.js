@@ -179,20 +179,20 @@ describe('Topic Cards block', () => {
 
     // Get the link element
     const link = block.querySelector('a');
-    
+
     // Reset the href to make sure it doesn't change
     window.location.href = '';
-    
+
     // Create a custom event that simulates clicking on the link
     // The event needs to have a target property with closest method
     const clickEvent = new MouseEvent('click', {
       bubbles: true,
       cancelable: true,
     });
-    
+
     // Override the target and add closest method
     Object.defineProperty(clickEvent, 'target', { value: link });
-    
+
     // Add closest method to event target
     clickEvent.target.closest = (selector) => {
       if (selector === 'a' && link.matches(selector)) {
@@ -200,11 +200,11 @@ describe('Topic Cards block', () => {
       }
       return null;
     };
-    
+
     // Dispatch the event on the card
     const card = block.querySelector('li');
     card.dispatchEvent(clickEvent);
-    
+
     // Check that location was not changed (link's default behavior would handle it)
     expect(window.location.href).toBe('');
   });

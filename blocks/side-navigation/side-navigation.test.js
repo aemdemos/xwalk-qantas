@@ -1,4 +1,6 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import {
+  describe, it, expect, vi, beforeEach, afterEach,
+} from 'vitest';
 import { JSDOM } from 'jsdom';
 import decorate from './side-navigation.js';
 
@@ -107,17 +109,11 @@ describe('Side Navigation Block', () => {
       // Create a mock implementation that will return different endpoints based on our mocked URLs
       global.getQueryIndexJsonEndpoint = vi.fn()
         // First call returns qantas-responds
-        .mockImplementationOnce(() => {
-          return '/qantas-responds.json';
-        })
+        .mockImplementationOnce(() => '/qantas-responds.json')
         // Second call returns speeches
-        .mockImplementationOnce(() => {
-          return '/speeches.json';
-        })
+        .mockImplementationOnce(() => '/speeches.json')
         // Third call returns roo-tales
-        .mockImplementationOnce(() => {
-          return '/roo-tales.json';
-        });
+        .mockImplementationOnce(() => '/roo-tales.json');
 
       // Test qantas-responds endpoint
       let endpoint = global.getQueryIndexJsonEndpoint();
@@ -138,17 +134,11 @@ describe('Side Navigation Block', () => {
       // Create a mock implementation that will return different links based on our test data
       global.getTopicLink = vi.fn()
         // Media releases
-        .mockImplementationOnce((topic) => {
-          return `https://example.qantas.com/topic?tag=${topic}`;
-        })
+        .mockImplementationOnce((topic) => `https://example.qantas.com/topic?tag=${topic}`)
         // Roo tales
-        .mockImplementationOnce((topic) => {
-          return `https://example.qantas.com/roo-tales-topic?tag=${topic}`;
-        })
+        .mockImplementationOnce((topic) => `https://example.qantas.com/roo-tales-topic?tag=${topic}`)
         // Other URL
-        .mockImplementationOnce(() => {
-          return 'https://example.qantas.com';
-        });
+        .mockImplementationOnce(() => 'https://example.qantas.com');
 
       // Test media-releases
       let link = global.getTopicLink('test-topic');

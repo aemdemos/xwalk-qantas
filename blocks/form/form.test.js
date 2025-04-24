@@ -119,7 +119,7 @@ describe('Form block', () => {
     originalAppendChild = document.head.appendChild;
 
     // Mock appendChild to avoid actual DOM manipulation
-    document.head.appendChild = vi.fn().mockImplementation(element => element);
+    document.head.appendChild = vi.fn().mockImplementation((element) => element);
 
     // Create a mock block element with links
     block = document.createElement('div');

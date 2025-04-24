@@ -39,14 +39,14 @@ describe('Table Block', () => {
     // Verify
     const table = block.querySelector('table');
     expect(table).not.toBeNull();
-    
+
     // Check header row
     const thead = table.querySelector('thead');
     expect(thead).not.toBeNull();
     expect(thead.querySelectorAll('th').length).toBe(2);
     expect(thead.querySelectorAll('th')[0].textContent).toBe('Header 1');
     expect(thead.querySelectorAll('th')[1].textContent).toBe('Header 2');
-    
+
     // Check body rows
     const tbody = table.querySelector('tbody');
     expect(tbody).not.toBeNull();
@@ -76,11 +76,11 @@ describe('Table Block', () => {
     // Verify
     const table = block.querySelector('table');
     expect(table).not.toBeNull();
-    
+
     // Check that there's no thead content
     const thead = table.querySelector('thead');
     expect(thead.children.length).toBe(0);
-    
+
     // Check that all rows are in tbody
     const tbody = table.querySelector('tbody');
     expect(tbody).not.toBeNull();
@@ -88,4 +88,3 @@ describe('Table Block', () => {
     expect(tbody.querySelectorAll('td').length).toBe(4);
   });
 });
-

@@ -42,16 +42,16 @@ function createCarouselElements() {
   rightSection.className = 'controls-right';
   const navContainer = document.createElement('div');
   navContainer.className = 'gallery-carousel-nav-container';
-  
+
   // Navigation buttons
   const prevButton = document.createElement('button');
   prevButton.className = 'gallery-carousel-nav prev';
   prevButton.innerHTML = '‹';
-  
+
   const nextButton = document.createElement('button');
   nextButton.className = 'gallery-carousel-nav next';
   nextButton.innerHTML = '›';
-  
+
   // Assemble the components
   navContainer.appendChild(prevButton);
   navContainer.appendChild(nextButton);
@@ -71,7 +71,7 @@ function createCarouselElements() {
     downloadLink,
     prevButton,
     nextButton,
-    closeButton
+    closeButton,
   };
 }
 
@@ -116,7 +116,6 @@ function createImageViewerHTML(imageUrl) {
  * @returns {Function} Cleanup function
  */
 export function initGalleryCarousel(images) {
-
   // Get or create carousel container
   let carouselContainer = document.querySelector('.gallery-carousel-container');
   let elements;
@@ -131,12 +130,14 @@ export function initGalleryCarousel(images) {
       downloadLink: carouselContainer.querySelector('.gallery-carousel-download'),
       prevButton: carouselContainer.querySelector('.gallery-carousel-nav.prev'),
       nextButton: carouselContainer.querySelector('.gallery-carousel-nav.next'),
-      closeButton: carouselContainer.querySelector('.gallery-carousel-close')
+      closeButton: carouselContainer.querySelector('.gallery-carousel-close'),
     };
   }
 
   let currentImageIndex = 0;
-  const { imageContainer, downloadLink, prevButton, nextButton, closeButton } = elements;
+  const {
+    imageContainer, downloadLink, prevButton, nextButton, closeButton,
+  } = elements;
 
   /**
    * Gets clean image URL without query parameters
@@ -154,7 +155,7 @@ export function initGalleryCarousel(images) {
    */
   function openImageInNewTab(url) {
     if (!url) return;
-    
+
     const newTab = window.open('', '_blank');
     if (newTab) {
       newTab.document.write(createImageViewerHTML(url));
@@ -175,13 +176,13 @@ export function initGalleryCarousel(images) {
     const imgElement = document.createElement('img');
     imgElement.src = cleanUrl;
     imgElement.alt = img.alt || '';
-    
+
     // Update display
     imageContainer.innerHTML = '';
     imageContainer.appendChild(imgElement);
     downloadLink.href = cleanUrl;
     currentImageIndex = index;
-    
+
     // Show/hide navigation buttons as needed
     prevButton.style.display = index === 0 ? 'none' : 'block';
     nextButton.style.display = index === images.length - 1 ? 'none' : 'block';
@@ -193,7 +194,7 @@ export function initGalleryCarousel(images) {
   }
 
   // Set up event handlers
-  
+
   // Gallery image click to open carousel
   images.forEach((img, index) => {
     img.style.cursor = 'pointer';
@@ -235,7 +236,7 @@ export function initGalleryCarousel(images) {
   function handleKeydown(e) {
     if (carouselContainer.style.display === 'none') return;
 
-    switch(e.key) {
+    switch (e.key) {
       case 'Escape':
         carouselContainer.style.display = 'none';
         document.body.style.overflow = '';
@@ -258,7 +259,7 @@ export function initGalleryCarousel(images) {
   // Return cleanup function
   return () => {
     document.removeEventListener('keydown', handleKeydown);
-    images.forEach(img => {
+    images.forEach((img) => {
       img.style.cursor = '';
       img.replaceWith(img.cloneNode(true));
     });
@@ -275,7 +276,7 @@ export function initGalleryCarouselForCards(block) {
     const galleryImages = block.querySelectorAll('.cards-card-image img');
     if (galleryImages.length > 0) {
       // Remove any existing links around the images
-      galleryImages.forEach(img => {
+      galleryImages.forEach((img) => {
         const wrapper = img.closest('a');
         if (wrapper) {
           wrapper.replaceWith(img);
@@ -291,7 +292,7 @@ export function initGalleryCarouselForCards(block) {
   // Start observing the block for changes
   observer.observe(block, {
     childList: true,
-    subtree: true
+    subtree: true,
   });
 }
 
@@ -300,27 +301,27 @@ export default async function decorate(block) {
   if (bannerBlock) {
     initGalleryCarouselForCards(bannerBlock);
   }
-  
+
   // Set up a MutationObserver to wait for video cards to be loaded
-  let videoCardsObserver = new MutationObserver((mutations, observer) => {
+  const videoCardsObserver = new MutationObserver((mutations, observer) => {
     const videoCards = document.querySelectorAll('.cards-card-video');
     if (videoCards && videoCards.length > 0) {
       // We found video cards, initialize the carousel
       console.log('Found video cards:', videoCards.length);
       initVideoCarousel(videoCards);
-      
+
       // We can disconnect this observer now that we've found cards
       // A new observer inside initVideoCarousel will handle dynamically added cards
       observer.disconnect();
     }
   });
-  
+
   // Start observing for DOM changes to detect when cards are loaded
   videoCardsObserver.observe(document.body, {
     childList: true,
-    subtree: true
+    subtree: true,
   });
-  
+
   // Also check if cards are already present
   const existingVideoCards = document.querySelectorAll('.cards-card-video');
   if (existingVideoCards && existingVideoCards.length > 0) {
@@ -339,7 +340,7 @@ function createVideoCarouselElements() {
   const carouselContainer = document.createElement('div');
   carouselContainer.className = 'gallery-carousel-container video-carousel-container';
   carouselContainer.style.display = 'none';
-  
+
   // Add skip to video embed link
   const skipLink = document.createElement('a');
   skipLink.className = 'skipVideo';
@@ -379,16 +380,16 @@ function createVideoCarouselElements() {
   rightSection.className = 'controls-right';
   const navContainer = document.createElement('div');
   navContainer.className = 'gallery-carousel-nav-container';
-  
+
   // Navigation buttons
   const prevButton = document.createElement('button');
   prevButton.className = 'gallery-carousel-nav prev';
   prevButton.innerHTML = '‹';
-  
+
   const nextButton = document.createElement('button');
   nextButton.className = 'gallery-carousel-nav next';
   nextButton.innerHTML = '›';
-  
+
   // Assemble the components
   navContainer.appendChild(prevButton);
   navContainer.appendChild(nextButton);
@@ -408,7 +409,7 @@ function createVideoCarouselElements() {
     prevButton,
     nextButton,
     closeButton,
-    skipLink
+    skipLink,
   };
 }
 
@@ -428,7 +429,7 @@ export function initVideoCarousel(videoCards) {
     if (link && link.href) {
       videos.push({
         url: link.href,
-        title: link.getAttribute('title') || ''
+        title: link.getAttribute('title') || '',
       });
     }
   });
@@ -449,12 +450,14 @@ export function initVideoCarousel(videoCards) {
       prevButton: carouselContainer.querySelector('.gallery-carousel-nav.prev'),
       nextButton: carouselContainer.querySelector('.gallery-carousel-nav.next'),
       closeButton: carouselContainer.querySelector('.gallery-carousel-close'),
-      skipLink: carouselContainer.querySelector('.skipVideo')
+      skipLink: carouselContainer.querySelector('.skipVideo'),
     };
   }
 
   let currentVideoIndex = 0;
-  const { videoContainer, prevButton, nextButton, closeButton, skipLink } = elements;
+  const {
+    videoContainer, prevButton, nextButton, closeButton, skipLink,
+  } = elements;
 
   /**
    * Updates the carousel to show a specific video
@@ -466,7 +469,7 @@ export function initVideoCarousel(videoCards) {
 
     // Clear the container
     videoContainer.innerHTML = '';
-    
+
     // Create the HTML element to pass to the embed block's decorate method
     const parser = new DOMParser();
     const htmlDoc = parser.parseFromString(`
@@ -476,23 +479,23 @@ export function initVideoCarousel(videoCards) {
         </div>
       </div>
     `, 'text/html');
-    
+
     // Get the embed block element from the parsed HTML
     const embedBlock = htmlDoc.body.firstChild;
-    
+
     // Add to DOM first
     videoContainer.appendChild(embedBlock);
-    
+
     // Import both JS and CSS for embed block
     Promise.all([
-      import('../../blocks/embed/embed.js')
+      import('../../blocks/embed/embed.js'),
     ]).then(([{ default: decorate }]) => {
       decorate(embedBlock);
-    }).catch(err => {
+    }).catch((err) => {
       console.error('Error loading embed block', err);
     });
     currentVideoIndex = index;
-    
+
     // Show/hide navigation buttons as needed
     prevButton.style.display = index === 0 ? 'none' : 'block';
     nextButton.style.display = index === videos.length - 1 ? 'none' : 'block';
@@ -505,7 +508,7 @@ export function initVideoCarousel(videoCards) {
       videoContainer.focus();
     }, 100);
   });
-  
+
   skipLink.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       // Don't prevent default for Enter key either
@@ -514,7 +517,7 @@ export function initVideoCarousel(videoCards) {
       }, 100);
     }
   });
-  
+
   // Video card click to open carousel
   videoCards.forEach((card, index) => {
     // Handle clicks based on the card's structure
@@ -538,7 +541,7 @@ export function initVideoCarousel(videoCards) {
     videoContainer.innerHTML = ''; // Remove video to stop playback
     skipLink.classList.remove('active');
   });
-  
+
   closeButton.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -567,7 +570,7 @@ export function initVideoCarousel(videoCards) {
   function handleKeydown(e) {
     if (carouselContainer.style.display === 'none') return;
 
-    switch(e.key) {
+    switch (e.key) {
       case 'Escape':
         carouselContainer.style.display = 'none';
         document.body.style.overflow = '';
@@ -590,26 +593,26 @@ export function initVideoCarousel(videoCards) {
   }
 
   document.addEventListener('keydown', handleKeydown);
-  
+
   // Set up a new observer to detect newly added video cards
   const newCardsObserver = new MutationObserver((mutations) => {
     let newCardsFound = false;
-    
+
     // Check if any new video cards have been added
     mutations.forEach((mutation) => {
       if (mutation.type === 'childList' && mutation.addedNodes.length) {
         const hasNewVideoCards = Array.from(mutation.addedNodes).some(
-          (node) => node.nodeType === 1 && 
-                   (node.classList?.contains('cards-card-video') || 
-                    node.querySelector?.('.cards-card-video'))
+          (node) => node.nodeType === 1
+                   && (node.classList?.contains('cards-card-video')
+                    || node.querySelector?.('.cards-card-video')),
         );
-        
+
         if (hasNewVideoCards) {
           newCardsFound = true;
         }
       }
     });
-    
+
     // If new cards were found, reinitialize the carousel with all video cards
     if (newCardsFound) {
       console.log('New video cards detected, reinitializing carousel');
@@ -622,11 +625,11 @@ export function initVideoCarousel(videoCards) {
       }
     }
   });
-  
+
   // Start observing for new cards
   newCardsObserver.observe(document.body, {
     childList: true,
-    subtree: true
+    subtree: true,
   });
 
   // Return cleanup function that also disconnects the observer
@@ -635,5 +638,3 @@ export function initVideoCarousel(videoCards) {
     newCardsObserver.disconnect();
   };
 }
-
- 

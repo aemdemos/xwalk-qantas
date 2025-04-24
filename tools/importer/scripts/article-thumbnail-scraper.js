@@ -287,7 +287,7 @@ const config = {
   selectors: {
     article: '.posts-module .post-has-image',
     href: '.post-image',
-    image: '.post-image img'
+    image: '.post-image img',
   },
 
   // Rate limiting and retry settings
@@ -299,6 +299,7 @@ const config = {
 };
 
 class ArticleScraper {
+  // eslint-disable-next-line no-shadow
   constructor(config) {
     this.config = config;
     this.articleMap = {}; // To store article-image pairs
@@ -306,8 +307,8 @@ class ArticleScraper {
 
   /**
    * Fetch the HTML content of a URL with retry logic
-   * @param {string} url 
-   * @param {number} retryCount 
+   * @param {string} url
+   * @param {number} retryCount
    * @returns {Promise<string>} The HTML content of the URL
    */
   async fetchWithRetry(url, retryCount = 0) {
@@ -322,8 +323,8 @@ class ArticleScraper {
     } catch (error) {
       if (retryCount < this.config.rateLimit.maxRetries) {
         const delay = this.config.rateLimit.retryDelay * (retryCount + 1); // Exponential backoff
-        console.log(`Retrying ${url} (attempt ${retryCount + 1}/${this.config.rateLimit.maxRetries}) after ${delay}ms delay`);
-        console.log(`Error: ${error.message}`);
+        console.warn(`Retrying ${url} (attempt ${retryCount + 1}/${this.config.rateLimit.maxRetries}) after ${delay}ms delay`);
+        console.warn(`Error: ${error.message}`);
         await setTimeout(delay);
         return this.fetchWithRetry(url, retryCount + 1);
       }
@@ -334,34 +335,32 @@ class ArticleScraper {
 
   /**
    * Scrape the articles from a given URL
-   * @param {string} url 
+   * @param {string} url
    * @returns {Promise<boolean>} True if scraping was successful, false otherwise
    */
   async scrapeArticlesFromUrl(url) {
     try {
-      console.log(`\n=== Scraping: ${url} ===`);
+      console.info(`\n=== Scraping: ${url} ===`);
       const html = await this.fetchWithRetry(url);
       const $ = cheerio.load(html);
-      const articles = [];
 
       // Log the number of elements matching the article selector
       const articleElements = $(this.config.selectors.article);
-      console.log(`Found ${articleElements.length} elements matching selector: ${this.config.selectors.article}`);
-
+      console.info(`Found ${articleElements.length} elements matching selector: ${this.config.selectors.article}`);
 
       $(this.config.selectors.article).each((_, element) => {
         // Get the href and image src from the article image element
         const href = $(element).find(this.config.selectors.href).attr('href');
         const img = $(element).find(this.config.selectors.image).attr('src');
 
-        console.log(`\nProcessing article element:`);
-        console.log(`- Href found: ${href}`);
-        console.log(`- Image found: ${img}`);
+        console.info('\nProcessing article element:');
+        console.info(`- Href found: ${href}`);
+        console.info(`- Image found: ${img}`);
 
         if (href && img) {
           // Add to the flat map
           this.articleMap[href] = img;
-          console.log(`- Added image to map for url: ${href}`);
+          console.info(`- Added image to map for url: ${href}`);
         }
       });
 
@@ -377,19 +376,23 @@ class ArticleScraper {
    * @returns {Promise<boolean>} True if scraping was successful, false otherwise
    */
   async scrapeAll() {
-    for (const url of this.config.urls) {
-      await this.scrapeArticlesFromUrl(url);
-      await setTimeout(this.config.rateLimit.delay); // Rate limiting
-    }
+    const results = await Promise.all(
+      this.config.urls.map(async (url) => {
+        const result = await this.scrapeArticlesFromUrl(url);
+        await setTimeout(this.config.rateLimit.delay); // Rate limiting
+        return result;
+      }),
+    );
+    return results.every(Boolean);
   }
 
   /**
    * Save the results to a JSON file
    * @param {string} filename - The filename to save the results to
-   */ 
+   */
   saveResults(filename = 'article_thumbnail_map.json') {
     fs.writeFileSync(filename, JSON.stringify(this.articleMap, null, 2));
-    console.log(`✅ Scraping complete. Found ${Object.keys(this.articleMap).length} articles. Data saved to ${filename}`);
+    console.info(`✅ Scraping complete. Found ${Object.keys(this.articleMap).length} articles. Data saved to ${filename}`);
   }
 }
 

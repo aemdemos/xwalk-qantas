@@ -126,4 +126,4 @@ describe('Image with link block', () => {
     // Block should remain unchanged
     expect(block.innerHTML).toBe(originalHTML);
   });
-}); 
+});
