@@ -268,16 +268,13 @@ main > .section.cards-container:has(.cards) {
     line-height: 14px;
   }
 
-  .cards-wrapper > .cards.block.roo-tales > ul > li {
+  .cards-wrapper > .cards.block > ul > li {
     flex: 0 1 calc(50% - 16px);
   }
 }
 
 /* Ensure they're 50% width on medium screens too */
 @media (width <= 768px) {
-  .cards-wrapper > .cards.block > ul > li {
-    flex: 0 1 calc(50% - 16px);
-  }
 
   .cards-wrapper > .cards.block.new-galleries > ul.gallery-grid-two-per-row > li {
     flex: 0 1 calc(50% - 15px);
@@ -295,6 +292,14 @@ main > .section.cards-container:has(.cards) {
 
   .cards-wrapper > .cards.block.roo-tales > ul > li {
     flex: 0 1 100%;
+  }
+
+  .cards-wrapper > .cards.block.teaser > ul > li > .cards-card-image {
+    min-height: 320px;
+  }
+
+  .cards-wrapper > .cards.block.thumbnail > ul > li > .cards-card-image {
+    min-height: 180px;
   }
 }
 
