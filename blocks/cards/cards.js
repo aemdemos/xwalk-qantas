@@ -10,11 +10,16 @@ function getPagePublishedDate() {
 
 // Helper function to optimize images
 function optimizeImages(container) {
+  // Keep track of how many images have been processed
+  let imageCount = 0;
   container.querySelectorAll('picture > img:not([data-optimized])').forEach((img) => {
-    const optimizedPic = createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]);
+    // Set eager loading for first 2 images, lazy loading for the rest
+    const isEager = imageCount < 2;
+    const optimizedPic = createOptimizedPicture(img.src, img.alt, isEager, [{ width: '750' }]);
     moveInstrumentation(img, optimizedPic.querySelector('img'));
     img.closest('picture').replaceWith(optimizedPic);
     optimizedPic.querySelector('img').dataset.optimized = 'true';
+    imageCount += 1;
   });
 }
 
@@ -31,7 +36,6 @@ function createGalleryCard(gallery) {
     const img = document.createElement('img');
     img.src = gallery.image;
     img.alt = gallery.title || 'Gallery';
-    img.loading = 'lazy';
 
     picture.appendChild(img);
 
@@ -235,6 +239,9 @@ async function createNewGalleriesCards() {
 // Transform standard div rows into ul/li structure
 function transformToCardsList(block) {
   const ul = document.createElement('ul');
+  // Keep track of how many images have been processed
+  let imageCount = 0;
+
   [...block.children].forEach((row) => {
     const li = document.createElement('li');
     moveInstrumentation(row, li);
@@ -277,9 +284,12 @@ function transformToCardsList(block) {
 
   // Optimize images
   ul.querySelectorAll('picture > img').forEach((img) => {
-    const optimizedPic = createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]);
+    // Set eager loading for first 2 images, lazy loading for the rest
+    const isEager = imageCount < 2;
+    const optimizedPic = createOptimizedPicture(img.src, img.alt, isEager, [{ width: '750' }]);
     moveInstrumentation(img, optimizedPic.querySelector('img'));
     img.closest('picture').replaceWith(optimizedPic);
+    imageCount += 1;
   });
 
   return ul;
@@ -457,11 +467,17 @@ async function handleTeaser(block, pagePublishedDate) {
     ul.append(li);
   });
 
+  // Keep track of how many images have been processed
+  let imageCount = 0;
+
   // Optimize images
   ul.querySelectorAll('picture > img').forEach((img) => {
-    const optimizedPic = createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]);
+    // Set eager loading for first 2 images, lazy loading for the rest
+    const isEager = imageCount < 2;
+    const optimizedPic = createOptimizedPicture(img.src, img.alt, isEager, [{ width: '750' }]);
     moveInstrumentation(img, optimizedPic.querySelector('img'));
     img.closest('picture').replaceWith(optimizedPic);
+    imageCount += 1;
   });
 
   // Fetch gallery data and enhance teaser cards

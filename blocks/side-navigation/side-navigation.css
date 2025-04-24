@@ -306,7 +306,8 @@ main>.section.side-navigation-container>.default-content-wrapper {
 }
 
 @media (max-width: 580px) {
-  main>.section>.side-navigation-wrapper {
+  /* Only hide side navigation that doesn't have gallery class */
+  main>.section>.side-navigation-wrapper:not(:has(.side-navigation.gallery)) {
     display: none;
   }
 }

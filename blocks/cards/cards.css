@@ -293,6 +293,14 @@ main > .section.cards-container:has(.cards) {
   .cards-wrapper > .cards.block.roo-tales > ul > li {
     flex: 0 1 100%;
   }
+
+  .cards-wrapper > .cards.block.teaser > ul > li > .cards-card-image {
+    min-height: 320px;
+  }
+
+  .cards-wrapper > .cards.block.thumbnail > ul > li > .cards-card-image {
+    min-height: 180px;
+  }
 }
 
 /* Load More Button Styling */
