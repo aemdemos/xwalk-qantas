@@ -1,4 +1,4 @@
-/**
+ /**
  * Helper function to get ordinal suffix for day numbers
  * @param {number} day - The day number
  * @return {string} - The appropriate ordinal suffix
