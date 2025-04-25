@@ -56,14 +56,10 @@ describe('News Feed Block', () => {
 
   describe('Main Decorate Function', () => {
     it('should setup news feed block correctly', async () => {
-      // Mock fetch for regular content
       mockFetch.mockResolvedValue({
         json: () => Promise.resolve({
-          data: [
-            { title: 'Test 1', publisheddate: '2023-01-01' },
-            { title: 'Test 2', publisheddate: '2023-01-02' },
-          ],
-          total: 2,
+          data: [],
+          total: 0,
         }),
       });
 
@@ -71,48 +67,18 @@ describe('News Feed Block', () => {
       await decorate(block);
 
       expect(block.classList.contains('news-feed-block-content')).toBe(true);
-      expect(block.querySelector('.news-container')).toBeTruthy();
+      expect(block.querySelector('.news-container')).not.toBeNull();
     });
 
     it('should handle search functionality', async () => {
       mockFetch.mockResolvedValue({
         json: () => Promise.resolve({
           data: [
-            { 
-              title: 'Search Result 1', 
-              publisheddate: '2023-01-01',
-              description: 'Test description 1',
-              path: '/test1',
-              publishedlocation: 'Sydney'
-            },
-            { 
-              title: 'Search Result 2', 
-              publisheddate: '2023-01-02',
-              description: 'Test description 2',
-              path: '/test2',
-              publishedlocation: 'Melbourne'
-            },
-            { 
-              title: 'Search Result 3', 
-              publisheddate: '2023-01-03',
-              description: 'Test description 3',
-              path: '/test3',
-              publishedlocation: 'Brisbane'
-            },
-            { 
-              title: 'Search Result 4', 
-              publisheddate: '2023-01-04',
-              description: 'Test description 4',
-              path: '/test4',
-              publishedlocation: 'Perth'
-            },
-            { 
-              title: 'Search Result 5', 
-              publisheddate: '2023-01-05',
-              description: 'Test description 5',
-              path: '/test5',
-              publishedlocation: 'Adelaide'
-            }
+            { title: 'Search Result 1', description: 'Test description 1', path: '/test1' },
+            { title: 'Search Result 2', description: 'Test description 2', path: '/test2' },
+            { title: 'Search Result 3', description: 'Test description 3', path: '/test3' },
+            { title: 'Search Result 4', description: 'Test description 4', path: '/test4' },
+            { title: 'Search Result 5', description: 'Test description 5', path: '/test5' },
           ],
           total: 5,
         }),
@@ -138,6 +104,69 @@ describe('News Feed Block', () => {
       expect(postItems[2].querySelector('.post-title').textContent).toBe('Search Result 3');
       expect(postItems[3].querySelector('.post-title').textContent).toBe('Search Result 4');
       expect(postItems[4].querySelector('.post-title').textContent).toBe('Search Result 5');
+    });
+
+    it('should display and preserve search header when items are loaded', async () => {
+      // Mock all data sources
+      mockFetch.mockImplementation((url) => {
+        if (url.includes('media-releases')) {
+          return Promise.resolve({
+            json: () => Promise.resolve({
+              data: [
+                { title: 'Test Item 1', description: 'Test description 1', path: '/test1' },
+                { title: 'Test Item 2', description: 'Test description 2', path: '/test2' },
+              ],
+            }),
+          });
+        }
+        if (url.includes('speeches')) {
+          return Promise.resolve({
+            json: () => Promise.resolve({
+              data: [],
+            }),
+          });
+        }
+        if (url.includes('qantas-responds')) {
+          return Promise.resolve({
+            json: () => Promise.resolve({
+              data: [],
+            }),
+          });
+        }
+        if (url.includes('roo-tales')) {
+          return Promise.resolve({
+            json: () => Promise.resolve({
+              data: [],
+            }),
+          });
+        }
+        return Promise.reject(new Error('Unknown URL'));
+      });
+
+      const block = document.querySelector('div');
+      block.classList.add('search');
+      
+      // Mock URL parameters
+      const url = new URL(window.location.href);
+      url.searchParams.set('q', 'test');
+      window.history.pushState({}, '', url);
+
+      await decorate(block);
+
+      // Verify search header exists
+      const searchHeader = block.querySelector('.search-results-header');
+      expect(searchHeader).not.toBeNull();
+      
+      // Verify search header content
+      const headerTitle = searchHeader.querySelector('h2');
+      const headerCount = searchHeader.querySelector('p');
+      expect(headerTitle.textContent).toBe('Search results for "test"');
+      expect(headerCount.textContent).toBe('2 results found');
+
+      // Verify header is preserved after items are loaded
+      const postItems = block.querySelectorAll('.post-item');
+      expect(postItems.length).toBe(2);
+      expect(block.querySelector('.search-results-header')).not.toBeNull();
     });
 
     it('should handle errors gracefully', async () => {

@@ -209,7 +209,16 @@ function createPostItem(item) {
 }
 
 function displayItems(items, container) {
+  // Store the search header if it exists
+  const searchHeader = container.querySelector('.search-results-header');
+  
+  // Clear the container
   container.innerHTML = '';
+  
+  // Add back the search header if it exists
+  if (searchHeader) {
+    container.appendChild(searchHeader);
+  }
   
   if (items.length > 0) {
     items.forEach((item) => {
