@@ -78,13 +78,13 @@ function createSearchHeader(query, count) {
 
   const resultsHeading = document.createElement('h2');
   resultsHeading.textContent = `Search results for "${query}"`;
-  
+
   const resultsCount = document.createElement('p');
   resultsCount.textContent = `${count} results found`;
-  
+
   searchHeader.appendChild(resultsHeading);
   searchHeader.appendChild(resultsCount);
-  
+
   return searchHeader;
 }
 
@@ -211,15 +211,15 @@ function createPostItem(item) {
 function displayItems(items, container) {
   // Store the search header if it exists
   const searchHeader = container.querySelector('.search-results-header');
-  
+
   // Clear the container
   container.innerHTML = '';
-  
+
   // Add back the search header if it exists
   if (searchHeader) {
     container.appendChild(searchHeader);
   }
-  
+
   if (items.length > 0) {
     items.forEach((item) => {
       const postItem = createPostItem(item);
@@ -251,18 +251,17 @@ export default async function decorate(block) {
   // Create pagination container only if not on the home page
   const paginationContainer = window.location.pathname !== '/' ? createPaginationContainer() : null;
 
-  function handlePageChange(newPage) {
-    const url = new URL(window.location);
-    url.searchParams.set('page', newPage);
-    window.history.pushState({}, '', url);
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-    loadPage(newPage);
-  }
-
   async function loadPage(page) {
+    function handlePageChange(newPage) {
+      const url = new URL(window.location);
+      url.searchParams.set('page', newPage);
+      window.history.pushState({}, '', url);
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+      loadPage(newPage);
+    }
     // For search, fetch from all sources
     if (isSearchBlock && searchQuery) {
       try {
@@ -286,7 +285,7 @@ export default async function decorate(block) {
         });
 
         const filteredData = filterSearchResults(allData, searchQuery, urlParams);
-        
+
         // Format display text for year-month queries
         let displayQuery = searchQuery;
         if (urlParams.get('year') && urlParams.get('month')) {

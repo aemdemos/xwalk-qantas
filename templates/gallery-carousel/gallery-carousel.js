@@ -251,6 +251,9 @@ export function initGalleryCarousel(images) {
           updateCarouselImage(currentImageIndex + 1);
         }
         break;
+      default:
+        // Handle any other key press
+        break;
     }
   }
 
@@ -294,41 +297,6 @@ export function initGalleryCarouselForCards(block) {
     childList: true,
     subtree: true,
   });
-}
-
-export default async function decorate(block) {
-  const bannerBlock = block.querySelector('.cards.banner');
-  if (bannerBlock) {
-    initGalleryCarouselForCards(bannerBlock);
-  }
-
-  // Set up a MutationObserver to wait for video cards to be loaded
-  const videoCardsObserver = new MutationObserver((mutations, observer) => {
-    const videoCards = document.querySelectorAll('.cards-card-video');
-    if (videoCards && videoCards.length > 0) {
-      // We found video cards, initialize the carousel
-      console.log('Found video cards:', videoCards.length);
-      initVideoCarousel(videoCards);
-
-      // We can disconnect this observer now that we've found cards
-      // A new observer inside initVideoCarousel will handle dynamically added cards
-      observer.disconnect();
-    }
-  });
-
-  // Start observing for DOM changes to detect when cards are loaded
-  videoCardsObserver.observe(document.body, {
-    childList: true,
-    subtree: true,
-  });
-
-  // Also check if cards are already present
-  const existingVideoCards = document.querySelectorAll('.cards-card-video');
-  if (existingVideoCards && existingVideoCards.length > 0) {
-    console.log('Found existing video cards:', existingVideoCards.length);
-    initVideoCarousel(existingVideoCards);
-    videoCardsObserver.disconnect();
-  }
 }
 
 /**
@@ -489,10 +457,8 @@ export function initVideoCarousel(videoCards) {
     // Import both JS and CSS for embed block
     Promise.all([
       import('../../blocks/embed/embed.js'),
-    ]).then(([{ default: decorate }]) => {
-      decorate(embedBlock);
-    }).catch((err) => {
-      console.error('Error loading embed block', err);
+    ]).then(([{ default: embedDecorate }]) => {
+      embedDecorate(embedBlock);
     });
     currentVideoIndex = index;
 
@@ -502,7 +468,7 @@ export function initVideoCarousel(videoCards) {
   }
 
   // Set up event handlers for skip link
-  skipLink.addEventListener('click', (e) => {
+  skipLink.addEventListener('click', () => {
     // Don't prevent default to allow the #current to be added to URL
     setTimeout(() => {
       videoContainer.focus();
@@ -615,7 +581,6 @@ export function initVideoCarousel(videoCards) {
 
     // If new cards were found, reinitialize the carousel with all video cards
     if (newCardsFound) {
-      console.log('New video cards detected, reinitializing carousel');
       // Clean up existing carousel
       document.removeEventListener('keydown', handleKeydown);
       // Initialize new carousel with all video cards
@@ -637,4 +602,37 @@ export function initVideoCarousel(videoCards) {
     document.removeEventListener('keydown', handleKeydown);
     newCardsObserver.disconnect();
   };
+}
+
+export default async function decorate(block) {
+  const bannerBlock = block.querySelector('.cards.banner');
+  if (bannerBlock) {
+    initGalleryCarouselForCards(bannerBlock);
+  }
+
+  // Set up a MutationObserver to wait for video cards to be loaded
+  const videoCardsObserver = new MutationObserver((mutations, observer) => {
+    const videoCards = document.querySelectorAll('.cards-card-video');
+    if (videoCards && videoCards.length > 0) {
+      // We found video cards, initialize the carousel
+      initVideoCarousel(videoCards);
+
+      // We can disconnect this observer now that we've found cards
+      // A new observer inside initVideoCarousel will handle dynamically added cards
+      observer.disconnect();
+    }
+  });
+
+  // Start observing for DOM changes to detect when cards are loaded
+  videoCardsObserver.observe(document.body, {
+    childList: true,
+    subtree: true,
+  });
+
+  // Also check if cards are already present
+  const existingVideoCards = document.querySelectorAll('.cards-card-video');
+  if (existingVideoCards && existingVideoCards.length > 0) {
+    initVideoCarousel(existingVideoCards);
+    videoCardsObserver.disconnect();
+  }
 }

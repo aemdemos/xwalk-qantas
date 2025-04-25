@@ -49,6 +49,8 @@
     "vitest": "^2.1.9"
   },
   "dependencies": {
-    "@vitest/runner": "^3.1.2"
+    "@vitest/runner": "^3.1.2",
+    "axios": "^1.9.0",
+    "cheerio": "^1.0.0"
   }
 }

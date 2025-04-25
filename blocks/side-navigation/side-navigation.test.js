@@ -15,7 +15,6 @@ describe('Side Navigation Block', () => {
   let window;
   let document;
   let mockFetch;
-  let origHref;
 
   // Setup DOM environment before each test
   beforeEach(() => {
@@ -28,7 +27,6 @@ describe('Side Navigation Block', () => {
 
     window = dom.window;
     document = window.document;
-    origHref = window.location.href;
 
     // Mock fetch API
     mockFetch = vi.fn();
@@ -174,7 +172,9 @@ describe('Side Navigation Block', () => {
   describe('Related Posts Functions', () => {
     it('should fetch and process related posts', async () => {
       // Create global function for testing
-      global.fetchAndProcessRelatedPosts = async function fetchAndProcessRelatedPosts(relatedPostsSection) {
+      global.fetchAndProcessRelatedPosts = async function fetchAndProcess(
+        relatedPostsSection,
+      ) {
         try {
           const response = await fetch('/media-releases.json');
           const data = await response.json();
@@ -224,7 +224,9 @@ describe('Side Navigation Block', () => {
 
     it('should handle empty data and errors', async () => {
       // Create global function for testing
-      global.fetchAndProcessRelatedPosts = async function fetchAndProcessRelatedPosts(relatedPostsSection) {
+      global.fetchAndProcessRelatedPosts = async function fetchAndProcess(
+        relatedPostsSection,
+      ) {
         try {
           const response = await fetch('/media-releases.json');
           const data = await response.json();

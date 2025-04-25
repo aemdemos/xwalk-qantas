@@ -7,7 +7,9 @@ import decorate from './news-feed.js';
 // Mock the utils module
 vi.mock('../../scripts/util.js', () => ({
   formatDate: vi.fn((date) => `formatted: ${date}`),
-  sortDataByDate: vi.fn((data) => data.sort((a, b) => new Date(b.publisheddate) - new Date(a.publisheddate))),
+  sortDataByDate: vi.fn((data) => data.sort(
+    (a, b) => new Date(b.publisheddate) - new Date(a.publisheddate),
+  )),
 }));
 
 describe('News Feed Block', () => {
@@ -15,7 +17,6 @@ describe('News Feed Block', () => {
   let window;
   let document;
   let mockFetch;
-  let origHref;
 
   // Setup DOM environment before each test
   beforeEach(() => {
@@ -28,7 +29,6 @@ describe('News Feed Block', () => {
 
     window = dom.window;
     document = window.document;
-    origHref = window.location.href;
 
     // Mock fetch API
     mockFetch = vi.fn();
@@ -86,18 +86,14 @@ describe('News Feed Block', () => {
 
       const block = document.querySelector('div');
       block.classList.add('search');
-      
       // Mock URL parameters
       const url = new URL(window.location.href);
       url.searchParams.set('q', 'test');
       window.history.pushState({}, '', url);
-
       await decorate(block);
-
       // Verify search results
       const postItems = block.querySelectorAll('.post-item');
       expect(postItems.length).toBe(5);
-      
       // Verify post item content
       expect(postItems[0].querySelector('.post-title').textContent).toBe('Search Result 1');
       expect(postItems[1].querySelector('.post-title').textContent).toBe('Search Result 2');
@@ -145,18 +141,15 @@ describe('News Feed Block', () => {
 
       const block = document.querySelector('div');
       block.classList.add('search');
-      
       // Mock URL parameters
       const url = new URL(window.location.href);
       url.searchParams.set('q', 'test');
       window.history.pushState({}, '', url);
-
       await decorate(block);
-
       // Verify search header exists
       const searchHeader = block.querySelector('.search-results-header');
       expect(searchHeader).not.toBeNull();
-      
+
       // Verify search header content
       const headerTitle = searchHeader.querySelector('h2');
       const headerCount = searchHeader.querySelector('p');
@@ -188,7 +181,7 @@ describe('News Feed Block', () => {
         publisheddate: '2023-01-01',
         description: `Test description ${index + 1}`,
         path: `/test${index + 1}`,
-        publishedlocation: 'Sydney'
+        publishedlocation: 'Sydney',
       }));
 
       mockFetch.mockResolvedValue({
@@ -197,14 +190,11 @@ describe('News Feed Block', () => {
           total: 15,
         }),
       });
-
       const block = document.querySelector('div');
       await decorate(block);
-
       // Verify pagination
       const pagination = block.querySelector('.pagination');
       expect(pagination).toBeTruthy();
-      
       const pageLinks = pagination.querySelectorAll('.page-link');
       expect(pageLinks.length).toBeGreaterThan(0);
       expect(pageLinks[0].classList.contains('current')).toBe(true);
@@ -215,16 +205,14 @@ describe('News Feed Block', () => {
       const url = new URL(window.location.href);
       url.pathname = '/';
       window.history.pushState({}, '', url);
-
       // Mock fetch with enough items to trigger pagination
       const mockData = Array(15).fill(null).map((_, index) => ({
         title: `Test ${index + 1}`,
         publisheddate: '2023-01-01',
         description: `Test description ${index + 1}`,
         path: `/test${index + 1}`,
-        publishedlocation: 'Sydney'
+        publishedlocation: 'Sydney',
       }));
-
       mockFetch.mockResolvedValue({
         json: () => Promise.resolve({
           data: mockData,
@@ -261,13 +249,13 @@ describe('News Feed Block', () => {
 
       const postItem = block.querySelector('.post-item');
       expect(postItem).toBeTruthy();
-      
+
       // Verify post item structure
       expect(postItem.querySelector('.post-title')).toBeTruthy();
       expect(postItem.querySelector('.post-meta')).toBeTruthy();
       expect(postItem.querySelector('.post-excerpt')).toBeTruthy();
       expect(postItem.querySelector('.read-more')).toBeTruthy();
-      
+
       // Verify content
       expect(postItem.querySelector('.post-title').textContent).toBe('Test Post');
       expect(postItem.querySelector('.post-meta').textContent).toContain('formatted: 2023-01-01');
@@ -293,4 +281,4 @@ describe('News Feed Block', () => {
       expect(noResults.querySelector('p').textContent).toContain('Your search did not match any documents');
     });
   });
-}); 
+});
