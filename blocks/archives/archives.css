@@ -179,14 +179,14 @@
   display: block !important;
 }
 
-@media (max-width: 1199px) {
+@media (width <= 1199px) {
   main>.section>.archives-wrapper {
     margin-right: 30px;
   }
 }
 
 /* Responsive adjustments */
-@media (max-width: 1024px) {
+@media (width <= 1024px) {
   .section.news-feed-container.archives-container {
     flex-direction: column;
   }
@@ -198,7 +198,7 @@
   }
 }
 
-@media (max-width: 580px) {
+@media (width <= 580px) {
   main>.section>.archives-wrapper {
     display: none;
   }

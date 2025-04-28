@@ -151,7 +151,7 @@
 .footer .useful-links .default-content-wrapper {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  row-gap: 0px;
+  row-gap: 0;
   width: 400px;
   line-height: 1.1;
 }

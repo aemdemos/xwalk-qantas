@@ -80,7 +80,24 @@ main > .form-container h1 {
   line-height: 1.2;
 }
 
-.form textarea#Your\ Request {
+/* Make textareas behave like input fields without scrolling */
+.form textarea {
+  resize: none; /* Disable resize handle */
+  overflow: hidden; /* Hide scrollbars */
+  height: 40px; /* Fixed height */
+  min-height: 40px;
+  white-space: nowrap; /* Keep text on single line */
+  line-height: 1.5;
+}
+
+/* Only allow the "Your Request" field to be larger but still no scrolling */
+.form textarea#message {
+  height: 100px;
+  min-height: 100px;
+  white-space: normal; /* Allow text wrapping */
+}
+
+.form textarea#your-request {
   height: 100px;
   min-height: 100px;
 }
@@ -102,7 +119,6 @@ main > .form-container h1 {
 }
 
 @media (width >=600px) {
-
   .form input,
   .form select,
   .form textarea {
@@ -193,27 +209,10 @@ main > .form-container h1 {
   transform: translateX(24px);
 }
 
-@media (max-width: 600px) {
+@media (width <= 600px) {
   .form textarea {
     max-width: 100%;
   }
-}
-
-/* Make textareas behave like input fields without scrolling */
-.form textarea {
-  resize: none; /* Disable resize handle */
-  overflow: hidden; /* Hide scrollbars */
-  height: 40px; /* Fixed height */
-  min-height: 40px;
-  white-space: nowrap; /* Keep text on single line */
-  line-height: 1.5;
-}
-
-/* Only allow the "Your Request" field to be larger but still no scrolling */
-.form textarea#message {
-  height: 100px;
-  min-height: 100px;
-  white-space: normal; /* Allow text wrapping */
 }
 
 /* Success message styling */
@@ -236,7 +235,7 @@ main > .form-container h1 {
 }
 
 /* Ensure reCAPTCHA is responsive */
-@media (max-width: 300px) {
+@media (width <= 300px) {
   .g-recaptcha {
     transform-origin: 0 0;
     transform: scale(0.8);
