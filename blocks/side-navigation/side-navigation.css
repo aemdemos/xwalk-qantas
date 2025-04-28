@@ -1,8 +1,7 @@
 /* Parent container styling */
 .section.side-navigation-container:has(.side-navigation.gallery) {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  flex-flow: row nowrap;
   justify-content: space-between;
   align-items: flex-start;
   max-width: 1200px;
@@ -53,6 +52,19 @@ main>.section.side-navigation-container>.default-content-wrapper {
   text-transform: uppercase;
 }
 
+.topics .topic a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.topics .topic a img {
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+  filter: brightness(0) saturate(100%);
+}
+
 .side-navigation {
   padding-bottom: 30px;
   padding-right: 14px;
@@ -60,12 +72,12 @@ main>.section.side-navigation-container>.default-content-wrapper {
 }
 
 .side-navigation.gallery {
-  padding-right: 0px;
-  padding-left: 0px;
+  padding-right: 0;
+  padding-left: 0;
 }
 
 .side-navigation .heading {
-  padding: 35px 0px 0px 0px;
+  padding: 35px 0 0;
   text-transform: uppercase;
   font-size: 16px;
   font-weight: 600;
@@ -133,14 +145,13 @@ main>.section.side-navigation-container>.default-content-wrapper {
 
 .side-navigation .topics .icon img {
   filter: brightness(0);
-  /* Convert white to black */
 }
 
 .side-navigation .latest h1 {
   font-size: 15px;
   font-weight: 400;
   text-transform: uppercase;
-  margin: 0 0 20px 0;
+  margin: 0 0 20px;
 }
 
 /* Common divider styling */
@@ -155,6 +166,7 @@ main>.section.side-navigation-container>.default-content-wrapper {
 
 .side-navigation>div:last-child::after {
   display: none;
+
   /* Remove divider after last section */
 }
 
@@ -163,7 +175,7 @@ main>.section.side-navigation-container>.default-content-wrapper {
   font-size: 16px;
   font-weight: 600;
   text-transform: uppercase;
-  margin: 0 0 20px 0;
+  margin: 0 0 20px;
   display: inline-block;
 }
 
@@ -174,6 +186,15 @@ main>.section.side-navigation-container>.default-content-wrapper {
   font-size: 14px;
   font-weight: normal;
   margin: 0;
+}
+
+/* Most Viewed section */
+.side-navigation .latest .button-container a {
+  text-transform: uppercase;
+  margin: 0 0 5px;
+  font-size: 1.4rem;
+  color: #1c1d1e;
+  font-weight: 400;
 }
 
 .side-navigation>div:nth-child(2) h1#all-topics a {
@@ -211,20 +232,10 @@ main>.section.side-navigation-container>.default-content-wrapper {
   background-size: 25px;
 }
 
-/* Most Viewed section */
-.side-navigation .latest .button-container a {
-  text-transform: uppercase;
-  margin: 0 0 5px 0;
-  font-size: 1.4rem;
-  color: #1c1d1e;
-  font-size: 14px;
-  font-weight: 400;
-}
-
 .side-navigation>div:nth-child(3) p:not(.button-container) {
   font-size: 14px;
   color: #666;
-  margin: 5px 0 20px 0;
+  margin: 5px 0 20px;
 }
 
 /* Container for both news feed and side nav - ensure proper clearfix */
@@ -238,44 +249,35 @@ main>.section.side-navigation-container>.default-content-wrapper {
   margin-bottom: 14px;
 }
 
-.topics .topic a {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-}
-
-.topics .topic a img {
-  width: 40px;
-  height: 40px;
-  margin-right: 8px;
-  filter: brightness(0) saturate(100%);
-}
-
 .topics .topic a div {
   font-size: 12px;
   color: #1c1d1e;
   text-transform: uppercase;
 }
 
-@media (max-width: 1199px) {
+@media (width <= 1199px) {
   main>.section>.side-navigation-wrapper {
     margin-right: 30px;
   }
 }
 
 /* Responsive adjustments */
-@media (max-width: 1024px) {
-
+@media (width <= 1024px) {
   .section.side-navigation-container:has(.side-navigation.gallery) {
     display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
+    flex-flow: column nowrap;
     justify-content: space-between;
     align-items: flex-start;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0;
     min-height: 250px;
+  }
+
+  main>.section>.side-navigation-wrapper {
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
   }
 
   main>.section>.side-navigation-wrapper:has(.side-navigation.gallery) {
@@ -297,15 +299,9 @@ main>.section.side-navigation-container>.default-content-wrapper {
     margin-right: auto;
     width: 90%;
   }
-
-  main>.section>.side-navigation-wrapper {
-    margin-left: auto;
-    margin-right: auto;
-    width: 60%;
-  }
 }
 
-@media (max-width: 580px) {
+@media (width <= 580px) {
   /* Only hide side navigation that doesn't have gallery class */
   main>.section>.side-navigation-wrapper:not(:has(.side-navigation.gallery)) {
     display: none;

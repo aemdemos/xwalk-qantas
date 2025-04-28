@@ -1,5 +1,5 @@
 main > .section.cards-container:has(.cards) {
-  margin-top: 0px;
+  margin-top: 0;
 }
 
 .cards-wrapper {
@@ -33,8 +33,7 @@ main > .section.cards-container:has(.cards) {
   flex-direction: column; /* Stack image and red card body vertically */
   flex: 0 1 calc(33.333% - 16px); /* Fixed card width for three columns */
   box-sizing: border-box; /* Ensure consistent sizing */
-  background-color: white; /* Add a white background for cards */
-  overflow: hidden; /* Prevent overflow */
+  background-color: white; /* Add a white background for cards */ /* Prevent overflow */
   border-radius: 0; /* Remove rounded corners */
   margin: 0; /* Remove unnecessary margins */
   overflow: hidden; /* Prevent content overflow */
@@ -69,111 +68,6 @@ main > .section.cards-container:has(.cards) {
   text-transform: uppercase;
 }
 
-/* Set black background for the second card body in teaser cards */
-.cards-wrapper>.cards.block.teaser>ul>li>.cards-card-body:nth-of-type(3) {
-  background-color: #000;
-  font-size: 18px;
-  font-weight: 400;
-  min-height: 100px;
-  line-height: 1.4;
-}
-
-.cards-wrapper>.cards.block.teaser>ul>li>.cards-card-body p:nth-child(2) {
-  line-height: 12px;
-  font-size: 12px;
-  text-transform: none;
-}
-
-.cards-wrapper>.cards.block.teaser>ul>li>.cards-card-body:nth-of-type(2) {
-  font-size: 14px;
-  font-weight: 400;
-  flex: 1; /* Make this element fill the available space */
-  display: flex;
-  flex-direction: row;
-}
-
-/* Add flex container properties to the second card body */
-.cards-wrapper>.cards.block.teaser .cards-card-body:nth-of-type(2) {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between; /* This is key for pushing items to edges */
-  align-items: center;
-  width: 95%;
-}
-
-
-.cards-wrapper>.cards.block.banner>ul>li>.cards-card-body {
-  display: none;
-}
-
-/* Banner card aspect ratio */
-.cards-wrapper > .cards.block.banner > ul > li > .cards-card-image {
-  aspect-ratio: 1 / 1;
-  overflow: hidden; /* Ensure content doesn't spill out */
-}
-
-.cards-wrapper > .cards.block.banner > ul > li > .cards-card-image img {
-  width: 100%;
-  height: 100%;
-}
-
-.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body {
-  color: #000;
-  background-color: white;
-  text-transform: none;
-  padding: 20px;
-}
-
-.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>h2 {
-  font-size: 20px; /* Slightly smaller font for 3-column layout */
-  color: #1c1d1e;
-  margin-bottom: 8px; /* Add spacing below the heading */
-  line-height: 20px; /* Improved line height for readability */
-}
-
-.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>h2 a {
-  color: #1c1d1e;
-}
-
-.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>h2 a:hover {
-  text-decoration: none;
-}
-
-.cards-wrapper>.cards.block>ul>li>.cards-card-body p {
-  margin: 0.3rem;
-}
-
-.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>p {
-  font-size: 16px;
-  color: #1c1d1e;
-  font-weight: 400;
-  line-height: 22px;
-  margin: 10px 0;
-}
-
-.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>.card-publisheddate {
-  font-size: 14px;
-  color: #1c1d1e;
-  font-weight: 400;
-  line-height: 22px;
-}
-
-.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>.card-description {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-height: 4.5em; /* 3 lines * 1.5 line height */
-  line-height: 1.5;
-  margin: 20px 0;
-}
-
-.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>.cards-card-read-more>a {
-  font-size: 16px;
-  color: #eb000a;
-  font-weight: 400;
-  line-height: 16px;
-}
 
 /* Styling for new-galleries with 2 cards per row */
 .cards-wrapper > .cards.block.new-galleries > ul.gallery-grid-two-per-row {
@@ -213,7 +107,7 @@ main > .section.cards-container:has(.cards) {
   bottom: 0;
   left: 0;
   width: 100%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.5) 60%, transparent 100%);
+  background: linear-gradient(to top, rgb(0 0 0 / 80%) 0%, rgb(0 0 0 / 50%) 60%, transparent 100%);
   z-index: 1;
 }
 
@@ -235,11 +129,34 @@ main > .section.cards-container:has(.cards) {
   line-height: 24px;
 }
 
+.cards-wrapper>.cards.block.banner>ul>li>.cards-card-body {
+  display: none;
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body {
+  color: #000;
+  background-color: white;
+  text-transform: none;
+  padding: 20px;
+}
+
+.cards-wrapper>.cards.block>ul>li>.cards-card-body p {
+  margin: 0.3rem;
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>p {
+  font-size: 16px;
+  color: #1c1d1e;
+  font-weight: 400;
+  line-height: 22px;
+  margin: 10px 0;
+}
+
 /* Metadata styling */
 .cards-wrapper > .cards.block.new-galleries .overlay-text .card-metadata {
   display: flex;
   gap: 15px;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgb(255 255 255 / 80%);
   font-size: 14px;
 }
 
@@ -247,10 +164,107 @@ main > .section.cards-container:has(.cards) {
   margin: 0;
 }
 
+/* Add flex container properties to the second card body */
+.cards-wrapper>.cards.block.teaser .cards-card-body:nth-of-type(2) {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; /* This is key for pushing items to edges */
+  align-items: center;
+  width: 95%;
+}
+
+/* Set black background for the second card body in teaser cards */
+.cards-wrapper>.cards.block.teaser>ul>li>.cards-card-body:nth-of-type(3) {
+  background-color: #000;
+  font-size: 18px;
+  font-weight: 400;
+  min-height: 100px;
+  line-height: 1.4;
+}
+
+.cards-wrapper>.cards.block.teaser>ul>li>.cards-card-body p:nth-child(2) {
+  line-height: 12px;
+  font-size: 12px;
+  text-transform: none;
+}
+
+.cards-wrapper>.cards.block.teaser>ul>li>.cards-card-body:nth-of-type(2) {
+  font-size: 14px;
+  font-weight: 400;
+  flex: 1; /* Make this element fill the available space */
+  display: flex;
+  flex-direction: row;
+}
+
+/* Ensure consistent image height for roo-tales cards */
+.cards-wrapper > .cards.block.roo-tales .cards-card-image {
+  position: relative;
+  width: 100%;
+  height: 250px; /* Fixed height for all roo-tales card images */
+  overflow: hidden; /* Prevent image overflow */
+}
+
+.cards-wrapper > .cards.block.roo-tales .cards-card-image img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover; /* Maintain aspect ratio and cover the container */
+  object-position: center; /* Center the image within container */
+}
+
+/* Banner card aspect ratio */
+.cards-wrapper > .cards.block.banner > ul > li > .cards-card-image {
+  aspect-ratio: 1 / 1;
+  overflow: hidden; /* Ensure content doesn't spill out */
+}
+
+.cards-wrapper > .cards.block.banner > ul > li > .cards-card-image img {
+  width: 100%;
+  height: 100%;
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>h2 {
+  font-size: 20px; /* Slightly smaller font for 3-column layout */
+  color: #1c1d1e;
+  margin-bottom: 8px; /* Add spacing below the heading */
+  line-height: 20px; /* Improved line height for readability */
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>h2 a {
+  color: #1c1d1e;
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>.cards-card-read-more>a {
+  font-size: 16px;
+  color: #eb000a;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>h2 a:hover {
+  text-decoration: none;
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>.card-publisheddate {
+  font-size: 14px;
+  color: #1c1d1e;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.cards-wrapper>.cards.block.roo-tales>ul>li>.cards-card-body>.card-description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 4.5em; /* 3 lines * 1.5 line height */
+  line-height: 1.5;
+  margin: 20px 0;
+}
+
 /* Filter title styles */
 .filter-title {
   text-align: left;
-  margin: 20px 0 30px 0;
+  margin: 20px 0 30px;
   padding-bottom: 15px;
 }
 
@@ -258,7 +272,7 @@ main > .section.cards-container:has(.cards) {
   font-size: 36px;
   font-weight: 600;
   color: #333;
-  margin: 0 0 10px 0;
+  margin: 0 0 10px;
   text-transform: uppercase;
   font-family: europa, sans-serif;
 }
@@ -275,7 +289,6 @@ main > .section.cards-container:has(.cards) {
 
 /* Ensure they're 50% width on medium screens too */
 @media (width <= 768px) {
-
   .cards-wrapper > .cards.block.new-galleries > ul.gallery-grid-two-per-row > li {
     flex: 0 1 calc(50% - 15px);
   }
@@ -286,13 +299,14 @@ main > .section.cards-container:has(.cards) {
     flex: 0 1 100%;
   }
 
+  .cards-wrapper > .cards.block.roo-tales > ul > li {
+    flex: 0 1 100%;
+  }
+
   .cards-wrapper > .cards.block.new-galleries > ul.gallery-grid-two-per-row > li {
     flex: 0 1 100%;
   }
 
-  .cards-wrapper > .cards.block.roo-tales > ul > li {
-    flex: 0 1 100%;
-  }
 
   .cards-wrapper > .cards.block.teaser > ul > li > .cards-card-image {
     min-height: 320px;
@@ -330,21 +344,6 @@ main > .section.cards-container:has(.cards) {
   color: black;
 }
 
-/* Ensure consistent image height for roo-tales cards */
-.cards-wrapper > .cards.block.roo-tales .cards-card-image {
-  position: relative;
-  width: 100%;
-  height: 250px; /* Fixed height for all roo-tales card images */
-  overflow: hidden; /* Prevent image overflow */
-}
-
-.cards-wrapper > .cards.block.roo-tales .cards-card-image img {
-  width: 100%;
-  height: 250px;
-  object-fit: cover; /* Maintain aspect ratio and cover the container */
-  object-position: center; /* Center the image within container */
-}
-
 /* YouTube video play button styling using FontAwesome */
 .cards-wrapper > .cards.block.teaser .cards-card-video {
   position: relative;
@@ -352,14 +351,14 @@ main > .section.cards-container:has(.cards) {
 
 .cards-wrapper > .cards.block.teaser .cards-card-video a picture::before {
   content: "\f144"; /* FontAwesome play-circle icon */
-  font-family: "FontAwesome", sans-serif;
+  font-family: FontAwesome, sans-serif;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 60px;
   color: white;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 0 10px rgb(0 0 0 / 50%);
   z-index: 2;
   opacity: 0.9;
 }

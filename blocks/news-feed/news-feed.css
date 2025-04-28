@@ -1,8 +1,7 @@
 /* Parent container styling */
 .section.news-feed-container {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  flex-flow: row nowrap;
   justify-content: space-between;
   align-items: flex-start;
   max-width: 1200px;
@@ -15,11 +14,79 @@ main > .section > .news-feed-wrapper {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0;
-  font-family: 'Europa', sans-serif;
-  margin-right: 2.35765%;
+  font-family: Europa, sans-serif;
+  margin-right: 2.3577%;
   width: 67%;
   order: 1;
   align-self: flex-start;
+}
+
+/* Post Title */
+.post-title {
+  margin: 0 0 15px;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 1.2;
+  font-family: europa, sans-serif;
+}
+
+.post-title a {
+  color: #333;
+  text-decoration: none;
+  text-transform: uppercase;
+  display: block;
+}
+
+/* Post Excerpt */
+.post-excerpt-wrap {
+  margin-bottom: 10px;
+}
+
+.post-excerpt p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 21px;
+  color: #515151;
+}
+
+/* Search results styles */
+.search-results-header {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.search-results-header h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.search-results-header p {
+  color: #666;
+  font-size: 16px;
+}
+
+
+.no-results {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  margin: 20px 0;
+}
+
+.no-results h3 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.no-results p {
+  color: #666;
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 /* News Feed Block */
@@ -74,6 +141,7 @@ main > .section > .news-feed-wrapper {
 .post-item {
   display: flex;
   flex-direction: row;
+
   /* Explicit: text on left, image on right */
   justify-content: space-between;
   padding: 20px 0;
@@ -86,38 +154,10 @@ main > .section > .news-feed-wrapper {
   padding-right: 40px;
 }
 
-/* Post Title */
-.post-title {
-  margin: 0 0 15px 0;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 1.2;
-  font-family: europa, sans-serif;
-}
-
-.post-title a {
-  color: #333;
-  text-decoration: none;
-  text-transform: uppercase;
-  display: block;
-}
-
 /* Post Meta (Location/Date) */
 .post-meta {
-  margin: 0 0 15px 0;
+  margin: 0 0 15px;
   font-size: 14px;
-  color: #515151;
-}
-
-/* Post Excerpt */
-.post-excerpt-wrap {
-  margin-bottom: 10px;
-}
-
-.post-excerpt p {
-  margin: 0;
-  font-size: 16px;
-  line-height: 21px;
   color: #515151;
 }
 
@@ -142,6 +182,7 @@ main > .section > .news-feed-wrapper {
   width: 130px;
   height: 130px;
   order: 2;
+
   /* Ensures image is on the right */
 }
 
@@ -151,14 +192,14 @@ main > .section > .news-feed-wrapper {
   object-fit: cover;
 }
 
-@media (max-width: 1199px) {
+@media (width <= 1199px) {
   main>.section>.news-feed-wrapper {
     margin-left: 35px;
   }
 }
 
 /* Responsive Styles */
-@media (max-width: 1024px) {
+@media (width <= 1024px) {
   main>.section>.news-feed-wrapper {
     width: unset;
     margin: 0 30px;
@@ -177,7 +218,7 @@ main > .section > .news-feed-wrapper {
   }
 }
 
-@media (max-width: 480px) {
+@media (width <= 480px) {
   .post-meta,
   .post-excerpt p,
   .read-more {
@@ -229,7 +270,7 @@ main > .section > .news-feed-wrapper {
   color: #e3001b;
 }
 
-@media (max-width: 480px) {
+@media (width <= 480px) {
   .pagination {
     gap: 10px;
   }
@@ -240,41 +281,3 @@ main > .section > .news-feed-wrapper {
   }
 }
 
-/* Search results styles */
-.search-results-header {
-  margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #e6e6e6;
-}
-
-.search-results-header h2 {
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.search-results-header p {
-  color: #666;
-  font-size: 16px;
-}
-
-.no-results {
-  text-align: center;
-  padding: 40px 20px;
-  background-color: #f9f9f9;
-  border-radius: 4px;
-  margin: 20px 0;
-}
-
-.no-results h3 {
-  font-size: 20px;
-  color: #333;
-  margin-bottom: 15px;
-}
-
-.no-results p {
-  color: #666;
-  font-size: 16px;
-  max-width: 600px;
-  margin: 0 auto;
-}
