@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/adobe/aem-boilerplate#readme",
   "devDependencies": {
+    "@babel/core": "^7.25.9",
     "@babel/eslint-parser": "7.25.9",
     "@mdx-js/rollup": "^3.1.0",
     "@vitest/coverage-v8": "^2.1.8",
