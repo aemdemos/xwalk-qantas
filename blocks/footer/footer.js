@@ -64,5 +64,18 @@ export default async function decorate(block) {
     logosSection.appendChild(socialIconsWrapper);
   }
 
+  // Remove extra space before text after <strong> in all a.button links in useful-links section
+  const usefulLinksSection = footer.querySelector('.useful-links .default-content-wrapper');
+  if (usefulLinksSection) {
+    const links = usefulLinksSection.querySelectorAll('a.button');
+    links.forEach((link) => {
+      link.querySelectorAll('strong').forEach((strong) => {
+        if (strong.nextSibling && strong.nextSibling.nodeType === Node.TEXT_NODE) {
+          strong.nextSibling.textContent = strong.nextSibling.textContent.trimStart();
+        }
+      });
+    });
+  }
+  
   block.append(footer);
 }
