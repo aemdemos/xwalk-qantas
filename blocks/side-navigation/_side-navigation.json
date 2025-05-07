@@ -31,7 +31,8 @@
           "options": [
             { "name": "Main", "value": "main" },
             { "name": "Article", "value": "article" },
-            { "name": "Gallery", "value": "gallery" }
+            { "name": "Gallery", "value": "gallery" },
+            { "name": "Media-Enquiries", "value": "media-enquiries" }
           ]
         },
         {
