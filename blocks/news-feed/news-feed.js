@@ -285,6 +285,12 @@ export default async function decorate(block) {
         });
 
         const filteredData = filterSearchResults(allData, searchQuery, urlParams);
+        // Sort filtered data by date (newest first)
+        filteredData.sort((a, b) => {
+          const dateA = new Date(a.publisheddate || a.publishDateTime);
+          const dateB = new Date(b.publisheddate || b.publishDateTime);
+          return dateB - dateA;
+        });
 
         // Format display text for year-month queries
         let displayQuery = searchQuery;

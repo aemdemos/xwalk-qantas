@@ -70,6 +70,17 @@ function handleHeadingSection(headingSection, context) {
   } else if (context.isMainPage) {
     // If content is coming from authored page, just add the class for right styling
     headingSection.classList.add('heading');
+  } else if (context.isMediaEnquires) {
+    headingSection.remove();
+    const mediaHeading = document.getElementById('media-enquiries');
+    const formWrapper = document.querySelector('.form-wrapper');
+    if (mediaHeading && formWrapper) {
+      formWrapper.insertBefore(mediaHeading, formWrapper.firstChild);
+      const defaultContentWrapper = document.querySelector('.form-container .default-content-wrapper');
+      if (defaultContentWrapper && !defaultContentWrapper.textContent.trim()) {
+        defaultContentWrapper.remove();
+      }
+    }
   } else {
     headingSection.remove();
   }
@@ -153,6 +164,8 @@ function handleTopicsSection(topicsSection, context, isChildGalleryPage) {
     if (isChildGalleryPage) {
       handleGalleryMetadata(topicsSection);
     }
+  } else if (context.isMediaEnquires) {
+    topicsSection.classList.add('media-enquiries');
   } else {
     // If no topics found, remove the topics section
     topicsSection.remove();
@@ -252,10 +265,7 @@ async function fetchAndProcessRelatedPosts(relatedPostsSection) {
  * @returns {Promise<void>}
  */
 async function handleRelatedPostsSection(relatedPostsSection, context) {
-  if (context.isMainPage) {
-    // If content is coming from authored page, just add the class for right styling
-    relatedPostsSection.remove(); // classList.add('related-posts');
-  } else if (context.isGalleryBlock) {
+  if (context.isMainPage || context.isGalleryBlock || context.isMediaEnquires) {
     relatedPostsSection.remove();
   } else {
     await fetchAndProcessRelatedPosts(relatedPostsSection);
@@ -270,6 +280,7 @@ export default async function decorate(block) {
   // Setup context
   const context = setupPageContext();
   context.isGalleryBlock = block.classList.contains('gallery');
+  context.isMediaEnquires = block.classList.contains('media-enquiries');
 
   const isChildGalleryPage = context.isGalleryPage
     && window.location.pathname.split('/').filter((p) => p).length > 1;
