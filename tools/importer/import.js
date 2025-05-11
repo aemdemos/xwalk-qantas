@@ -290,70 +290,88 @@ const tableColsMap = {
   7: 'table-col-7',
 };
 
+/**
+ * Creates a table block structure that preserves rowspan and colspan attributes
+ * @param {HTMLTableElement} table - The source HTML table element
+ * @param {number} maxColumnCount - Maximum number of columns in the table
+ * @returns {Array<Array<string>>} - 2D array representing the table structure
+ */
 function createTableBlock(table, maxColumnCount) {
+  // Initialize the table cells array with the header row
   const tableCells = [['Table (no-header)']];
   const rows = table.querySelectorAll('tr');
   const rowCount = rows.length;
   
-  // Create a 2D array to track cell positions and their spans
+  // Create a 2D grid to track cell positions and their spans
+  // This grid will help us maintain the structure of rowspan and colspan cells
   const grid = Array(rowCount).fill().map(() => Array(maxColumnCount).fill(null));
   
-  // First pass: fill in the grid with actual cells and their spans
+  // First pass: Process the table and fill the grid with cell information
+  // This pass identifies all cells, their spans, and their positions
   rows.forEach((row, rowIndex) => {
     let colIndex = 0;
     row.querySelectorAll('td, th').forEach((cell) => {
-      // Skip if this position is already filled by a spanning cell
+      // Skip positions that are already filled by a spanning cell from a previous row
       while (colIndex < maxColumnCount && grid[rowIndex][colIndex] !== null) {
         colIndex++;
       }
       
+      // Get the span attributes, defaulting to 1 if not specified
       const rowspan = parseInt(cell.getAttribute('rowspan') || '1', 10);
       const colspan = parseInt(cell.getAttribute('colspan') || '1', 10);
       
-      // Fill the grid with this cell's content
+      // Fill the grid with this cell's content and span information
+      // This creates a complete map of how cells span across rows and columns
       for (let r = 0; r < rowspan; r++) {
         for (let c = 0; c < colspan; c++) {
           if (rowIndex + r < rowCount && colIndex + c < maxColumnCount) {
             grid[rowIndex + r][colIndex + c] = {
-              content: cell.innerHTML || '',
-              isSpan: r > 0 || c > 0, // Mark as span if not the original cell
-              originalCell: r === 0 && c === 0 ? cell : null, // Keep reference to original cell
-              rowspan,
-              colspan,
-              isRowSpan: r > 0,
-              isColSpan: c > 0
+              content: cell.innerHTML || '', // The cell's content
+              isSpan: r > 0 || c > 0, // Whether this is a spanned position
+              originalCell: r === 0 && c === 0 ? cell : null, // Reference to the original cell
+              rowspan, // Number of rows this cell spans
+              colspan, // Number of columns this cell spans
+              isRowSpan: r > 0, // Whether this is a rowspan position
+              isColSpan: c > 0  // Whether this is a colspan position
             };
           }
         }
       }
       
+      // Move the column index past this cell's span
       colIndex += colspan;
     });
   });
   
-  // Second pass: create the table cells array
+  // Second pass: Generate the final table structure
+  // This pass creates the actual table cells array based on the grid information
   rows.forEach((row, rowIndex) => {
-    const cells = [tableColsMap[maxColumnCount]]; // add the modelId as the first cell
+    // Start each row with the table model identifier
+    const cells = [tableColsMap[maxColumnCount]];
     
+    // Process each column in the current row
     for (let colIndex = 0; colIndex < maxColumnCount; colIndex++) {
       const cell = grid[rowIndex][colIndex];
       if (cell) {
         if (!cell.isSpan) {
-          // This is the original cell
+          // This is an original cell (not a span)
           cells.push(cell.content);
         } else if (cell.isRowSpan) {
-          // This is a spanned cell from a rowspan, include the content
+          // This is a position in a rowspan
+          // Include the content to maintain visual continuity across rows
           cells.push(cell.content);
         } else if (cell.isColSpan) {
-          // This is a spanned cell from a colspan, include the content
+          // This is a position in a colspan
+          // Include the content to maintain visual continuity across columns
           cells.push(cell.content);
         }
       } else {
-        // Empty cell
+        // Empty cell position
         cells.push('');
       }
     }
     
+    // Add the completed row to the table
     tableCells.push(cells);
   });
   
