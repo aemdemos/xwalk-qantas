@@ -270,7 +270,11 @@ function addGalleryImages(main) {
 function getMaxColumnCount(table) {
   let maxColumns = 0;
   table?.querySelectorAll('tr').forEach((row) => {
-    const columnCount = row.querySelectorAll('td, th').length;
+    let columnCount = 0;
+    row.querySelectorAll('td, th').forEach((cell) => {
+      const colspan = parseInt(cell.getAttribute('colspan') || '1', 10);
+      columnCount += colspan;
+    });
     maxColumns = Math.max(maxColumns, columnCount);
   });
   return maxColumns;
@@ -288,21 +292,71 @@ const tableColsMap = {
 
 function createTableBlock(table, maxColumnCount) {
   const tableCells = [['Table (no-header)']];
-
-  table.querySelectorAll('tr').forEach((row) => {
-    const cells = [tableColsMap[maxColumnCount]]; // add the modelId as the first cell in the rows
-    const cols = row.querySelectorAll('td, th');
-    let thisColCount = cols.length;
-    cols.forEach((col) => { // add the data from page table
-      cells.push(col.innerHTML || '');
+  const rows = table.querySelectorAll('tr');
+  const rowCount = rows.length;
+  
+  // Create a 2D array to track cell positions and their spans
+  const grid = Array(rowCount).fill().map(() => Array(maxColumnCount).fill(null));
+  
+  // First pass: fill in the grid with actual cells and their spans
+  rows.forEach((row, rowIndex) => {
+    let colIndex = 0;
+    row.querySelectorAll('td, th').forEach((cell) => {
+      // Skip if this position is already filled by a spanning cell
+      while (colIndex < maxColumnCount && grid[rowIndex][colIndex] !== null) {
+        colIndex++;
+      }
+      
+      const rowspan = parseInt(cell.getAttribute('rowspan') || '1', 10);
+      const colspan = parseInt(cell.getAttribute('colspan') || '1', 10);
+      
+      // Fill the grid with this cell's content
+      for (let r = 0; r < rowspan; r++) {
+        for (let c = 0; c < colspan; c++) {
+          if (rowIndex + r < rowCount && colIndex + c < maxColumnCount) {
+            grid[rowIndex + r][colIndex + c] = {
+              content: cell.innerHTML || '',
+              isSpan: r > 0 || c > 0, // Mark as span if not the original cell
+              originalCell: r === 0 && c === 0 ? cell : null, // Keep reference to original cell
+              rowspan,
+              colspan,
+              isRowSpan: r > 0,
+              isColSpan: c > 0
+            };
+          }
+        }
+      }
+      
+      colIndex += colspan;
     });
-    // fill in empty cells for missing column data
-    while (thisColCount < maxColumnCount) {
-      cells.push('');
-      thisColCount += 1;
+  });
+  
+  // Second pass: create the table cells array
+  rows.forEach((row, rowIndex) => {
+    const cells = [tableColsMap[maxColumnCount]]; // add the modelId as the first cell
+    
+    for (let colIndex = 0; colIndex < maxColumnCount; colIndex++) {
+      const cell = grid[rowIndex][colIndex];
+      if (cell) {
+        if (!cell.isSpan) {
+          // This is the original cell
+          cells.push(cell.content);
+        } else if (cell.isRowSpan) {
+          // This is a spanned cell from a rowspan, include the content
+          cells.push(cell.content);
+        } else if (cell.isColSpan) {
+          // This is a spanned cell from a colspan, include the content
+          cells.push(cell.content);
+        }
+      } else {
+        // Empty cell
+        cells.push('');
+      }
     }
+    
     tableCells.push(cells);
   });
+  
   return tableCells;
 }
 
