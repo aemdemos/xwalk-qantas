@@ -241,3 +241,8 @@ main > .form-container h1 {
     transform: scale(0.8);
   }
 }
+
+.form-container .form-wrapper {
+  margin: 0;
+  padding: 0;
+}
