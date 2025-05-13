@@ -120,6 +120,21 @@
           }
         }
       }
+    },
+    {
+      "title": "Table Column 10",
+      "id": "table-col-10",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Table Column 10",
+              "model": "table-col-10"
+            }
+          }
+        }
+      }
     }
   ],
   "models": [
@@ -383,6 +398,76 @@
           "label": "Classes"
         }
       ]
+    },
+    {
+      "id": "table-col-10",
+      "fields": [
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "column1text",
+          "label": "Column1"
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "column2text",
+          "label": "Column2"
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "column3text",
+          "label": "Column3"
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "column4text",
+          "label": "Column4"
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "column5text",
+          "label": "Column5"
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "column6text",
+          "label": "Column6"
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "column7text",
+          "label": "Column7"
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "column8text",
+          "label": "Column7"
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "column9text",
+          "label": "Column7"
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "column10text",
+          "label": "Column7"
+        },
+        {
+          "component": "text",
+          "name": "classes",
+          "label": "Classes"
+        }
+      ]
     }
   ],
   "filters": [
@@ -395,7 +480,8 @@
         "table-col-4",
         "table-col-5",
         "table-col-6",
-        "table-col-7"
+        "table-col-7",
+        "table-col-10"
       ]
     }
   ]

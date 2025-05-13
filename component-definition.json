@@ -389,6 +389,21 @@
           }
         },
         {
+          "title": "Table Column 10",
+          "id": "table-col-10",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "Table Column 10",
+                  "model": "table-col-10"
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Topic Cards",
           "id": "topic-cards",
           "plugins": {

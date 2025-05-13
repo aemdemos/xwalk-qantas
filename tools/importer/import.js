@@ -288,6 +288,7 @@ const tableColsMap = {
   5: 'table-col-5',
   6: 'table-col-6',
   7: 'table-col-7',
+  10: 'table-col-10',
 };
 
 /**
