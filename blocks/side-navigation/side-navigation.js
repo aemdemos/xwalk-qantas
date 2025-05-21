@@ -129,7 +129,9 @@ function handleGalleryMetadata(topicsSection) {
     topicsSection.textContent = '';
     if (imageCount) {
       const countElement = document.createElement('p');
-      countElement.textContent = `${imageCount} Images`;
+      // Remove any existing 'Images' or 'Image' (case-insensitive) from the meta value
+      const count = imageCount.replace(/images?/i, '').trim();
+      countElement.textContent = `${count} Images`;
       topicsSection.appendChild(countElement);
     }
 
