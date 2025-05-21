@@ -36,7 +36,7 @@ function getQueryIndexJsonEndpoint() {
 function getTopicLink(topic) {
   const currentUrl = window.location.href.toLowerCase();
   let topicLink = window.location.origin;
-  if (currentUrl.includes('/media-releases/')) {
+  if (currentUrl.includes('/media-releases/') || currentUrl.includes('/speeches/')) {
     topicLink += `/topic?tag=${topic}`;
   } else if (currentUrl.includes(('/roo-tales/'))) {
     topicLink += `/roo-tales-topic?tag=${topic}`;
