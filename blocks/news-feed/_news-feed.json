@@ -28,6 +28,7 @@
           "valueType": "string",
           "options": [
             { "name": "Category Pages", "value": "category" },
+            { "name": "No Thumbnail Feed", "value": "no-thumbnail-feed" },
             { "name": "Search Results", "value": "search" }
           ]
         },
