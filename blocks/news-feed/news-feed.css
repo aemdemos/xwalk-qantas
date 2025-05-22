@@ -154,6 +154,17 @@ main > .section > .news-feed-wrapper {
   padding-right: 40px;
 }
 
+/* Full width text when no thumbnail is displayed */
+.post-text.full-width {
+  padding-right: 0;
+  width: 100%;
+}
+
+/* Post items without thumbnails take full width */
+.news-feed.no-thumbnail-feed .post-item {
+  width: 100%;
+}
+
 /* Post Meta (Location/Date) */
 .post-meta {
   margin: 0 0 15px;
