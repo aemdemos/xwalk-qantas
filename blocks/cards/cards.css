@@ -70,18 +70,18 @@ main > .section.cards-container:has(.cards) {
 
 
 /* Styling for new-galleries with 2 cards per row */
-.cards-wrapper > .cards.block.new-galleries > ul.gallery-grid-two-per-row {
+.cards-wrapper > .cards.block.new-galleries > ul.gallery-grid-three-per-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 10px;
   justify-content: space-between;
   margin-left: 0;
   margin-right: auto;
 }
 
-.cards-wrapper > .cards.block.new-galleries > ul.gallery-grid-two-per-row > li {
-  flex: 0 1 calc(50% - 15px); /* Two cards per row with gap consideration */
-  margin-bottom: 20px;
+.cards-wrapper > .cards.block.new-galleries > ul.gallery-grid-three-per-row > li {
+  flex: 0 1 calc(33.333% - 10px); /* Three cards per row with gap consideration */
+  margin-bottom: 10px;
   position: relative; /* For positioning child elements */
 }
 
@@ -120,13 +120,17 @@ main > .section.cards-container:has(.cards) {
 }
 
 /* Link styling */
+
+.cards-wrapper > .cards.block.new-galleries .overlay-text h3 {
+  line-height: 12px;
+}
+
 .cards-wrapper > .cards.block.new-galleries .overlay-text a {
   color: white;
   text-decoration: none;
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
-  line-height: 24px;
 }
 
 .cards-wrapper>.cards.block.banner>ul>li>.cards-card-body {
@@ -289,7 +293,7 @@ main > .section.cards-container:has(.cards) {
 
 /* Ensure they're 50% width on medium screens too */
 @media (width <= 768px) {
-  .cards-wrapper > .cards.block.new-galleries > ul.gallery-grid-two-per-row > li {
+  .cards-wrapper > .cards.block.new-galleries > ul.gallery-grid-three-per-row > li {
     flex: 0 1 calc(50% - 15px);
   }
 }
@@ -303,7 +307,7 @@ main > .section.cards-container:has(.cards) {
     flex: 0 1 100%;
   }
 
-  .cards-wrapper > .cards.block.new-galleries > ul.gallery-grid-two-per-row > li {
+  .cards-wrapper > .cards.block.new-galleries > ul.gallery-grid-three-per-row > li {
     flex: 0 1 100%;
   }
 
