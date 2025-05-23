@@ -17,6 +17,7 @@ indices:
   news:
     include:
       - '/media-releases/*'
+      - '/uncategorized/*'
     exclude:
       - '/**.json'
     target: /media-releases.json
