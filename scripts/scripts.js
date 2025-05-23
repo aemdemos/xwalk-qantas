@@ -69,6 +69,7 @@ async function decorateTemplates(main) {
       '/roo-tales/',
       '/speeches/',
       '/media-releases/',
+      '/uncategorized/',
     ];
 
     // Get the current pathname

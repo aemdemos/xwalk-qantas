@@ -37,7 +37,8 @@ function getTopicLink(topic) {
   const currentUrl = window.location.href.toLowerCase();
   let topicLink = window.location.origin;
   if (currentUrl.includes('/media-releases/') || currentUrl.includes('/speeches/')
-    || currentUrl.includes('/qantas-responds/') || currentUrl.includes('/featured/')) {
+    || currentUrl.includes('/qantas-responds/') || currentUrl.includes('/featured/')
+    || currentUrl.includes('/uncategorized/')) {
     topicLink += `/topic?tag=${topic}`;
   } else if (currentUrl.includes(('/roo-tales/'))) {
     topicLink += `/roo-tales-topic?tag=${topic}`;
