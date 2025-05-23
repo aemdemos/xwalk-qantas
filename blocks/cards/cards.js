@@ -1,6 +1,7 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 import { moveInstrumentation } from '../../scripts/scripts.js';
 import { formatDate, formatDateNoTime, sortDataByDate } from '../../scripts/util.js';
+import { createPaginationContainer, updatePagination } from '../../scripts/pagination.js';
 
 // Get published-time from page metadata
 function getPagePublishedDate() {
@@ -408,7 +409,8 @@ async function handleTeaser(block, pagePublishedDate) {
   const galleryType = urlParams.get('gallery_type');
   const isVideoFilter = galleryType === 'video';
 
-  const ul = document.createElement('ul');
+  // Collect all <li> cards
+  const allLis = [];
   [...block.children].forEach((row) => {
     const li = document.createElement('li');
     moveInstrumentation(row, li);
@@ -464,20 +466,26 @@ async function handleTeaser(block, pagePublishedDate) {
     } else if (!isVideoFilter && hasYouTubeLink) {
       li.style.display = 'none';
     }
-    ul.append(li);
+    allLis.push(li);
   });
 
   // Keep track of how many images have been processed
   let imageCount = 0;
 
   // Optimize images
-  ul.querySelectorAll('picture > img').forEach((img) => {
-    // Set eager loading for first 2 images, lazy loading for the rest
-    const isEager = imageCount < 2;
-    const optimizedPic = createOptimizedPicture(img.src, img.alt, isEager, [{ width: '750' }]);
-    moveInstrumentation(img, optimizedPic.querySelector('img'));
-    img.closest('picture').replaceWith(optimizedPic);
-    imageCount += 1;
+  allLis.forEach((li) => {
+    const imageDiv = li.querySelector('.cards-card-image');
+    if (imageDiv) {
+      const picture = imageDiv.querySelector('picture');
+      if (picture) {
+        // Set eager loading for first 2 images, lazy loading for the rest
+        const isEager = imageCount < 2;
+        const optimizedPic = createOptimizedPicture(picture.querySelector('img').src, picture.querySelector('img').alt, isEager, [{ width: '750' }]);
+        moveInstrumentation(picture.querySelector('img'), optimizedPic.querySelector('img'));
+        picture.parentNode.replaceChild(optimizedPic, picture);
+        imageCount += 1;
+      }
+    }
   });
 
   // Fetch gallery data and enhance teaser cards
@@ -487,7 +495,7 @@ async function handleTeaser(block, pagePublishedDate) {
 
     if (galleryData && galleryData.data && Array.isArray(galleryData.data)) {
       // Process each card to find matches and add data
-      ul.querySelectorAll('li').forEach((card) => {
+      allLis.forEach((card) => {
         const cardBody = card.querySelector('.cards-card-body');
         if (!cardBody) return;
 
@@ -551,8 +559,34 @@ async function handleTeaser(block, pagePublishedDate) {
     // No console statements to avoid linter errors
   }
 
+  // Pagination logic
+  const cardsPerPage = 9;
+  let currentPage = parseInt(new URLSearchParams(window.location.search).get('page'), 10) || 1;
+  const ul = document.createElement('ul');
+  allLis.forEach(li => ul.appendChild(li));
+  const paginationContainer = createPaginationContainer();
+
+  function renderPage(page) {
+    allLis.forEach((li, idx) => {
+      li.style.display = (idx >= (page - 1) * cardsPerPage && idx < page * cardsPerPage) ? '' : 'none';
+    });
+  }
+
+  function handlePageChange(newPage) {
+    const url = new URL(window.location);
+    url.searchParams.set('page', newPage);
+    window.history.pushState({}, '', url);
+    currentPage = newPage;
+    renderPage(currentPage);
+    updatePagination(allLis.length, cardsPerPage, currentPage, handlePageChange);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   block.textContent = '';
-  block.append(ul);
+  block.appendChild(ul);
+  block.appendChild(paginationContainer);
+  renderPage(currentPage);
+  updatePagination(allLis.length, cardsPerPage, currentPage, handlePageChange);
 }
 
 // Handle default cards
