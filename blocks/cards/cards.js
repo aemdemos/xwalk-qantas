@@ -610,4 +610,5 @@ export default async function decorate(block) {
   } else {
     handleDefaultCards(block);
   }
+  
 }

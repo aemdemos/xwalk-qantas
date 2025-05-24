@@ -1,88 +1,77 @@
 /**
  * Creates and returns a pagination container element.
- *
- * @returns {HTMLDivElement} The pagination container <div> with class 'pagination'.
- *
- * @example
- * const paginationContainer = createPaginationContainer();
- * block.appendChild(paginationContainer);
+ * @returns {HTMLDivElement} The pagination container.
  */
 export function createPaginationContainer() {
-  const paginationContainer = document.createElement('div');
-  paginationContainer.className = 'pagination';
-  return paginationContainer;
+  const container = document.createElement('div');
+  container.className = 'pagination';
+  return container;
 }
 
 /**
- * Updates the pagination container with page numbers and navigation controls.
- *
- * @param {number} totalItems - The total number of items to paginate.
- * @param {number} itemsPerPage - The number of items to show per page.
- * @param {number} pageNum - The current page number (1-based).
- * @param {function} onPageChange - Callback function to call when a page is selected. Receives the new page number as an argument.
- *
- * @example
- * updatePagination(100, 9, 1, (newPage) => {
- *   // Handle page change
- * });
- *
- * This function will clear and repopulate the pagination container ('.pagination')
- * with numbered page links and a next arrow if needed. The current page is highlighted.
+ * Updates the pagination controls inside the given container.
+ * @param {number} totalItems - Total number of items to paginate.
+ * @param {number} itemsPerPage - Number of items per page.
+ * @param {number} currentPage - The current page number (1-based).
+ * @param {function} onPageChange - Callback when a page is selected.
  */
-export function updatePagination(totalItems, itemsPerPage, pageNum, onPageChange) {
-  const paginationContainer = document.querySelector('.pagination');
-  if (!paginationContainer) return;
+export function updatePagination(totalItems, itemsPerPage, currentPage, onPageChange) {
+  const container = document.querySelector('.pagination');
+  if (!container) return;
 
-  paginationContainer.innerHTML = '';
-
+  container.innerHTML = '';
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-  const maxVisiblePages = 8;
-  let startPage;
-  let endPage;
+  if (totalPages <= 1) return;
 
-  if (totalPages <= maxVisiblePages) {
-    startPage = 1;
-    endPage = totalPages;
-  } else if (pageNum <= 4) {
-    startPage = 1;
-    endPage = 7;
-  } else if (pageNum >= totalPages - 3) {
-    startPage = totalPages - 6;
-    endPage = totalPages;
-  } else {
-    startPage = pageNum - 3;
-    endPage = pageNum + 3;
-  }
+  // Previous button
+  const prev = document.createElement('button');
+  prev.textContent = 'Previous';
+  prev.disabled = currentPage === 1;
+  prev.onclick = () => onPageChange(currentPage - 1);
+  container.appendChild(prev);
 
-  for (let i = startPage; i <= endPage; i += 1) {
-    const pageLink = document.createElement('a');
-    pageLink.href = '#';
-    pageLink.textContent = i.toString();
-    pageLink.className = 'page-link';
+  // Page numbers (show up to 5 pages, with ellipsis if needed)
+  let start = Math.max(1, currentPage - 2);
+  let end = Math.min(totalPages, currentPage + 2);
+  if (currentPage <= 3) end = Math.min(5, totalPages);
+  if (currentPage >= totalPages - 2) start = Math.max(1, totalPages - 4);
 
-    if (i === pageNum) {
-      pageLink.classList.add('current');
+  if (start > 1) {
+    const first = document.createElement('button');
+    first.textContent = '1';
+    first.onclick = () => onPageChange(1);
+    container.appendChild(first);
+    if (start > 2) {
+      const dots = document.createElement('span');
+      dots.textContent = '...';
+      container.appendChild(dots);
     }
-
-    pageLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      onPageChange(i);
-    });
-
-    paginationContainer.appendChild(pageLink);
   }
 
-  if (pageNum < totalPages) {
-    const nextLink = document.createElement('a');
-    nextLink.href = '#';
-    nextLink.textContent = '>';
-    nextLink.className = 'page-link next';
-
-    nextLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      onPageChange(pageNum + 1);
-    });
-
-    paginationContainer.appendChild(nextLink);
+  for (let i = start; i <= end; i += 1) {
+    const btn = document.createElement('button');
+    btn.textContent = i;
+    if (i === currentPage) btn.classList.add('active');
+    btn.onclick = () => onPageChange(i);
+    container.appendChild(btn);
   }
+
+  if (end < totalPages) {
+    if (end < totalPages - 1) {
+      const dots = document.createElement('span');
+      dots.textContent = '...';
+      container.appendChild(dots);
+    }
+    const last = document.createElement('button');
+    last.textContent = totalPages;
+    last.onclick = () => onPageChange(totalPages);
+    container.appendChild(last);
+  }
+
+  // Next button
+  const next = document.createElement('button');
+  next.textContent = 'Next';
+  next.disabled = currentPage === totalPages;
+  next.onclick = () => onPageChange(currentPage + 1);
+  container.appendChild(next);
 } 
