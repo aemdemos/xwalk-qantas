@@ -9,7 +9,7 @@ main > .section.cards-container:has(.cards) {
 }
 
 .cards-wrapper > .cards.block {
-  display: flex; /* Use flexbox for the overall card container */
+  display: flex;
   flex-flow: row wrap; /* Allow cards to wrap into multiple rows */ /* Ensure cards are side-by-side */
   gap: 16px; /* Reduce spacing between cards to match original layout */
   padding: 0;
@@ -373,4 +373,50 @@ main > .section.cards-container:has(.cards) {
 .cards-wrapper > .cards.block.teaser .hide-video-icon .cards-card-video::before,
 .cards-wrapper > .cards.block.teaser .hide-video-icon .cards-card-video::after {
   display: none;
+}
+
+/* Pagination Styling (improved for small page counts) */
+.cards.block .pagination {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.page-link {
+  display: inline-block;
+  font-size: 18px;
+  text-decoration: none;
+  color: #3366ff;
+  padding: 5px 10px;
+  min-width: 20px;
+  text-align: center;
+  margin: 0 8px;
+  transition: color 0.2s;
+}
+
+.page-link.current {
+  color: #e3001b;
+  font-weight: bold;
+  position: relative;
+}
+
+.page-link.current::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #e3001b;
+}
+
+.page-link.next {
+  font-weight: bold;
+  color: #e3001b;
+}
+
+.page-link:hover {
+  color: #e3001b;
 }

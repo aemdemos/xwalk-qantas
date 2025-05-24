@@ -401,6 +401,71 @@ async function handleNewGalleries(block) {
   block.appendChild(cardsContainer);
 }
 
+// Pagination helpers (local to this file)
+function createPaginationContainer() {
+  const paginationContainer = document.createElement('div');
+  paginationContainer.className = 'pagination';
+  return paginationContainer;
+}
+
+function updatePagination(totalItems, itemsPerPage, pageNum, onPageChange) {
+  const paginationContainer = document.querySelector('.pagination');
+  if (!paginationContainer) return;
+
+  paginationContainer.innerHTML = '';
+
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const maxVisiblePages = 8;
+  let startPage;
+  let endPage;
+
+  if (totalPages <= maxVisiblePages) {
+    startPage = 1;
+    endPage = totalPages;
+  } else if (pageNum <= 4) {
+    startPage = 1;
+    endPage = 7;
+  } else if (pageNum >= totalPages - 3) {
+    startPage = totalPages - 6;
+    endPage = totalPages;
+  } else {
+    startPage = pageNum - 3;
+    endPage = pageNum + 3;
+  }
+
+  for (let i = startPage; i <= endPage; i += 1) {
+    const pageLink = document.createElement('a');
+    pageLink.href = '#';
+    pageLink.textContent = i.toString();
+    pageLink.className = 'page-link';
+
+    if (i === pageNum) {
+      pageLink.classList.add('current');
+    }
+
+    pageLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      onPageChange(i);
+    });
+
+    paginationContainer.appendChild(pageLink);
+  }
+
+  if (pageNum < totalPages) {
+    const nextLink = document.createElement('a');
+    nextLink.href = '#';
+    nextLink.textContent = '>';
+    nextLink.className = 'page-link next';
+
+    nextLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      onPageChange(pageNum + 1);
+    });
+
+    paginationContainer.appendChild(nextLink);
+  }
+}
+
 // Handle teaser cards
 async function handleTeaser(block, pagePublishedDate) {
   // Check if we're filtering by gallery_type
@@ -408,7 +473,8 @@ async function handleTeaser(block, pagePublishedDate) {
   const galleryType = urlParams.get('gallery_type');
   const isVideoFilter = galleryType === 'video';
 
-  const ul = document.createElement('ul');
+  // Collect all <li> cards
+  const allLis = [];
   [...block.children].forEach((row) => {
     const li = document.createElement('li');
     moveInstrumentation(row, li);
@@ -464,55 +530,45 @@ async function handleTeaser(block, pagePublishedDate) {
     } else if (!isVideoFilter && hasYouTubeLink) {
       li.style.display = 'none';
     }
-    ul.append(li);
+    allLis.push(li);
   });
 
-  // Keep track of how many images have been processed
-  let imageCount = 0;
-
   // Optimize images
-  ul.querySelectorAll('picture > img').forEach((img) => {
-    // Set eager loading for first 2 images, lazy loading for the rest
-    const isEager = imageCount < 2;
-    const optimizedPic = createOptimizedPicture(img.src, img.alt, isEager, [{ width: '750' }]);
-    moveInstrumentation(img, optimizedPic.querySelector('img'));
-    img.closest('picture').replaceWith(optimizedPic);
-    imageCount += 1;
+  let imageCount = 0;
+  allLis.forEach((li) => {
+    const imageDiv = li.querySelector('.cards-card-image');
+    if (imageDiv) {
+      const picture = imageDiv.querySelector('picture');
+      if (picture) {
+        // Set eager loading for first 2 images, lazy loading for the rest
+        const isEager = imageCount < 2;
+        const optimizedPic = createOptimizedPicture(picture.querySelector('img').src, picture.querySelector('img').alt, isEager, [{ width: '750' }]);
+        moveInstrumentation(picture.querySelector('img'), optimizedPic.querySelector('img'));
+        picture.parentNode.replaceChild(optimizedPic, picture);
+        imageCount += 1;
+      }
+    }
   });
 
   // Fetch gallery data and enhance teaser cards
   try {
     const response = await fetch('/gallery.json');
     const galleryData = await response.json();
-
     if (galleryData && galleryData.data && Array.isArray(galleryData.data)) {
-      // Process each card to find matches and add data
-      ul.querySelectorAll('li').forEach((card) => {
+      allLis.forEach((card) => {
         const cardBody = card.querySelector('.cards-card-body');
         if (!cardBody) return;
-
-        // Find the link in the card to get the path
         const cardLink = card.querySelector('a');
         if (!cardLink) return;
-
-        // Get the relative path by creating a URL object and extracting the pathname
         const href = cardLink.getAttribute('href');
         if (!href) return;
-
-        // Extract just the pathname as the relative path
-        const cardPath = href.startsWith('http')
-          ? new URL(href).pathname
-          : href;
-
-        // Look for matching gallery item in the fetched data
+        const cardPath = href.startsWith('http') ? new URL(href).pathname : href;
         const matchingPath = (item) => item.path === cardPath
           || (item.path.startsWith('/') && item.path.substring(1) === cardPath)
           || (cardPath.startsWith('/') && cardPath.substring(1) === item.path);
-
         const matchingGallery = galleryData.data.find(matchingPath);
         const metadataBody = document.createElement('div');
         metadataBody.className = 'cards-card-body';
-
         if (matchingGallery) {
           // Add published date if available
           const galleryDateSource = matchingGallery.publisheddate
@@ -524,35 +580,57 @@ async function handleTeaser(block, pagePublishedDate) {
             dateP.textContent = `POSTED ON ${formatDateNoTime(galleryDateSource)}`;
             metadataBody.appendChild(dateP);
           }
-
           // Add imagecount if available
           if (matchingGallery.imagecount) {
             const imageCountP = document.createElement('p');
             imageCountP.className = 'card-image-count';
-            imageCountP.textContent = `${matchingGallery.imagecount}`;
+            imageCountP.textContent = `${matchingGallery.imagecount} Images`;
             metadataBody.appendChild(imageCountP);
           }
         } else {
           // Create default structure when no matching gallery is found
-          // Use page published date if available
           const dateP = document.createElement('p');
           dateP.className = 'card-publisheddate';
           dateP.textContent = `POSTED ON ${formatDateNoTime(pagePublishedDate)}`;
           metadataBody.appendChild(dateP);
         }
-        // Create a new card body for metadata instead of adding to the existing one
         if (metadataBody.children.length > 0) {
           card.insertBefore(metadataBody, cardBody);
         }
       });
     }
   } catch (error) {
-    // Silent error handling - gallery data enhancement will be skipped
-    // No console statements to avoid linter errors
+    // Silent error handling
+  }
+
+  // Pagination logic
+  const cardsPerPage = 9;
+  let currentPage = parseInt(new URLSearchParams(window.location.search).get('page'), 10) || 1;
+  const ul = document.createElement('ul');
+  allLis.forEach(li => ul.appendChild(li));
+
+  function renderPage(page) {
+    allLis.forEach((li, idx) => {
+      li.style.display = (idx >= (page - 1) * cardsPerPage && idx < page * cardsPerPage) ? '' : 'none';
+    });
+  }
+
+  function handlePageChange(newPage) {
+    const url = new URL(window.location);
+    url.searchParams.set('page', newPage);
+    window.history.pushState({}, '', url);
+    currentPage = newPage;
+    renderPage(currentPage);
+    updatePagination(allLis.length, cardsPerPage, currentPage, handlePageChange);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   block.textContent = '';
-  block.append(ul);
+  block.appendChild(ul);
+  const paginationContainer = createPaginationContainer();
+  block.appendChild(paginationContainer);
+  renderPage(currentPage);
+  updatePagination(allLis.length, cardsPerPage, currentPage, handlePageChange);
 }
 
 // Handle default cards
