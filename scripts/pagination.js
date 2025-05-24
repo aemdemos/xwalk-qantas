@@ -23,11 +23,20 @@ export function updatePagination(totalItems, itemsPerPage, currentPage, onPageCh
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   if (totalPages <= 1) return;
 
-  // Previous button
-  const prev = document.createElement('button');
-  prev.textContent = 'Previous';
-  prev.disabled = currentPage === 1;
-  prev.onclick = () => onPageChange(currentPage - 1);
+  // Previous link
+  const prev = document.createElement('a');
+  prev.textContent = '<';
+  prev.href = '#';
+  prev.className = 'prev';
+  if (currentPage === 1) {
+    prev.classList.add('disabled');
+    prev.onclick = (e) => e.preventDefault();
+  } else {
+    prev.onclick = (e) => {
+      e.preventDefault();
+      onPageChange(currentPage - 1);
+    };
+  }
   container.appendChild(prev);
 
   // Page numbers (show up to 5 pages, with ellipsis if needed)
@@ -37,9 +46,14 @@ export function updatePagination(totalItems, itemsPerPage, currentPage, onPageCh
   if (currentPage >= totalPages - 2) start = Math.max(1, totalPages - 4);
 
   if (start > 1) {
-    const first = document.createElement('button');
+    const first = document.createElement('a');
     first.textContent = '1';
-    first.onclick = () => onPageChange(1);
+    first.href = '#';
+    first.onclick = (e) => {
+      e.preventDefault();
+      onPageChange(1);
+    };
+    if (currentPage === 1) first.classList.add('current');
     container.appendChild(first);
     if (start > 2) {
       const dots = document.createElement('span');
@@ -49,11 +63,15 @@ export function updatePagination(totalItems, itemsPerPage, currentPage, onPageCh
   }
 
   for (let i = start; i <= end; i += 1) {
-    const btn = document.createElement('button');
-    btn.textContent = i;
-    if (i === currentPage) btn.classList.add('active');
-    btn.onclick = () => onPageChange(i);
-    container.appendChild(btn);
+    const link = document.createElement('a');
+    link.textContent = i;
+    link.href = '#';
+    if (i === currentPage) link.classList.add('current');
+    link.onclick = (e) => {
+      e.preventDefault();
+      onPageChange(i);
+    };
+    container.appendChild(link);
   }
 
   if (end < totalPages) {
@@ -62,16 +80,30 @@ export function updatePagination(totalItems, itemsPerPage, currentPage, onPageCh
       dots.textContent = '...';
       container.appendChild(dots);
     }
-    const last = document.createElement('button');
+    const last = document.createElement('a');
     last.textContent = totalPages;
-    last.onclick = () => onPageChange(totalPages);
+    last.href = '#';
+    last.onclick = (e) => {
+      e.preventDefault();
+      onPageChange(totalPages);
+    };
+    if (currentPage === totalPages) last.classList.add('current');
     container.appendChild(last);
   }
 
-  // Next button
-  const next = document.createElement('button');
-  next.textContent = 'Next';
-  next.disabled = currentPage === totalPages;
-  next.onclick = () => onPageChange(currentPage + 1);
+  // Next link
+  const next = document.createElement('a');
+  next.textContent = '>';
+  next.href = '#';
+  next.className = 'next';
+  if (currentPage === totalPages) {
+    next.classList.add('disabled');
+    next.onclick = (e) => e.preventDefault();
+  } else {
+    next.onclick = (e) => {
+      e.preventDefault();
+      onPageChange(currentPage + 1);
+    };
+  }
   container.appendChild(next);
 } 
