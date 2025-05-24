@@ -1,5 +1,75 @@
 import { formatDate, sortDataByDate } from '../../scripts/util.js';
-import { createPaginationContainer, updatePagination } from '../../scripts/pagination.js';
+
+// Pagination related functions
+function createPaginationContainer() {
+  const paginationContainer = document.createElement('div');
+  paginationContainer.className = 'pagination';
+  return paginationContainer;
+}
+
+function updatePagination(totalItems, itemsPerPage, pageNum, onPageChange) {
+  const paginationContainer = document.querySelector('.pagination');
+  if (!paginationContainer) return;
+
+  // Clear existing pagination
+  paginationContainer.innerHTML = '';
+
+  // Calculate total pages
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  // Determine how many page numbers to show
+  const maxVisiblePages = 8;
+  let startPage;
+  let endPage;
+
+  if (totalPages <= maxVisiblePages) {
+    startPage = 1;
+    endPage = totalPages;
+  } else if (pageNum <= 4) {
+    startPage = 1;
+    endPage = 7;
+  } else if (pageNum >= totalPages - 3) {
+    startPage = totalPages - 6;
+    endPage = totalPages;
+  } else {
+    startPage = pageNum - 3;
+    endPage = pageNum + 3;
+  }
+
+  // Create numbered page links
+  for (let i = startPage; i <= endPage; i += 1) {
+    const pageLink = document.createElement('a');
+    pageLink.href = '#';
+    pageLink.textContent = i.toString();
+    pageLink.className = 'page-link';
+
+    if (i === pageNum) {
+      pageLink.classList.add('current');
+    }
+
+    pageLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      onPageChange(i);
+    });
+
+    paginationContainer.appendChild(pageLink);
+  }
+
+  // Add next page button if not on last page
+  if (pageNum < totalPages) {
+    const nextLink = document.createElement('a');
+    nextLink.href = '#';
+    nextLink.textContent = '>';
+    nextLink.className = 'page-link next';
+
+    nextLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      onPageChange(pageNum + 1);
+    });
+
+    paginationContainer.appendChild(nextLink);
+  }
+}
 
 // Search related functions
 function createSearchHeader(query, count) {
@@ -70,12 +140,12 @@ function filterSearchResults(data, searchQuery, urlParams) {
 }
 
 // Post item related functions
-function createPostItem(item) {
+function createPostItem(item, hideThumbnail = false) {
   const postItem = document.createElement('div');
   postItem.className = 'post-item';
 
-  // Add the image if available
-  if (item.image) {
+  // Add the image if available and not in no-thumbnail mode
+  if (item.image && !hideThumbnail) {
     const postImage = document.createElement('div');
     postImage.className = 'post-image';
 
@@ -91,6 +161,11 @@ function createPostItem(item) {
   // Create the post text container
   const postText = document.createElement('div');
   postText.className = 'post-text';
+
+  // Add full-width class when no thumbnail is shown
+  if (hideThumbnail) {
+    postText.classList.add('full-width');
+  }
 
   // Create and add the title with link
   const postTitle = document.createElement('h2');
@@ -138,7 +213,7 @@ function createPostItem(item) {
   return postItem;
 }
 
-function displayItems(items, container) {
+function displayItems(items, container, hideThumbnail = false) {
   // Store the search header if it exists
   const searchHeader = container.querySelector('.search-results-header');
 
@@ -152,7 +227,7 @@ function displayItems(items, container) {
 
   if (items.length > 0) {
     items.forEach((item) => {
-      const postItem = createPostItem(item);
+      const postItem = createPostItem(item, hideThumbnail);
       container.appendChild(postItem);
     });
   } else {
@@ -164,6 +239,9 @@ function displayItems(items, container) {
 export default async function decorate(block) {
   // Add class name directly to the block element
   block.classList.add('news-feed-block-content');
+
+  // Check if this is the no-thumbnail variant
+  const isNoThumbnailFeed = block.classList.contains('no-thumbnail-feed');
 
   // Get current page from URL if available
   const urlParams = new URLSearchParams(window.location.search);
@@ -192,6 +270,7 @@ export default async function decorate(block) {
       });
       loadPage(newPage);
     }
+
     // For search, fetch from all sources
     if (isSearchBlock && searchQuery) {
       try {
@@ -237,7 +316,7 @@ export default async function decorate(block) {
 
         newsContainer.appendChild(createSearchHeader(displayQuery, filteredData.length));
         const paginatedData = filteredData.slice((page - 1) * limit, page * limit);
-        displayItems(paginatedData, newsContainer);
+        displayItems(paginatedData, newsContainer, isNoThumbnailFeed);
 
         if (window.location.pathname !== '/') {
           updatePagination(filteredData.length, limit, page, handlePageChange);
@@ -265,7 +344,7 @@ export default async function decorate(block) {
         // Sort the data by date (newest first)
         const sortedData = sortDataByDate(data.data);
         const paginatedData = sortedData.slice((page - 1) * limit, page * limit);
-        displayItems(paginatedData, newsContainer);
+        displayItems(paginatedData, newsContainer, isNoThumbnailFeed);
 
         // Only show pagination if not on home page
         if (window.location.pathname !== '/') {
