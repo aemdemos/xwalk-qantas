@@ -584,7 +584,7 @@ async function handleTeaser(block, pagePublishedDate) {
           if (matchingGallery.imagecount) {
             const imageCountP = document.createElement('p');
             imageCountP.className = 'card-image-count';
-            imageCountP.textContent = `${matchingGallery.imagecount} Images`;
+            imageCountP.textContent = `${matchingGallery.imagecount}`;
             metadataBody.appendChild(imageCountP);
           }
         } else {
