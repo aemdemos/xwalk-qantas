@@ -23,22 +23,6 @@ export function updatePagination(totalItems, itemsPerPage, currentPage, onPageCh
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   if (totalPages <= 1) return;
 
-  // Previous link
-  const prev = document.createElement('a');
-  prev.textContent = '<';
-  prev.href = '#';
-  prev.className = 'prev';
-  if (currentPage === 1) {
-    prev.classList.add('disabled');
-    prev.onclick = (e) => e.preventDefault();
-  } else {
-    prev.onclick = (e) => {
-      e.preventDefault();
-      onPageChange(currentPage - 1);
-    };
-  }
-  container.appendChild(prev);
-
   // Page numbers (show up to 5 pages, with ellipsis if needed)
   let start = Math.max(1, currentPage - 2);
   let end = Math.min(totalPages, currentPage + 2);
@@ -91,7 +75,7 @@ export function updatePagination(totalItems, itemsPerPage, currentPage, onPageCh
     container.appendChild(last);
   }
 
-  // Next link
+  // Next link only
   const next = document.createElement('a');
   next.textContent = '>';
   next.href = '#';
