@@ -320,6 +320,10 @@
             "value": "category"
           },
           {
+            "name": "No Thumbnail Feed",
+            "value": "no-thumbnail-feed"
+          },
+          {
             "name": "Search Results",
             "value": "search"
           }
