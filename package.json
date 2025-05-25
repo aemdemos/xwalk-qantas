@@ -18,7 +18,8 @@
     "test:ui": "vitest --ui --coverage.enabled=true",
     "test:coverage": "vitest run --coverage",
     "test:watch": "test --watch",
-    "prepare": "husky"
+    "prepare": "husky",
+    "aem-upload": "aem-import-helper aem upload"
   },
   "repository": {
     "type": "git",
