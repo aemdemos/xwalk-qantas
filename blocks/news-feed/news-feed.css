@@ -238,7 +238,7 @@ main > .section > .news-feed-wrapper {
 }
 
 /* Pagination Styling */
-.pagination {
+.news-feed .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -246,23 +246,23 @@ main > .section > .news-feed-wrapper {
   gap: 15px;
 }
 
-.page-link {
+.news-feed .page-link {
   display: inline-block;
   font-size: 18px;
   text-decoration: none;
-  color: #ccc;
+  color: #3366ff;
   padding: 5px 10px;
   min-width: 20px;
   text-align: center;
 }
 
-.page-link.current {
+.news-feed .page-link.current {
   color: #e3001b;
   font-weight: bold;
   position: relative;
 }
 
-.page-link.current::after {
+.news-feed .page-link.current::after {
   content: '';
   position: absolute;
   left: 0;
@@ -272,21 +272,20 @@ main > .section > .news-feed-wrapper {
   background-color: #e3001b;
 }
 
-.page-link.next {
+.news-feed .page-link.next {
   font-weight: bold;
   color: #e3001b;
 }
 
-.page-link:hover {
+.news-feed .page-link:hover {
   color: #e3001b;
 }
 
 @media (width <= 480px) {
-  .pagination {
+  .news-feed .pagination {
     gap: 10px;
   }
-  
-  .page-link {
+  .news-feed .page-link {
     font-size: 16px;
     padding: 3px 8px;
   }

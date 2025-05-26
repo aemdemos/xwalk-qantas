@@ -375,17 +375,17 @@ main > .section.cards-container:has(.cards) {
   display: none;
 }
 
-/* Pagination Styling (improved for small page counts) */
-.cards.block .pagination {
-  width: 100%;
+/* Pagination Styling for teaser cards block only */
+.cards-wrapper > .cards.block.teaser .pagination {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin: 30px 0;
-  gap: 5px;
+  margin: 10px 0;
+  gap: 1px;
+  width: 100%;
 }
 
-.page-link {
+.cards-wrapper > .cards.block.teaser .page-link {
   display: inline-block;
   font-size: 18px;
   text-decoration: none;
@@ -397,13 +397,13 @@ main > .section.cards-container:has(.cards) {
   transition: color 0.2s;
 }
 
-.page-link.current {
+.cards-wrapper > .cards.block.teaser .page-link.current {
   color: #e3001b;
   font-weight: bold;
   position: relative;
 }
 
-.page-link.current::after {
+.cards-wrapper > .cards.block.teaser .page-link.current::after {
   content: '';
   position: absolute;
   left: 0;
@@ -413,11 +413,27 @@ main > .section.cards-container:has(.cards) {
   background-color: #e3001b;
 }
 
-.page-link.next {
+.cards-wrapper > .cards.block.teaser .page-link.next {
   font-weight: bold;
   color: #e3001b;
 }
 
-.page-link:hover {
+.cards-wrapper > .cards.block.teaser .page-link:hover {
   color: #e3001b;
+}
+
+@media (max-width: 1024px) {
+  .cards-wrapper > .cards.block.teaser .pagination {
+    justify-content: center !important;
+  }
+}
+
+@media (width <= 480px) {
+  .cards-wrapper > .cards.block.teaser .pagination {
+    gap: 10px;
+  }
+  .cards-wrapper > .cards.block.teaser .page-link {
+    font-size: 16px;
+    padding: 3px 8px;
+  }
 }
