@@ -242,8 +242,8 @@ main > .section > .news-feed-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px 0;
-  gap: 1px;
+  margin: 30px 0;
+  gap: 15px;
 }
 
 .news-feed .page-link {
