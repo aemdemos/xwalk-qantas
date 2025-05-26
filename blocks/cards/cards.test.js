@@ -26,6 +26,12 @@ vi.mock('../../scripts/util.js', () => ({
   formatDate: vi.fn((date) => `Formatted: ${date}`),
   formatDateNoTime: vi.fn((date) => `Date Only: ${date}`),
   sortDataByDate: vi.fn((data) => data),
+  createPaginationContainer: vi.fn(() => {
+    const div = document.createElement('div');
+    div.className = 'pagination';
+    return div;
+  }),
+  updatePagination: vi.fn(),
 }));
 
 describe('Cards Block', () => {
