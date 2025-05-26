@@ -1,7 +1,7 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 import { moveInstrumentation } from '../../scripts/scripts.js';
-import { formatDate, formatDateNoTime, sortDataByDate } from '../../scripts/util.js';
-import { createPaginationContainer, updatePagination } from '../../scripts/pagination.js';
+import { formatDate, formatDateNoTime, sortDataByDate, createPaginationContainer, updatePagination } from '../../scripts/util.js';
+
 
 // Get published-time from page metadata
 function getPagePublishedDate() {

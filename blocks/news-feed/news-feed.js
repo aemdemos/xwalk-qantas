@@ -1,5 +1,4 @@
-import { formatDate, sortDataByDate } from '../../scripts/util.js';
-import { createPaginationContainer, updatePagination } from '../../scripts/pagination.js';
+import { formatDate, sortDataByDate, createPaginationContainer, updatePagination } from '../../scripts/util.js';
 
 // Search related functions
 function createSearchHeader(query, count) {
