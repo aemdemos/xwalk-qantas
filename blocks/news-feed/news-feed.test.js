@@ -10,6 +10,19 @@ vi.mock('../../scripts/util.js', () => ({
   sortDataByDate: vi.fn((data) => data.sort(
     (a, b) => new Date(b.publisheddate) - new Date(a.publisheddate),
   )),
+  createPaginationContainer: vi.fn(() => {
+    const div = document.createElement('div');
+    div.className = 'pagination';
+    return div;
+  }),
+  updatePagination: vi.fn((totalItems, itemsPerPage, currentPage, onPageChange) => {
+    const container = document.querySelector('.pagination');
+    if (!container) return;
+    // Add a dummy page link for testing
+    const link = document.createElement('a');
+    link.className = 'page-link current';
+    container.appendChild(link);
+  }),
 }));
 
 describe('News Feed Block', () => {
