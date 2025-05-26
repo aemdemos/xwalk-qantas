@@ -212,11 +212,11 @@ async function createNewGalleriesCards() {
     const sortedData = sortDataByDate(galleryData.data);
 
     // Take only the first 4 entries
-    const latestGalleries = sortedData.slice(0, 4);
+    const latestGalleries = sortedData.slice(0, 6);
 
     // Create UL element for the cards
     const ul = document.createElement('ul');
-    ul.className = 'gallery-grid-two-per-row'; // Add a class for specific styling
+    ul.className = 'gallery-grid-three-per-row'; // Add a class for specific styling
 
     // Create cards for each of the latest galleries
     latestGalleries.forEach((gallery) => {
