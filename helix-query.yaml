@@ -86,6 +86,7 @@ indices:
     include:
       - '/qantas-responds/*'
       - '/featured/*'
+      - '/uncategorized/*'
     exclude:
       - '/**.json'
     target: /qantas-responds.json
