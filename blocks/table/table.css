@@ -1,6 +1,7 @@
 .table.block {
   width: 100%;
   overflow-x: auto;
+  margin: 2em 0;
 }
 
 .table.block table {
@@ -8,6 +9,7 @@
   max-width: 100%;
   border-collapse: collapse;
   font-size: var(--body-font-size-xs);
+  border: none;
 }
 
 @media (width >= 600px) {
@@ -23,12 +25,15 @@
 }
 
 .table.block table thead tr {
-  border-top: 2px solid;
-  border-bottom: 2px solid;
+  border-bottom: 1px solid #ddd;
 }
 
 .table.block table tbody tr {
-  border-bottom: 1px solid;
+  border-bottom: 1px solid #eee;
+}
+
+.table.block table tbody tr:last-child {
+  border-bottom: none;
 }
 
 .table.block table th {
@@ -37,13 +42,49 @@
 
 .table.block table th,
 .table.block table td {
-  padding: 0.5em;
+  padding: 0.75em 0.5em;
   text-align: left;
+  vertical-align: middle;
+}
+
+/* Merged cells maintain left alignment with vertical centering */
+.table.block table th[colspan],
+.table.block table td[colspan] {
+  text-align: left;
+  vertical-align: middle;
+}
+
+/* Center align for merged row cells that start from first cell */
+.table.block table tr th:first-child[colspan],
+.table.block table tr td:first-child[colspan] {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table.block table th[rowspan],
+.table.block table td[rowspan] {
+  text-align: left;
+  vertical-align: middle;
+  padding: 1em 0.5em;
+}
+
+.table.block table th[rowspan][colspan],
+.table.block table td[rowspan][colspan] {
+  text-align: left;
+  vertical-align: middle;
+}
+
+/* Center align for merged cells with both rowspan and colspan that start from first cell */
+.table.block table tr th:first-child[rowspan][colspan],
+.table.block table tr td:first-child[rowspan][colspan] {
+  text-align: center;
+  vertical-align: middle;
 }
 
 .table table th p,
 .table table td p {
   margin: 0;
+  line-height: 1.4;
 }
 
 .table table td p + p {
@@ -51,8 +92,16 @@
 }
 
 /* no header variant */
+.table.block.no-header table tbody tr:first-child {
+  border-top: none;
+}
+
 .table.block.no-header table tbody tr {
-  border-top: 1px solid;
+  border-bottom: 1px solid #eee;
+}
+
+.table.block.no-header table tbody tr:last-child {
+  border-bottom: none;
 }
 
 /* striped variant */
@@ -63,5 +112,5 @@
 /* bordered variant */
 .table.block.bordered table th,
 .table.block.bordered table td {
-  border: 1px solid;
+  border: 1px solid #ddd;
 }

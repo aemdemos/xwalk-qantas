@@ -7,90 +7,98 @@
 import { moveInstrumentation } from '../../scripts/scripts.js';
 
 /**
- * Analyzes table data to find consecutive cells with same values and group them using rowspan/colspan
- * This function processes the table in two passes:
- * 1. First pass: Identifies and groups consecutive cells with same values in columns (rowspan)
- * 2. Second pass: Identifies and groups consecutive cells with same values in rows (colspan)
- * 
+ * Analyzes table data to find cells that should be merged based on specific rules:
+ * 1. Merge continuous cells in first column with same content
+ * 2. Merge continuous cells in rows with same content (anywhere in the row)
+ *
  * @param {Array<Array<string>>} tableData - 2D array of cell values
- * @returns {Array<Array<{value: string, rowspan: number, colspan: number}>>} - Processed table data with spans
+ * @returns {Array<Array<{value: string, rowspan: number, colspan: number, skip: boolean}>>} - Processed table data with spans
  */
 function analyzeTableData(tableData) {
   const rows = tableData.length;
   const cols = tableData[0].length;
-  // Initialize a 2D array to store processed data with span information
-  const processedData = Array(rows).fill().map(() => Array(cols).fill(null));
-  
-  // First pass: Process columns to find consecutive cells with same values (rowspan)
-  // This creates vertical groupings of cells
-  for (let col = 0; col < cols; col++) {
-    let currentValue = null;
-    let rowspan = 1;
-    let startRow = 0;
-    
-    for (let row = 0; row < rows; row++) {
-      const value = tableData[row][col];
-      
-      if (value === currentValue) {
-        // Found consecutive cell with same value, increment rowspan
-        rowspan++;
-        if (row === rows - 1) {
-          // Last row, apply the span for the final group
-          processedData[startRow][col] = { value: currentValue, rowspan, colspan: 1 };
-        }
-      } else {
-        if (currentValue !== null) {
-          // Different value found, apply the span for the previous group
-          processedData[startRow][col] = { value: currentValue, rowspan, colspan: 1 };
-        }
-        // Start tracking new value
-        currentValue = value;
-        rowspan = 1;
-        startRow = row;
-      }
-    }
-  }
-  
-  // Second pass: Process rows to find consecutive cells with same values (colspan)
-  // This creates horizontal groupings of cells
+
+  // Initialize processed data structure
+  const processedData = Array(rows).fill().map((_, i) => Array(cols).fill().map((_, j) => ({
+    value: tableData[i][j],
+    rowspan: 1,
+    colspan: 1,
+    skip: false,
+  })));
+
+  // Helper function to check if a value is valid for merging
+  const isValidForMerging = (value) => {
+    return value && value.trim() !== '';
+  };
+
+  // First pass: Handle rowspan (vertical merging) - ONLY for first column
   for (let row = 0; row < rows; row++) {
-    let currentValue = null;
-    let colspan = 1;
-    let startCol = 0;
-    
-    for (let col = 0; col < cols; col++) {
-      const value = tableData[row][col];
-      
-      if (value === currentValue) {
-        // Found consecutive cell with same value, increment colspan
-        colspan++;
-        if (col === cols - 1) {
-          // Last column, apply the span for the final group
-          processedData[row][startCol] = { value: currentValue, rowspan: 1, colspan };
-        }
+    if (processedData[row][0].skip) continue;
+
+    const currentValue = tableData[row][0];
+
+    // Only process cells with valid content in first column
+    if (!isValidForMerging(currentValue)) {
+      continue;
+    }
+
+    let rowspan = 1;
+
+    // Look down to find consecutive cells with identical content in first column
+    for (let nextRow = row + 1; nextRow < rows; nextRow++) {
+      const nextValue = tableData[nextRow][0];
+
+      // Both cells must have valid content, be identical, and not already skipped
+      if (isValidForMerging(nextValue)
+          && nextValue === currentValue
+          && !processedData[nextRow][0].skip) {
+        rowspan++;
+        processedData[nextRow][0].skip = true;
       } else {
-        if (currentValue !== null) {
-          // Different value found, apply the span for the previous group
-          processedData[row][startCol] = { value: currentValue, rowspan: 1, colspan };
-        }
-        // Start tracking new value
-        currentValue = value;
-        colspan = 1;
-        startCol = col;
+        break;
       }
     }
+
+    processedData[row][0].rowspan = rowspan;
   }
-  
+
+  // Second pass: Handle colspan (horizontal merging) - for any consecutive cells with same content
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      if (processedData[row][col].skip) continue;
+
+      const currentValue = tableData[row][col];
+
+      // Only process cells with valid content
+      if (!isValidForMerging(currentValue)) {
+        continue;
+      }
+
+      let colspan = 1;
+
+      // Look ahead to find consecutive cells with identical content
+      for (let nextCol = col + 1; nextCol < cols; nextCol++) {
+        const nextValue = tableData[row][nextCol];
+
+        // Both cells must have valid content and be identical
+        if (isValidForMerging(nextValue) && nextValue === currentValue) {
+          colspan++;
+          processedData[row][nextCol].skip = true;
+        } else {
+          break;
+        }
+      }
+
+      processedData[row][col].colspan = colspan;
+    }
+  }
+
   return processedData;
 }
 
 /**
- * Decorates a table block by analyzing and grouping consecutive cells with same content
- * The function:
- * 1. Collects all cell values from the table
- * 2. Analyzes the data to find groups of cells with same content
- * 3. Creates a new table structure with appropriate rowspan/colspan attributes
- * 
+ * Decorates a table block by analyzing and grouping consecutive cells with specific merging rules
+ *
  * @param {Element} block - The table block element to decorate
  */
 export default async function decorate(block) {
@@ -98,42 +106,39 @@ export default async function decorate(block) {
   const thead = document.createElement('thead');
   const tbody = document.createElement('tbody');
   const header = !block.classList.contains('no-header');
-  
-  // First, collect all cell values from the table
-  // This creates a 2D array of cell contents for analysis
-  const tableData = [...block.children].map(row => 
+
+  // Collect all cell values from the table
+  const tableData = [...block.children].map(row =>
     [...row.children].map(cell => cell.textContent.trim())
   );
-  
+
   // Analyze the table data to find groups of cells with same content
-  // This will identify where rowspan and colspan should be applied
   const processedData = analyzeTableData(tableData);
-  
+
   // Create the table structure with the identified spans
   [...block.children].forEach((row, i) => {
     const tr = document.createElement('tr');
     moveInstrumentation(row, tr);
-    
+
     [...row.children].forEach((cell, j) => {
       const cellData = processedData[i][j];
-      if (!cellData) return; // Skip if this cell is part of a span
-      
+      if (cellData.skip) return; // Skip cells that are part of a span
+
       const td = document.createElement(i === 0 && header ? 'th' : 'td');
-      if (i === 0) td.setAttribute('scope', 'column');
-      
+      if (i === 0 && header) td.setAttribute('scope', 'column');
+
       // Apply the identified spans to the cell
-      // This will create the visual grouping of cells with same content
       if (cellData.rowspan > 1) td.setAttribute('rowspan', cellData.rowspan);
       if (cellData.colspan > 1) td.setAttribute('colspan', cellData.colspan);
-      
+
       td.innerHTML = cell.innerHTML;
       tr.append(td);
     });
-    
+
     if (i === 0 && header) thead.append(tr);
     else tbody.append(tr);
   });
-  
+
   table.append(thead, tbody);
   block.replaceChildren(table);
 }
