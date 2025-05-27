@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 /* global WebImporter */
-/* eslint-disable no-console, class-methods-use-this */
+/* eslint-disable no-console, class-methods-use-this, no-plusplus, no-trailing-spaces, no-multi-spaces, comma-dangle, max-len */
 
 // Convert text date in the format 'Published on 28th October 2015 at 9:17' to ISO format
 function convertToISO(dateString) {

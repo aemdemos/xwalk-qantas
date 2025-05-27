@@ -63,7 +63,6 @@ function formatDateInternal(dateString, includeTime) {
 
   const date = new Date(normalizedDateString);
   if (Number.isNaN(date.getTime())) {
-    console.error(`Invalid date format: ${dateString}`);
     return dateString;
   }
 

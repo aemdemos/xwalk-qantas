@@ -92,20 +92,12 @@
 }
 
 /* no header variant */
-.table.block.no-header table tbody tr:first-child {
-  border-top: none;
-}
-
 .table.block.no-header table tbody tr {
   border-bottom: 1px solid #eee;
 }
 
-.table.block.no-header table tbody tr:last-child {
-  border-bottom: none;
-}
-
 /* striped variant */
-.table.block.striped tbody tr:nth-child(odd) {
+.table.block.striped table tbody tr:nth-child(odd) {
   background-color: var(--overlay-background-color);
 }
 
@@ -113,4 +105,13 @@
 .table.block.bordered table th,
 .table.block.bordered table td {
   border: 1px solid #ddd;
+}
+
+/* no header variant - more specific selectors */
+.table.block.no-header table tbody tr:first-child {
+  border-top: none;
+}
+
+.table.block.no-header table tbody tr:last-child {
+  border-bottom: none;
 }
