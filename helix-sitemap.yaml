@@ -1,5 +1,51 @@
 sitemaps:
-  default:
-    source: /query-index.json
+  # Main sitemap index that references other sitemaps
+  index:
     destination: /sitemap.xml
+    sitemaps:
+      - /sitemap-pages.xml
+      - /sitemap-media-releases.xml
+      - /sitemap-speeches.xml
+      - /sitemap-qantas-responds.xml
+      - /sitemap-roo-tales.xml
+      - /sitemap-gallery.xml
+    
+  # General pages sitemap (excludes content that has dedicated sitemaps)
+  pages:
+    source: /query-index.json
+    destination: /sitemap-pages.xml
+    lastmod: YYYY-MM-DD
+    exclude:
+      - '/media-releases/*'
+      - '/speeches/*'
+      - '/qantas-responds/*'
+      - '/featured/*'
+      - '/uncategorized/*'
+      - '/roo-tales/*'
+      - '/gallery/*'
+    
+  # Category-specific sitemaps
+  media-releases:
+    source: /media-releases.json
+    destination: /sitemap-media-releases.xml
+    lastmod: YYYY-MM-DD
+    
+  speeches:
+    source: /speeches.json
+    destination: /sitemap-speeches.xml
+    lastmod: YYYY-MM-DD
+    
+  qantas-responds:
+    source: /qantas-responds.json
+    destination: /sitemap-qantas-responds.xml
+    lastmod: YYYY-MM-DD
+    
+  roo-tales:
+    source: /roo-tales.json
+    destination: /sitemap-roo-tales.xml
+    lastmod: YYYY-MM-DD
+    
+  gallery:
+    source: /gallery.json
+    destination: /sitemap-gallery.xml
     lastmod: YYYY-MM-DD
