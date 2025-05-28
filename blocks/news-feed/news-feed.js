@@ -283,7 +283,6 @@ export default async function decorate(block) {
         newsContainer.innerHTML = '<p>No items found.</p>';
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
       newsContainer.innerHTML = '<p>An error occurred while loading the content.</p>';
     }
   }
@@ -305,7 +304,6 @@ export default async function decorate(block) {
     // Load the initial page
     await loadPage(currentPage);
   } catch (error) {
-    console.error('Error:', error);
     block.innerHTML = '<p>An error occurred while loading the content.</p>';
   }
 }

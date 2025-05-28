@@ -222,7 +222,7 @@ class ArticleManager {
   static loadSocialWidgets() {
     // Load Facebook Widget
     if (!document.getElementById('facebook-jssdk')) {
-      window.fbAsyncInit = function () {
+      window.fbAsyncInit = function fbAsyncInit() {
         // Use global FB object safely
         if (window.FB) {
           window.FB.init({

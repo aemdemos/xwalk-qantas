@@ -3,6 +3,8 @@
 //  1. npm install axios cheerio - to install the required dependencies
 //  2. node article-thumbnail-scraper.js - to run the scraper
 
+/* eslint-disable no-console, import/no-unresolved */
+
 const axios = require('axios');
 const cheerio = require('cheerio');
 const fs = require('fs');
