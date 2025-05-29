@@ -1,30 +1,11 @@
 sitemaps:
-  # Main sitemap index that references other sitemaps
-  index:
-    destination: /sitemap.xml
-    sitemaps:
-      - /sitemap-pages.xml
-      - /sitemap-media-releases.xml
-      - /sitemap-speeches.xml
-      - /sitemap-qantas-responds.xml
-      - /sitemap-roo-tales.xml
-      - /sitemap-gallery.xml
-    
-  # General pages sitemap (excludes content that has dedicated sitemaps)
-  pages:
+  # Main sitemap with all content
+  default:
     source: /query-index.json
-    destination: /sitemap-pages.xml
+    destination: /sitemap.xml
     lastmod: YYYY-MM-DD
-    exclude:
-      - '/media-releases/*'
-      - '/speeches/*'
-      - '/qantas-responds/*'
-      - '/featured/*'
-      - '/uncategorized/*'
-      - '/roo-tales/*'
-      - '/gallery/*'
     
-  # Category-specific sitemaps
+  # Category-specific sitemaps for better organization
   media-releases:
     source: /media-releases.json
     destination: /sitemap-media-releases.xml
