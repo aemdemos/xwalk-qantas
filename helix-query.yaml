@@ -6,6 +6,13 @@ indices:
       - '/**'
     exclude:
       - '/**.json'
+      - '/media-releases/*'
+      - '/speeches/*'
+      - '/qantas-responds/*'
+      - '/roo-tales/*'
+      - '/gallery/*'
+      - '/featured/*'
+      - '/uncategorized/*'
     target: /query-index.json
     properties:
       lastModified:
