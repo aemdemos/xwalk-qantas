@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /wp-admin/
 Allow: /wp-admin/admin-ajax.php
 Crawl-delay: 10
-Sitemap: https://www.qantasnewsroom.com.au/sitemap.xml
+Sitemap: https://www.qantasnewsroom.com.au/sitemap-index.xml
