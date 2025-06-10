@@ -408,6 +408,22 @@ function handleLinkImages(main) {
   }
 }
 
+/**
+ * Handle blockquote in the page content
+ */
+function handleBlockquote(main) {
+  const pageContent = main.querySelector('.page-content');
+  if (pageContent) {
+    const blockquote = pageContent.querySelector('blockquote');
+    if (blockquote) {
+      const quoteText = blockquote.innerText;
+      const cells = [['Quote']];
+      cells.push([quoteText]);
+      blockquote.replaceWith(WebImporter.DOMUtils.createTable(cells, document));
+    }
+  }
+}
+
 function addVideos(main) {
   const iframes = main.querySelectorAll('iframe');
   if (iframes) {
@@ -523,6 +539,7 @@ export default {
     addCards(main);
     addGalleryImages(main);
     handleLinkImages(main);
+    handleBlockquote(main);
     addVideos(main);
     WebImporter.rules.transformBackgroundImages(main, document);
     // WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
