@@ -22,7 +22,8 @@
       "form",
       "image-with-link",
       "embed",
-      "quote"
+      "quote",
+      "video"
     ]
   },
   {
@@ -72,5 +73,9 @@
     "components": [
       "topic-card"
     ]
+  },
+  {
+    "id": "video",
+    "components": []
   }
 ]

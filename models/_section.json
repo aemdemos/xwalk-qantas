@@ -61,7 +61,8 @@
         "form",
         "image-with-link",
         "embed",
-        "quote"
+        "quote",
+        "video"
       ]
     }
   ]

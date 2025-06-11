@@ -437,6 +437,19 @@ function addVideos(main) {
       }
     });
   }
+
+  const videos = main.querySelectorAll('.wp-video');
+  if (videos) {
+    videos.forEach((video) => {
+      const cells = [['Video']];
+      // first check if anchor tag is present, and use it as src, else the source tag
+      const src = video.querySelector('a')?.href || video.querySelector('source')?.src;
+      // get the video path from the url
+      const videoPath = new URL(src).pathname;
+      cells.push([videoPath]);
+      video.replaceWith(WebImporter.DOMUtils.createTable(cells, document));
+    });
+  }
 }
 
 function removeSocial(main) {
