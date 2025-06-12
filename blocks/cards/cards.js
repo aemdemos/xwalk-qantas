@@ -1,7 +1,8 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 import { moveInstrumentation } from '../../scripts/scripts.js';
-import { formatDate, formatDateNoTime, sortDataByDate, createPaginationContainer, updatePagination } from '../../scripts/util.js';
-
+import {
+  formatDate, formatDateNoTime, sortDataByDate, createPaginationContainer, updatePagination,
+} from '../../scripts/util.js';
 
 // Get published-time from page metadata
 function getPagePublishedDate() {
@@ -402,12 +403,37 @@ async function handleNewGalleries(block) {
   block.appendChild(cardsContainer);
 }
 
+// Helper function to update page title based on video filter
+function updatePageHeading(isVideoFilter) {
+  // Update the main heading (h1) if it exists
+  const mainHeading = document.querySelector('h1');
+  if (mainHeading) {
+    const headingText = mainHeading.textContent;
+    if (isVideoFilter && !headingText.includes('- Videos')) {
+      if (headingText.includes('- Photos')) {
+        mainHeading.textContent = headingText.replace('- Photos', '- Videos');
+      } else if (window.location.pathname.includes('/gallery-category/')) {
+        mainHeading.textContent = `${headingText} - Videos`;
+      }
+    } else if (!isVideoFilter && !headingText.includes('- Photos')) {
+      if (headingText.includes('- Videos')) {
+        mainHeading.textContent = headingText.replace('- Videos', '- Photos');
+      } else if (window.location.pathname.includes('/gallery-category/')) {
+        mainHeading.textContent = `${headingText} - Photos`;
+      }
+    }
+  }
+}
+
 // Handle teaser cards
 async function handleTeaser(block, pagePublishedDate) {
   // Check if we're filtering by gallery_type
   const urlParams = new URLSearchParams(window.location.search);
   const galleryType = urlParams.get('gallery_type');
   const isVideoFilter = galleryType === 'video';
+
+  // Update page heading based on filter type
+  updatePageHeading(isVideoFilter);
 
   // Collect all <li> cards
   const allLis = [];
@@ -463,8 +489,12 @@ async function handleTeaser(block, pagePublishedDate) {
     // If we're filtering by video type, hide non-video cards
     if (isVideoFilter && !hasYouTubeLink) {
       li.style.display = 'none';
+      li.dataset.filteredOut = 'true';
     } else if (!isVideoFilter && hasYouTubeLink) {
       li.style.display = 'none';
+      li.dataset.filteredOut = 'true';
+    } else {
+      li.dataset.filteredOut = 'false';
     }
     allLis.push(li);
   });
@@ -559,16 +589,33 @@ async function handleTeaser(block, pagePublishedDate) {
     // No console statements to avoid linter errors
   }
 
-  // Pagination logic
+  // Pagination logic - filter out hidden items for accurate pagination
   const cardsPerPage = 9;
   let currentPage = parseInt(new URLSearchParams(window.location.search).get('page'), 10) || 1;
   const ul = document.createElement('ul');
-  allLis.forEach(li => ul.appendChild(li));
+  allLis.forEach((li) => ul.appendChild(li));
   const paginationContainer = createPaginationContainer();
 
+  // Get only visible (non-filtered) items for pagination
+  const getVisibleItems = () => allLis.filter((li) => {
+    // Check if item was filtered out by video/photo logic
+    const wasFilteredOut = li.dataset.filteredOut === 'true';
+    return !wasFilteredOut;
+  });
+
   function renderPage(page) {
-    allLis.forEach((li, idx) => {
-      li.style.display = (idx >= (page - 1) * cardsPerPage && idx < page * cardsPerPage) ? '' : 'none';
+    const visibleItems = getVisibleItems();
+
+    // Hide all items first
+    allLis.forEach((li) => {
+      li.style.display = 'none';
+    });
+
+    // Show only items for current page that aren't filtered out
+    const startIdx = (page - 1) * cardsPerPage;
+    const endIdx = startIdx + cardsPerPage;
+    visibleItems.slice(startIdx, endIdx).forEach((li) => {
+      li.style.display = '';
     });
   }
 
@@ -578,15 +625,44 @@ async function handleTeaser(block, pagePublishedDate) {
     window.history.pushState({}, '', url);
     currentPage = newPage;
     renderPage(currentPage);
-    updatePagination(allLis.length, cardsPerPage, currentPage, handlePageChange);
+    const visibleCount = getVisibleItems().length;
+    updatePagination(visibleCount, cardsPerPage, currentPage, handlePageChange);
+
+    // Maintain title when navigating pages
+    // eslint-disable-next-line no-shadow
+    const urlParams = new URLSearchParams(url.search);
+    // eslint-disable-next-line no-shadow
+    const galleryType = urlParams.get('gallery_type');
+    updatePageHeading(galleryType === 'video');
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  // Check if there are any visible items after filtering
+  const visibleCount = getVisibleItems().length;
+
   block.textContent = '';
-  block.appendChild(ul);
-  block.appendChild(paginationContainer);
-  renderPage(currentPage);
-  updatePagination(allLis.length, cardsPerPage, currentPage, handlePageChange);
+
+  if (visibleCount === 0) {
+    // Show "No results" message when no items match the filter
+    const noResultsDiv = document.createElement('div');
+    noResultsDiv.className = 'no-results-message';
+    noResultsDiv.innerHTML = 'No results';
+    block.appendChild(noResultsDiv);
+  } else {
+    // Show normal results with pagination
+    block.appendChild(ul);
+    block.appendChild(paginationContainer);
+
+    // Ensure current page doesn't exceed available pages
+    const totalPages = Math.ceil(visibleCount / cardsPerPage);
+    if (currentPage > totalPages) {
+      currentPage = 1;
+    }
+
+    renderPage(currentPage);
+    updatePagination(visibleCount, cardsPerPage, currentPage, handlePageChange);
+  }
 }
 
 // Handle default cards
