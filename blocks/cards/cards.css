@@ -427,7 +427,7 @@ main > .section.cards-container:has(.cards) {
   color: #e3001b;
 }
 
-@media (max-width: 1024px) {
+@media (width <= 1024px) {
   .cards-wrapper > .cards.block.teaser .pagination {
     justify-content: center !important;
   }
@@ -437,8 +437,17 @@ main > .section.cards-container:has(.cards) {
   .cards-wrapper > .cards.block.teaser .pagination {
     gap: 10px;
   }
+
   .cards-wrapper > .cards.block.teaser .page-link {
     font-size: 16px;
     padding: 3px 8px;
   }
+}
+
+/* No results message styling */
+.cards-wrapper > .cards.block .no-results-message {
+  text-align: center;
+  margin: 0 40px;
+  font-size: 16px;
+  font-weight: 700;
 }
